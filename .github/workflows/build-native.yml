@@ -1,0 +1,26 @@
+name: Build Kotlin/Native
+on: [push]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Source Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Create a Gradle Wrapper
+        # Use a null gradle file so that if the gradle version cannot parse this gradle
+        # file it will be able to run and generate the gradle wrapper.
+        run: touch null.gradle ; gradle -b null.gradle wrapper --gradle-version 7.5 ; rm null.gradle
+
+      - name: Gradle Version
+        run: ./gradlew --version
+
+      - name: Build for Kotlin/Native
+        run: ./gradlew nativeMainKlibrary
+
+      - name: Test for Kotlin/Native
+        run: ./gradlew nativeTest
