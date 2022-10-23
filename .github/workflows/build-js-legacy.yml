@@ -1,0 +1,20 @@
+name: Build Kotlin/JS Legacy
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Source Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Create a Gradle Wrapper
+        # Use a null gradle file so that if the gradle version cannot parse this gradle
+        # file it will be able to run and generate the gradle wrapper.
+        run: touch null.gradle ; gradle -b null.gradle wrapper --gradle-version 7.5 ; rm null.gradle
+
+      - name: Gradle Version
+        run: ./gradlew --version
+
+      - name: Build for Kotlin/JS Legacy
+        run: ./gradlew jsLegacyJar
