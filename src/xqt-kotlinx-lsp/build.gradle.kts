@@ -9,7 +9,7 @@ version = "0.1-SNAPSHOT"
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions.jvmTarget = System.getProperty("jvm.target") ?: "11"
         }
         withJava()
         testRuns["test"].executionTask.configure {

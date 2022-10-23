@@ -5,7 +5,7 @@ plugins {
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions.jvmTarget = System.getProperty("jvm.target") ?: "11"
         }
         withJava()
     }
