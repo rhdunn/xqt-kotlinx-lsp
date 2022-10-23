@@ -70,3 +70,23 @@ jobs:
 
       - name: Test for Kotlin/JS Legacy on Firefox
         run: ./gradlew -D js.browser=Firefox jsLegacyBrowserTest
+
+  test-chrome:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-js-legacy
+
+      - name: Extract Build Artifacts
+        run: tar -xf build-js-legacy-artifacts.tar
+
+      - name: Setup Chrome Latest
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: 'latest'
+
+      - name: Test for Kotlin/JS Legacy on Chrome
+        run: ./gradlew -D js.browser=Chrome jsLegacyBrowserTest
