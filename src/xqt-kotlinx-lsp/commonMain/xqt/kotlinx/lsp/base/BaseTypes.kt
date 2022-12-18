@@ -3,8 +3,16 @@ package xqt.kotlinx.lsp.base
 
 import kotlinx.serialization.json.JsonElement
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
+import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonUInt
 import xqt.kotlinx.rpc.json.serialization.valueOutOfRange
+
+/**
+ * Defines an integer number in the range of -2^31 to 2^31 - 1.
+ *
+ * @since 3.16.0
+ */
+typealias Integer = JsonInt
 
 /**
  * Defines an unsigned integer number in the range of 0 to 2^31 - 1.
