@@ -3,6 +3,7 @@ package xqt.kotlinx.lsp.base
 
 import kotlinx.serialization.json.JsonElement
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
+import xqt.kotlinx.rpc.json.serialization.types.JsonDouble
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonUInt
 import xqt.kotlinx.rpc.json.serialization.valueOutOfRange
@@ -36,3 +37,14 @@ object UInteger : JsonSerialization<UInt> {
         return value
     }
 }
+
+/**
+ * Defines a decimal number.
+ *
+ * Since decimal numbers are very rare in the language server specification we
+ * denote the exact range with every decimal using the mathematics interval
+ * notation (e.g. `[0, 1]` denotes all decimals `d` with `0 <= d <= 1`).
+ *
+ * @since 3.16.0
+ */
+typealias Decimal = JsonDouble
