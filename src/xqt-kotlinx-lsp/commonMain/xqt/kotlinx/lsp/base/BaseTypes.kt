@@ -3,9 +3,7 @@ package xqt.kotlinx.lsp.base
 
 import kotlinx.serialization.json.JsonElement
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
-import xqt.kotlinx.rpc.json.serialization.types.JsonDouble
-import xqt.kotlinx.rpc.json.serialization.types.JsonInt
-import xqt.kotlinx.rpc.json.serialization.types.JsonUInt
+import xqt.kotlinx.rpc.json.serialization.types.*
 import xqt.kotlinx.rpc.json.serialization.valueOutOfRange
 
 /**
@@ -48,3 +46,10 @@ object UInteger : JsonSerialization<UInt> {
  * @since 3.16.0
  */
 typealias Decimal = JsonDouble
+
+/**
+ * LSP arrays.
+ *
+ * @since 3.17.0
+ */
+typealias LSPArray = JsonArray
