@@ -48,6 +48,13 @@ object UInteger : JsonSerialization<UInt> {
 typealias Decimal = JsonDouble
 
 /**
+ * LSP object definition.
+ *
+ * @since 3.17.0
+ */
+typealias LSPObject = JsonObject
+
+/**
  * LSP arrays.
  *
  * @since 3.17.0
