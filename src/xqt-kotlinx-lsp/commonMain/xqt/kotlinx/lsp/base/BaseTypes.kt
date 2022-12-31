@@ -48,6 +48,13 @@ object UInteger : JsonSerialization<UInt> {
 typealias Decimal = JsonDouble
 
 /**
+ * The LSP any type
+ *
+ * @since 3.17.0
+ */
+typealias LSPAny = xqt.kotlinx.rpc.json.serialization.types.JsonElement
+
+/**
  * LSP object definition.
  *
  * @since 3.17.0
