@@ -71,3 +71,13 @@ data class TextEdit(
         }
     }
 }
+
+internal object TextEditArray : JsonSerialization<List<TextEdit>> {
+    override fun serializeToJson(value: List<TextEdit>): JsonElement {
+        return JsonTypedArray.serialize(value, TextEdit)
+    }
+
+    override fun deserialize(json: JsonElement): List<TextEdit> {
+        return JsonTypedArray.deserialize(json, TextEdit)
+    }
+}
