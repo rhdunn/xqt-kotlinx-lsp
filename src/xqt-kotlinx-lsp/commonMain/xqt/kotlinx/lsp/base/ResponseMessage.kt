@@ -3,6 +3,7 @@ package xqt.kotlinx.lsp.base
 
 import xqt.kotlinx.rpc.json.protocol.ErrorCode
 import xqt.kotlinx.rpc.json.protocol.ErrorObject
+import xqt.kotlinx.rpc.json.protocol.ResponseObject
 
 /**
  * A number that indicates the error type that occurred.
@@ -54,3 +55,15 @@ object ErrorCodes {
  * @since 1.0.0
  */
 typealias ResponseError = ErrorObject
+
+/**
+ * A response message sent as a result of a request.
+ *
+ * If a request doesn't provide a result value the receiver of a request still
+ * needs to return a response message to conform to the JSON-RPC specification.
+ * The result property should be set to `null` in this case to signal a
+ * successful request.
+ *
+ * @since 1.0.0
+ */
+typealias ResponseMessage = ResponseObject
