@@ -2,6 +2,7 @@
 package xqt.kotlinx.lsp.base
 
 import xqt.kotlinx.rpc.json.protocol.ErrorCode
+import xqt.kotlinx.rpc.json.protocol.ErrorObject
 
 /**
  * A number that indicates the error type that occurred.
@@ -46,3 +47,10 @@ object ErrorCodes {
      */
     val ServerErrorEnd: ErrorCode = ErrorCode(-32000)
 }
+
+/**
+ * An error processing an RPC call.
+ *
+ * @since 1.0.0
+ */
+typealias ResponseError = ErrorObject
