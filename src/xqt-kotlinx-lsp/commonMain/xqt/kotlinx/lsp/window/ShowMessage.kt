@@ -2,10 +2,45 @@
 package xqt.kotlinx.lsp.window
 
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
+import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import kotlin.jvm.JvmInline
+
+/**
+ * Parameters for `window/showMessage` notifications.
+ *
+ * @since 1.0.0
+ */
+data class ShowMessageParams(
+    /**
+     * The message type.
+     */
+    val type: MessageType,
+
+    /**
+     * The actual message.
+     */
+    val message: String
+) {
+    companion object : JsonSerialization<ShowMessageParams> {
+        override fun serializeToJson(value: ShowMessageParams): JsonObject = buildJsonObject {
+            put("type", value.type, MessageType)
+            put("message", value.message, JsonString)
+        }
+
+        override fun deserialize(json: JsonElement): ShowMessageParams = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> ShowMessageParams(
+                type = json.get("type", MessageType),
+                message = json.get("message", JsonString)
+            )
+        }
+    }
+}
 
 /**
  * The message type.
