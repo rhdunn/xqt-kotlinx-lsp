@@ -1,8 +1,49 @@
 name: Build Kotlin/Native
-on: [push]
+on: [ push ]
 
 jobs:
+  xqt-kotlinx-json-rpc:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Source Code Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: rhdunn/xqt-kotlinx-json-rpc
+
+      - name: Create a Gradle Wrapper
+        # Use a null gradle file so that if the gradle version cannot parse this gradle
+        # file it will be able to run and generate the gradle wrapper.
+        run: touch null.gradle ; gradle -b null.gradle wrapper --gradle-version 7.5 ; rm null.gradle
+
+      - name: Gradle Version
+        run: ./gradlew --version
+
+      - name: Build for Kotlin/Native
+        run: ./gradlew nativeMainKlibrary
+
+      - name: Test for Kotlin/Native
+        run: ./gradlew nativeTest
+
+      - name: Publish Kotlin/Multiplatform to Maven Local
+        run: ./gradlew publishKotlinMultiplatformPublicationToMavenLocal
+
+      - name: Publish Kotlin/Native to Maven Local
+        run: ./gradlew publishNativePublicationToMavenLocal
+
+      - name: Tar XQT Kotlin JSON-RPC Artifacts
+        run: tar -cvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/xqt-kotlinx-lsp .
+
+      - name: Upload XQT Kotlin JSON-RPC Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-native-${{ matrix.os }}
+          path: xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar
+
   build:
+    needs: xqt-kotlinx-json-rpc
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
@@ -18,6 +59,16 @@ jobs:
 
       - name: Gradle Version
         run: ./gradlew --version
+
+      - name: Download XQT Kotlin JSON-RPC Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-native-${{ matrix.os }}
+
+      - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
+        run: |
+          mkdir -p $HOME/.m2/repository/xqt-kotlinx-lsp
+          tar -xvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/xqt-kotlinx-lsp
 
       - name: Build for Kotlin/Native
         run: ./gradlew nativeMainKlibrary

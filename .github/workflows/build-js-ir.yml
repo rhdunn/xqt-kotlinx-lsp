@@ -1,8 +1,43 @@
 name: Build Kotlin/JS IR
-on: [push]
+on: [ push ]
 
 jobs:
+  xqt-kotlinx-json-rpc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Source Code Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: rhdunn/xqt-kotlinx-json-rpc
+
+      - name: Create a Gradle Wrapper
+        # Use a null gradle file so that if the gradle version cannot parse this gradle
+        # file it will be able to run and generate the gradle wrapper.
+        run: touch null.gradle ; gradle -b null.gradle wrapper --gradle-version 7.5 ; rm null.gradle
+
+      - name: Gradle Version
+        run: ./gradlew --version
+
+      - name: Build for Kotlin/JS IR
+        run: ./gradlew jsIrJar
+
+      - name: Publish Kotlin/Multiplatform to Maven Local
+        run: ./gradlew publishKotlinMultiplatformPublicationToMavenLocal
+
+      - name: Publish Kotlin/JS IR to Maven Local
+        run: ./gradlew publishJsPublicationToMavenLocal
+
+      - name: Tar XQT Kotlin JSON-RPC Artifacts
+        run: tar -cvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/xqt-kotlinx-lsp .
+
+      - name: Upload XQT Kotlin JSON-RPC Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-js-ir
+          path: xqt-kotlinx-json-rpc-js-ir.tar
+
   build:
+    needs: xqt-kotlinx-json-rpc
     runs-on: ubuntu-latest
     steps:
       - name: Source Code Checkout
@@ -15,6 +50,16 @@ jobs:
 
       - name: Gradle Version
         run: ./gradlew --version
+
+      - name: Download XQT Kotlin JSON-RPC Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-js-ir
+
+      - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
+        run: |
+          mkdir -p ~/.m2/repository/xqt-kotlinx-lsp
+          tar -xvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/xqt-kotlinx-lsp
 
       - name: Build for Kotlin/JS IR
         run: ./gradlew jsIrJar
@@ -43,6 +88,16 @@ jobs:
       - name: Extract Build Artifacts
         run: tar -xf build-js-ir-artifacts.tar
 
+      - name: Download XQT Kotlin JSON-RPC Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-js-ir
+
+      - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
+        run: |
+          mkdir -p ~/.m2/repository/xqt-kotlinx-lsp
+          tar -xvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/xqt-kotlinx-lsp
+
       - name: Setup Node ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
@@ -63,6 +118,16 @@ jobs:
       - name: Extract Build Artifacts
         run: tar -xf build-js-ir-artifacts.tar
 
+      - name: Download XQT Kotlin JSON-RPC Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-js-ir
+
+      - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
+        run: |
+          mkdir -p ~/.m2/repository/xqt-kotlinx-lsp
+          tar -xvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/xqt-kotlinx-lsp
+
       - name: Setup Firefox Latest
         uses: browser-actions/setup-firefox@latest
         with:
@@ -82,6 +147,16 @@ jobs:
 
       - name: Extract Build Artifacts
         run: tar -xf build-js-ir-artifacts.tar
+
+      - name: Download XQT Kotlin JSON-RPC Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-js-ir
+
+      - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
+        run: |
+          mkdir -p ~/.m2/repository/xqt-kotlinx-lsp
+          tar -xvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/xqt-kotlinx-lsp
 
       - name: Setup Chrome Latest
         uses: browser-actions/setup-chrome@latest
