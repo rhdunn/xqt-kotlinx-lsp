@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.test.types
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.types.Position
+import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextEdit
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -38,6 +39,18 @@ class TheTextEditType {
         assertEquals("lorem", te.newText)
 
         assertEquals(json, TextEdit.serializeToJson(te))
+    }
+
+    @Test
+    @DisplayName("supports insert operations")
+    fun supports_insert_operations() {
+        val expected = TextEdit(
+            Range(Position(5u, 23u), Position(5u, 23u)),
+            "lorem"
+        )
+
+        val insert = TextEdit.insert(Position(5u, 23u), "lorem")
+        assertEquals(expected, insert)
     }
 
     @Test

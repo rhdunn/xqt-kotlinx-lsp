@@ -28,6 +28,16 @@ data class TextEdit(
     val newText: String
 ) {
     companion object : JsonSerialization<TextEdit> {
+        /**
+         * Creates an "insert" text edit.
+         *
+         * @param position the location of the inserted text in the text document.
+         * @param newText the string to be inserted.
+         */
+        fun insert(position: Position, newText: String): TextEdit {
+            return TextEdit(Range(position, position), newText)
+        }
+
         override fun serializeToJson(value: TextEdit): JsonObject = buildJsonObject {
             put("range", value.range, Range)
             put("newText", value.newText, JsonString)
