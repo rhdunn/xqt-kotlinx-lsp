@@ -54,6 +54,21 @@ class TheTextEditType {
     }
 
     @Test
+    @DisplayName("supports edit operations")
+    fun supports_edit_operations() {
+        val expected = TextEdit(
+            Range(Position(5u, 23u), Position(5u, 34u)),
+            "lorem"
+        )
+
+        val edit = TextEdit.edit(
+            Range(Position(5u, 23u), Position(5u, 34u)),
+            "lorem"
+        )
+        assertEquals(expected, edit)
+    }
+
+    @Test
     @DisplayName("throws an error if the kind type is not supported")
     fun throws_an_error_if_the_kind_type_is_not_supported() {
         val e1 = assertFails { TextEdit.deserialize(jsonArrayOf()) }

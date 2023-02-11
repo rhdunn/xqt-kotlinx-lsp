@@ -38,6 +38,16 @@ data class TextEdit(
             return TextEdit(Range(position, position), newText)
         }
 
+        /**
+         * Creates an "edit" text edit.
+         *
+         * @param range the range of the text document to be edited.
+         * @param newText the string to be inserted.
+         */
+        fun edit(range: Range, newText: String): TextEdit {
+            return TextEdit(range, newText)
+        }
+
         override fun serializeToJson(value: TextEdit): JsonObject = buildJsonObject {
             put("range", value.range, Range)
             put("newText", value.newText, JsonString)
