@@ -48,6 +48,15 @@ data class TextEdit(
             return TextEdit(range, newText)
         }
 
+        /**
+         * Creates a "delete" text edit.
+         *
+         * @param range the range of the text document to be removed.
+         */
+        fun delete(range: Range): TextEdit {
+            return TextEdit(range, "")
+        }
+
         override fun serializeToJson(value: TextEdit): JsonObject = buildJsonObject {
             put("range", value.range, Range)
             put("newText", value.newText, JsonString)

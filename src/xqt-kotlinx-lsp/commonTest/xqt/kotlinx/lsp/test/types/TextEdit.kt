@@ -69,6 +69,18 @@ class TheTextEditType {
     }
 
     @Test
+    @DisplayName("supports delete operations")
+    fun supports_delete_operations() {
+        val expected = TextEdit(
+            Range(Position(5u, 23u), Position(5u, 34u)),
+            ""
+        )
+
+        val delete = TextEdit.delete(Range(Position(5u, 23u), Position(5u, 34u)))
+        assertEquals(expected, delete)
+    }
+
+    @Test
     @DisplayName("throws an error if the kind type is not supported")
     fun throws_an_error_if_the_kind_type_is_not_supported() {
         val e1 = assertFails { TextEdit.deserialize(jsonArrayOf()) }
