@@ -2,9 +2,13 @@
 package xqt.kotlinx.lsp.workspace
 
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
+import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import kotlin.jvm.JvmInline
 
 /**
@@ -37,5 +41,37 @@ value class FileChangeType(val type: Int) {
          * The file got deleted.
          */
         val Deleted: FileChangeType = FileChangeType(3)
+    }
+}
+
+/**
+ * An event describing a file change.
+ *
+ * @since 1.0.0
+ */
+data class FileEvent(
+    /**
+     * The file's uri.
+     */
+    override val uri: String,
+
+    /**
+     * The change type.
+     */
+    val type: FileChangeType
+) : TextDocumentIdentifier {
+    companion object : JsonSerialization<FileEvent> {
+        override fun serializeToJson(value: FileEvent): JsonObject = buildJsonObject {
+            put("uri", value.uri, JsonString)
+            put("type", value.type, FileChangeType)
+        }
+
+        override fun deserialize(json: JsonElement): FileEvent = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> FileEvent(
+                uri = json.get("uri", JsonString),
+                type = json.get("type", FileChangeType)
+            )
+        }
     }
 }
