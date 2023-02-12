@@ -17,7 +17,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  *
  * @since 1.0.0
  */
-sealed interface TextDocumentIdentifier {
+interface TextDocumentIdentifier {
     /**
      * The text document's URI.
      */
