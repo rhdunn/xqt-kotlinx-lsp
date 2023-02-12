@@ -6,8 +6,38 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
 import xqt.kotlinx.lsp.types.Range
+import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+
+/**
+ * Parameters for `textDocument/didChange` notification.
+ *
+ * @since 1.0.0
+ */
+data class DidChangeTextDocumentParams(
+    override val uri: String,
+
+    /**
+     * The actual content changes.
+     */
+    val contentChanges: List<TextDocumentContentChangeEvent>
+) : TextDocumentIdentifier {
+    companion object : JsonSerialization<DidChangeTextDocumentParams> {
+        override fun serializeToJson(value: DidChangeTextDocumentParams): JsonObject = buildJsonObject {
+            put("uri", value.uri, JsonString)
+            putArray("contentChanges", value.contentChanges, TextDocumentContentChangeEvent)
+        }
+
+        override fun deserialize(json: JsonElement): DidChangeTextDocumentParams = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> DidChangeTextDocumentParams(
+                uri = json.get("uri", JsonString),
+                contentChanges = json.getArray("contentChanges", TextDocumentContentChangeEvent)
+            )
+        }
+    }
+}
 
 /**
  * An event describing a change to a text document.
