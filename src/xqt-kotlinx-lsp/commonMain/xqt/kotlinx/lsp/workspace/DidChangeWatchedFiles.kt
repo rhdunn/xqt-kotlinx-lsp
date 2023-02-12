@@ -12,6 +12,31 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import kotlin.jvm.JvmInline
 
 /**
+ * Parameters for `workspace/didChangeWatchedFiles` notification.
+ *
+ * @since 1.0.0
+ */
+data class DidChangeWatchedFilesParams(
+    /**
+     * The actual file events.
+     */
+    val changes: List<FileEvent>
+) {
+    companion object : JsonSerialization<DidChangeWatchedFilesParams> {
+        override fun serializeToJson(value: DidChangeWatchedFilesParams): JsonObject = buildJsonObject {
+            putArray("changes", value.changes, FileEvent)
+        }
+
+        override fun deserialize(json: JsonElement): DidChangeWatchedFilesParams = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> DidChangeWatchedFilesParams(
+                changes = json.getArray("changes", FileEvent)
+            )
+        }
+    }
+}
+
+/**
  * The file event type.
  *
  * @param type the file event type.
