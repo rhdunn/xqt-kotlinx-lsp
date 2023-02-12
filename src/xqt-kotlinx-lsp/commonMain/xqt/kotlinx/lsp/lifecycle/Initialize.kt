@@ -78,6 +78,33 @@ data class InitializeResults(
 }
 
 /**
+ * The `initialize` request error data.
+ *
+ * @since 1.0.0
+ */
+data class InitializeError(
+    /**
+     * Indicates whether the client should retry to send the
+     * initialize request after showing the message provided
+     * in the ResponseError.
+     */
+    val retry: Boolean
+) {
+    companion object : JsonSerialization<InitializeError> {
+        override fun serializeToJson(value: InitializeError): JsonObject = buildJsonObject {
+            put("retry", value.retry, JsonBoolean)
+        }
+
+        override fun deserialize(json: JsonElement): InitializeError = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> InitializeError(
+                retry = json.get("retry", JsonBoolean)
+            )
+        }
+    }
+}
+
+/**
  * Server capabilities.
  *
  * @since 1.0.0
