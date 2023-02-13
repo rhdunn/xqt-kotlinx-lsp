@@ -34,3 +34,39 @@ data class SignatureHelpOptions(
         }
     }
 }
+
+/**
+ * Represents a parameter of a callable-signature.
+ *
+ * @since 1.0.0
+ */
+data class ParameterInformation(
+    /**
+     * The label of this signature.
+     *
+     * Will be shown in the UI.
+     */
+    val label: String,
+
+    /**
+     * The human-readable doc-comment of this signature.
+     *
+     * Will be shown in the UI but can be omitted.
+     */
+    val documentation: String? = null
+) {
+    companion object : JsonSerialization<ParameterInformation> {
+        override fun serializeToJson(value: ParameterInformation): JsonObject = buildJsonObject {
+            put("label", value.label, JsonString)
+            putOptional("documentation", value.documentation, JsonString)
+        }
+
+        override fun deserialize(json: JsonElement): ParameterInformation = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> ParameterInformation(
+                label = json.get("label", JsonString),
+                documentation = json.getOptional("documentation", JsonString),
+            )
+        }
+    }
+}
