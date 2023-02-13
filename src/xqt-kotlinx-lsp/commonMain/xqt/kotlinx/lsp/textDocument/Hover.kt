@@ -5,8 +5,44 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedObjectOrArray
+
+/**
+ * The `textDocument/hover` request response.
+ *
+ * @since 1.0.0
+ */
+data class Hover(
+    /**
+     * The hover's content.
+     */
+    val contents: List<MarkedString>,
+
+    /**
+     * An optional range.
+     */
+    val range: Range? = null
+) {
+    companion object : JsonSerialization<Hover> {
+        private val MarkedStringArray = JsonTypedObjectOrArray(MarkedString)
+
+        override fun serializeToJson(value: Hover): JsonObject = buildJsonObject {
+            put("contents", value.contents, MarkedStringArray)
+            putOptional("range", value.range, Range)
+        }
+
+        override fun deserialize(json: JsonElement): Hover = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> Hover(
+                contents = json.get("contents", MarkedStringArray),
+                range = json.getOptional("range", Range)
+            )
+        }
+    }
+}
 
 /**
  * Render human-readable text or code-block.
