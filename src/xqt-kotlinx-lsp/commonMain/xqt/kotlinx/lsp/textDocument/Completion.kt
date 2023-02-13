@@ -5,6 +5,8 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.base.LSPAny
+import xqt.kotlinx.lsp.types.TextEdit
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
@@ -39,6 +41,104 @@ data class CompletionOptions(
             else -> CompletionOptions(
                 resolveProvider = json.getOptional("resolveProvider", JsonBoolean),
                 triggerCharacters = json.getOptionalArray("triggerCharacters", JsonString)
+            )
+        }
+    }
+}
+
+/**
+ * Completion item.
+ *
+ * @since 1.0.0
+ */
+data class CompletionItem(
+    /**
+     * The label of this completion item.
+     *
+     * By default, this is also the text that is inserted when selecting this
+     * completion.
+     */
+    val label: String,
+
+    /**
+     * The kind of this completion item.
+     *
+     * Based of the kind an icon is chosen by the editor.
+     */
+    val kind: CompletionItemKind? = null,
+
+    /**
+     * A human-readable string with additional information about this item.
+     *
+     * This can be things like type or symbol information.
+     */
+    val detail: String? = null,
+
+    /**
+     * A human-readable string that represents a doc-comment.
+     */
+    val documentation: String? = null,
+
+    /**
+     * A string that should be used when comparing this item with other items.
+     *
+     * When `null` the label is used.
+     */
+    val sortText: String? = null,
+
+    /**
+     * A string that should be used when filtering a set of completion items.
+     *
+     * When `null` the label is used.
+     */
+    val filterText: String? = null,
+
+    /**
+     * A string that should be inserted a document when selecting this
+     * completion.
+     *
+     * When `null` the label is used.
+     */
+    val insertText: String? = null,
+
+    /**
+     * An edit which is applied to a document when selecting this completion.
+     *
+     * When an edit is provided the value of insertText is ignored.
+     */
+    val textEdit: TextEdit? = null,
+
+    /**
+     * A data entry field that is preserved on a completion item between
+     * a completion and a completion resolve request.
+     */
+    val data: JsonElement? = null
+) {
+    companion object : JsonSerialization<CompletionItem> {
+        override fun serializeToJson(value: CompletionItem): JsonObject = buildJsonObject {
+            put("label", value.label, JsonString)
+            putOptional("kind", value.kind, CompletionItemKind)
+            putOptional("detail", value.detail, JsonString)
+            putOptional("documentation", value.documentation, JsonString)
+            putOptional("sortText", value.sortText, JsonString)
+            putOptional("filterText", value.filterText, JsonString)
+            putOptional("insertText", value.insertText, JsonString)
+            putOptional("textEdit", value.textEdit, TextEdit)
+            putOptional("data", value.data, LSPAny)
+        }
+
+        override fun deserialize(json: JsonElement): CompletionItem = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> CompletionItem(
+                label = json.get("label", JsonString),
+                kind = json.getOptional("kind", CompletionItemKind),
+                detail = json.getOptional("detail", JsonString),
+                documentation = json.getOptional("documentation", JsonString),
+                sortText = json.getOptional("sortText", JsonString),
+                filterText = json.getOptional("filterText", JsonString),
+                insertText = json.getOptional("insertText", JsonString),
+                textEdit = json.getOptional("textEdit", TextEdit),
+                data = json.getOptional("data", LSPAny)
             )
         }
     }
