@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
 /**
  * Format document on type options.
@@ -24,10 +25,12 @@ data class DocumentOnTypeFormattingOptions(
     val moreTriggerCharacters: List<String> = emptyList()
 ) {
     companion object : JsonSerialization<DocumentOnTypeFormattingOptions> {
+        private val JsonStringArray = JsonTypedArray(JsonString)
+
         override fun serializeToJson(value: DocumentOnTypeFormattingOptions): JsonObject = buildJsonObject {
             put("firstTriggerCharacter", value.firstTriggerCharacter, JsonString)
             // NOTE: The moreTriggerCharacters property is mistyped in the LSP specification.
-            putOptionalArray("moreTriggerCharacter", value.moreTriggerCharacters, JsonString)
+            putOptional("moreTriggerCharacter", value.moreTriggerCharacters, JsonStringArray)
         }
 
         override fun deserialize(json: JsonElement): DocumentOnTypeFormattingOptions = when (json) {
@@ -35,7 +38,7 @@ data class DocumentOnTypeFormattingOptions(
             else -> DocumentOnTypeFormattingOptions(
                 firstTriggerCharacter = json.get("firstTriggerCharacter", JsonString),
                 // NOTE: The moreTriggerCharacters property is mistyped in the LSP specification.
-                moreTriggerCharacters = json.getOptionalArray("moreTriggerCharacter", JsonString)
+                moreTriggerCharacters = json.getOptional("moreTriggerCharacter", JsonStringArray)
             )
         }
     }

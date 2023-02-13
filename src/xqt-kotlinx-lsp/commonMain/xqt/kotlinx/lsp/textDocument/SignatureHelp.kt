@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
 /**
  * Signature help options.
@@ -19,14 +20,16 @@ data class SignatureHelpOptions(
     val triggerCharacters: List<String> = emptyList()
 ) {
     companion object : JsonSerialization<SignatureHelpOptions> {
+        private val JsonStringArray = JsonTypedArray(JsonString)
+
         override fun serializeToJson(value: SignatureHelpOptions): JsonObject = buildJsonObject {
-            putOptionalArray("triggerCharacters", value.triggerCharacters, JsonString)
+            putOptional("triggerCharacters", value.triggerCharacters, JsonStringArray)
         }
 
         override fun deserialize(json: JsonElement): SignatureHelpOptions = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> SignatureHelpOptions(
-                triggerCharacters = json.getOptionalArray("triggerCharacters", JsonString)
+                triggerCharacters = json.getOptional("triggerCharacters", JsonStringArray)
             )
         }
     }

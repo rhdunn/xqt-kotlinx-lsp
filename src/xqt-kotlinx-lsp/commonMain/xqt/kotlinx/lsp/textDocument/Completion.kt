@@ -11,6 +11,7 @@ import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import kotlin.jvm.JvmInline
 
 /**
@@ -31,16 +32,18 @@ data class CompletionOptions(
     val triggerCharacters: List<String> = emptyList()
 ) {
     companion object : JsonSerialization<CompletionOptions> {
+        private val JsonStringArray = JsonTypedArray(JsonString)
+
         override fun serializeToJson(value: CompletionOptions): JsonObject = buildJsonObject {
             putOptional("resolveProvider", value.resolveProvider, JsonBoolean)
-            putOptionalArray("triggerCharacters", value.triggerCharacters, JsonString)
+            putOptional("triggerCharacters", value.triggerCharacters, JsonStringArray)
         }
 
         override fun deserialize(json: JsonElement): CompletionOptions = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> CompletionOptions(
                 resolveProvider = json.getOptional("resolveProvider", JsonBoolean),
-                triggerCharacters = json.getOptionalArray("triggerCharacters", JsonString)
+                triggerCharacters = json.getOptional("triggerCharacters", JsonStringArray)
             )
         }
     }
