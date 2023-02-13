@@ -7,6 +7,7 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Diagnostic
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
 /**
  * Parameters for `textDocument/publishDiagnostics` notification.
@@ -25,16 +26,18 @@ data class PublishDiagnosticsParams(
     val diagnostics: List<Diagnostic>
 ) {
     companion object : JsonSerialization<PublishDiagnosticsParams> {
+        private val DiagnosticArray = JsonTypedArray(Diagnostic)
+
         override fun serializeToJson(value: PublishDiagnosticsParams): JsonObject = buildJsonObject {
             put("uri", value.uri, JsonString)
-            putArray("diagnostics", value.diagnostics, Diagnostic)
+            put("diagnostics", value.diagnostics, DiagnosticArray)
         }
 
         override fun deserialize(json: JsonElement): PublishDiagnosticsParams = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> PublishDiagnosticsParams(
                 uri = json.get("uri", JsonString),
-                diagnostics = json.getArray("diagnostics", Diagnostic)
+                diagnostics = json.get("diagnostics", DiagnosticArray)
             )
         }
     }

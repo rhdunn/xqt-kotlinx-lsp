@@ -9,6 +9,7 @@ import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
 /**
  * Parameters for `textDocument/didChange` notification.
@@ -24,16 +25,18 @@ data class DidChangeTextDocumentParams(
     val contentChanges: List<TextDocumentContentChangeEvent>
 ) : TextDocumentIdentifier {
     companion object : JsonSerialization<DidChangeTextDocumentParams> {
+        private val TextDocumentContentChangeEventArray = JsonTypedArray(TextDocumentContentChangeEvent)
+
         override fun serializeToJson(value: DidChangeTextDocumentParams): JsonObject = buildJsonObject {
             put("uri", value.uri, JsonString)
-            putArray("contentChanges", value.contentChanges, TextDocumentContentChangeEvent)
+            put("contentChanges", value.contentChanges, TextDocumentContentChangeEventArray)
         }
 
         override fun deserialize(json: JsonElement): DidChangeTextDocumentParams = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> DidChangeTextDocumentParams(
                 uri = json.get("uri", JsonString),
-                contentChanges = json.getArray("contentChanges", TextDocumentContentChangeEvent)
+                contentChanges = json.get("contentChanges", TextDocumentContentChangeEventArray)
             )
         }
     }

@@ -9,6 +9,7 @@ import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import kotlin.jvm.JvmInline
 
 /**
@@ -23,14 +24,16 @@ data class DidChangeWatchedFilesParams(
     val changes: List<FileEvent>
 ) {
     companion object : JsonSerialization<DidChangeWatchedFilesParams> {
+        private val FileEventArray = JsonTypedArray(FileEvent)
+
         override fun serializeToJson(value: DidChangeWatchedFilesParams): JsonObject = buildJsonObject {
-            putArray("changes", value.changes, FileEvent)
+            put("changes", value.changes, FileEventArray)
         }
 
         override fun deserialize(json: JsonElement): DidChangeWatchedFilesParams = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> DidChangeWatchedFilesParams(
-                changes = json.getArray("changes", FileEvent)
+                changes = json.get("changes", FileEventArray)
             )
         }
     }
