@@ -7,6 +7,7 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedObject
 
 /**
  * A workspace edit represents changes to many resources managed in the workspace.
@@ -20,16 +21,19 @@ data class WorkspaceEdit(
     val changes: Map<String, List<TextEdit>>
 ) {
     companion object : JsonSerialization<WorkspaceEdit> {
-        private val TextEditArray = JsonTypedArray(TextEdit)
+        private val TextEditArrayMap = JsonTypedObject(
+            keySerialization = JsonString,
+            valueSerialization = JsonTypedArray(TextEdit)
+        )
 
         override fun serializeToJson(value: WorkspaceEdit): JsonObject = buildJsonObject {
-            putMap("changes", value.changes, JsonString, TextEditArray)
+            put("changes", value.changes, TextEditArrayMap)
         }
 
         override fun deserialize(json: JsonElement): WorkspaceEdit = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> WorkspaceEdit(
-                changes = json.getMap("changes", JsonString, TextEditArray)
+                changes = json.get("changes", TextEditArrayMap)
             )
         }
     }
