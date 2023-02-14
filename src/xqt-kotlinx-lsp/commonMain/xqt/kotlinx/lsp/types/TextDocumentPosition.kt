@@ -10,14 +10,14 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonString
  *
  * @since 1.0.0
  */
-data class TextDocumentPosition(
-    override val uri: String,
+interface TextDocumentPosition : TextDocumentIdentifier {
+    override val uri: String
 
     /**
      * The position inside the text document.
      */
     val position: Position
-) : TextDocumentIdentifier {
+
     companion object : JsonSerialization<TextDocumentPosition> {
         override fun serializeToJson(value: TextDocumentPosition): JsonObject = buildJsonObject {
             put("uri", value.uri, JsonString)
@@ -26,10 +26,15 @@ data class TextDocumentPosition(
 
         override fun deserialize(json: JsonElement): TextDocumentPosition = when (json) {
             !is JsonObject -> unsupportedKindType(json)
-            else -> TextDocumentPosition(
+            else -> TextDocumentPositionImpl(
                 uri = json.get("uri", JsonString),
                 position = json.get("position", Position)
             )
         }
     }
 }
+
+internal data class TextDocumentPositionImpl(
+    override val uri: String,
+    override val position: Position
+) : TextDocumentPosition
