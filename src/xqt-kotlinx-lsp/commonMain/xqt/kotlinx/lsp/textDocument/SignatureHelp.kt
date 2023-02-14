@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.textDocument
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.base.UInteger
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
@@ -30,6 +31,50 @@ data class SignatureHelpOptions(
             !is JsonObject -> unsupportedKindType(json)
             else -> SignatureHelpOptions(
                 triggerCharacters = json.getOptional("triggerCharacters", JsonStringArray)
+            )
+        }
+    }
+}
+
+/**
+ * Signature help represents the signature of something callable.
+ *
+ * There can be multiple signatures, but only one active and only one active
+ * parameter.
+ *
+ * @since 1.0.0
+ */
+data class SignatureHelp(
+    /**
+     * One or more signatures.
+     */
+    val signatures: List<SignatureInformation>,
+
+    /**
+     * The active signature.
+     */
+    val activeSignature: UInt? = null,
+
+    /**
+     * The active parameter of the active signature.
+     */
+    val activeParameter: UInt? = null
+) {
+    companion object : JsonSerialization<SignatureHelp> {
+        private val SignatureInformationArray = JsonTypedArray(SignatureInformation)
+
+        override fun serializeToJson(value: SignatureHelp): JsonObject = buildJsonObject {
+            put("signatures", value.signatures, SignatureInformationArray)
+            putOptional("activeSignature", value.activeSignature, UInteger)
+            putOptional("activeParameter", value.activeParameter, UInteger)
+        }
+
+        override fun deserialize(json: JsonElement): SignatureHelp = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> SignatureHelp(
+                signatures = json.get("signatures", SignatureInformationArray),
+                activeSignature = json.getOptional("activeSignature", UInteger),
+                activeParameter = json.getOptional("activeParameter", UInteger)
             )
         }
     }
