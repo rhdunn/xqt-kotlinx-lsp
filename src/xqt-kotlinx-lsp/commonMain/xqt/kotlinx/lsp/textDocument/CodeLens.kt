@@ -4,6 +4,9 @@ package xqt.kotlinx.lsp.textDocument
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.base.LSPAny
+import xqt.kotlinx.lsp.types.Command
+import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 
@@ -28,6 +31,53 @@ data class CodeLensOptions(
             !is JsonObject -> unsupportedKindType(json)
             else -> CodeLensOptions(
                 resolveProvider = json.getOptional("resolveProvider", JsonBoolean)
+            )
+        }
+    }
+}
+
+/**
+ * A code lens represents a command that should be shown along with source text.
+ *
+ * For example, like the number of references, a way to run tests, etc.
+ *
+ * A code lens is _unresolved_ when no command is associated to it. For performance
+ * reasons the creation of a code lens and resolving should be done to two stages.
+ *
+ * @since 1.0.0
+ */
+data class CodeLens(
+    /**
+     * The range in which this code lens is valid.
+     *
+     * This should only span a single line.
+     */
+    val range: Range,
+
+    /**
+     * The command this code lens represents.
+     */
+    val command: Command? = null,
+
+    /**
+     * A data entry field that is preserved on a code lens item between
+     * a code lens and a code lens resolve request.
+     */
+    val data: JsonElement? = null
+) {
+    companion object : JsonSerialization<CodeLens> {
+        override fun serializeToJson(value: CodeLens): JsonObject = buildJsonObject {
+            put("range", value.range, Range)
+            putOptional("command", value.command, Command)
+            putOptional("data", value.data, LSPAny)
+        }
+
+        override fun deserialize(json: JsonElement): CodeLens = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> CodeLens(
+                range = json.get("range", Range),
+                command = json.getOptional("command", Command),
+                data = json.getOptional("data", LSPAny),
             )
         }
     }
