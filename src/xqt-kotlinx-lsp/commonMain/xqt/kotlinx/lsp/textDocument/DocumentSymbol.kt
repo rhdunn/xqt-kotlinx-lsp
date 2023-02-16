@@ -2,10 +2,61 @@
 package xqt.kotlinx.lsp.textDocument
 
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.types.Location
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
+import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import kotlin.jvm.JvmInline
+
+/**
+ * Represents information about programming constructs like variables, classes,
+ * and interfaces.
+ *
+ * @since 1.0.0
+ */
+data class SymbolInformation(
+    /**
+     * The name of this symbol.
+     */
+    val name: String,
+
+    /**
+     * The kind of this symbol.
+     */
+    val kind: SymbolKind,
+
+    /**
+     * The location of this symbol.
+     */
+    val location: Location,
+
+    /**
+     * The name of the symbol containing this symbol.
+     */
+    val containerName: String? = null
+) {
+    companion object : JsonSerialization<SymbolInformation> {
+        override fun serializeToJson(value: SymbolInformation): JsonObject = buildJsonObject {
+            put("name", value.name, JsonString)
+            put("kind", value.kind, SymbolKind)
+            put("location", value.location, Location)
+            putOptional("containerName", value.containerName, JsonString)
+        }
+
+        override fun deserialize(json: JsonElement): SymbolInformation = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> SymbolInformation(
+                name = json.get("name", JsonString),
+                kind = json.get("kind", SymbolKind),
+                location = json.get("location", Location),
+                containerName = json.getOptional("containerName", JsonString)
+            )
+        }
+    }
+}
 
 /**
  * A symbol kind.
