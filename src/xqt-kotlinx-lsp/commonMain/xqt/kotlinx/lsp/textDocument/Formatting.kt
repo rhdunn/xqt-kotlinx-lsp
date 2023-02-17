@@ -4,10 +4,44 @@ package xqt.kotlinx.lsp.textDocument
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
+import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonPrimitiveValue
+
+/**
+ * The `textDocument/formatting` request parameters.
+ *
+ * @since 1.0.0
+ */
+data class DocumentFormattingParams(
+    /**
+     * The document to format.
+     */
+    val textDocument: TextDocumentIdentifier,
+
+    /**
+     * The format options.
+     */
+    val options: FormattingOptions
+) {
+    companion object : JsonSerialization<DocumentFormattingParams> {
+        override fun serializeToJson(value: DocumentFormattingParams): JsonObject = buildJsonObject {
+            put("textDocument", value.textDocument, TextDocumentIdentifier)
+            put("options", value.options, FormattingOptions)
+        }
+
+        override fun deserialize(json: JsonElement): DocumentFormattingParams = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> DocumentFormattingParams(
+                textDocument = json.get("textDocument", TextDocumentIdentifier),
+                options = json.get("options", FormattingOptions)
+            )
+        }
+    }
+}
 
 /**
  * Value-object describing what options formatting should use.
