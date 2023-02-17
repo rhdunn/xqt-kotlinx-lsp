@@ -6,7 +6,10 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.Integer
 import xqt.kotlinx.lsp.base.LSPObject
+import xqt.kotlinx.lsp.base.RequestMessage
 import xqt.kotlinx.lsp.textDocument.*
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
@@ -35,6 +38,8 @@ data class InitializeParams(
     val capabilities: JsonObject
 ) {
     companion object : JsonSerialization<InitializeParams> {
+        internal const val INITIALIZE: String = "initialize"
+
         override fun serializeToJson(value: InitializeParams): JsonObject = buildJsonObject {
             put("processId", value.processId, Integer)
             putNullable("rootPath", value.rootPath, JsonString)
@@ -231,5 +236,19 @@ data class ServerCapabilities(
                 renameProvider = json.getOptional("renameProvider", JsonBoolean),
             )
         }
+    }
+}
+
+/**
+ * The initialize request is sent as the first request from the client to the server.
+ *
+ * @return an initialize result response
+ *
+ * @since 1.0.0
+ */
+fun RequestMessage.initialize(handler: InitializeParams.() -> InitializeResult) {
+    if (method == InitializeParams.INITIALIZE) {
+        val result = params(InitializeParams).handler()
+        sendResult(result, InitializeResult)
     }
 }
