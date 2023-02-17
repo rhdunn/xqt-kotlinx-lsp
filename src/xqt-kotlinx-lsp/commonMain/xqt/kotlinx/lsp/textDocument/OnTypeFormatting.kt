@@ -4,6 +4,9 @@ package xqt.kotlinx.lsp.textDocument
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.types.Position
+import xqt.kotlinx.lsp.types.Range
+import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
@@ -39,6 +42,52 @@ data class DocumentOnTypeFormattingOptions(
                 firstTriggerCharacter = json.get("firstTriggerCharacter", JsonString),
                 // NOTE: The moreTriggerCharacters property is mistyped in the LSP specification.
                 moreTriggerCharacters = json.getOptional("moreTriggerCharacter", JsonStringArray)
+            )
+        }
+    }
+}
+
+/**
+ * The `textDocument/onTypeFormatting` request parameters.
+ *
+ * @since 1.0.0
+ */
+data class DocumentOnTypeFormattingParams(
+    /**
+     * The document to format.
+     */
+    val textDocument: TextDocumentIdentifier,
+
+    /**
+     * The position at which this request was send.
+     */
+    val position: Position,
+
+    /**
+     * The character that has been typed.
+     */
+    val ch: String,
+
+    /**
+     * The format options.
+     */
+    val options: FormattingOptions
+) {
+    companion object : JsonSerialization<DocumentOnTypeFormattingParams> {
+        override fun serializeToJson(value: DocumentOnTypeFormattingParams): JsonObject = buildJsonObject {
+            put("textDocument", value.textDocument, TextDocumentIdentifier)
+            put("position", value.position, Position)
+            put("ch", value.ch, JsonString)
+            put("options", value.options, FormattingOptions)
+        }
+
+        override fun deserialize(json: JsonElement): DocumentOnTypeFormattingParams = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> DocumentOnTypeFormattingParams(
+                textDocument = json.get("textDocument", TextDocumentIdentifier),
+                position = json.get("position", Position),
+                ch = json.get("ch", JsonString),
+                options = json.get("options", FormattingOptions)
             )
         }
     }
