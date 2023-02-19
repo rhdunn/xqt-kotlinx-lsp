@@ -57,20 +57,20 @@ data class InitializeParams(
  *
  * @since 1.0.0
  */
-data class InitializeResults(
+data class InitializeResult(
     /**
      * The capabilities provided by the language server.
      */
     val capabilities: ServerCapabilities
 ) {
-    companion object : JsonSerialization<InitializeResults> {
-        override fun serializeToJson(value: InitializeResults): JsonObject = buildJsonObject {
+    companion object : JsonSerialization<InitializeResult> {
+        override fun serializeToJson(value: InitializeResult): JsonObject = buildJsonObject {
             put("capabilities", value.capabilities, ServerCapabilities)
         }
 
-        override fun deserialize(json: JsonElement): InitializeResults = when (json) {
+        override fun deserialize(json: JsonElement): InitializeResult = when (json) {
             !is JsonObject -> unsupportedKindType(json)
-            else -> InitializeResults(
+            else -> InitializeResult(
                 capabilities = json.get("capabilities", ServerCapabilities)
             )
         }
