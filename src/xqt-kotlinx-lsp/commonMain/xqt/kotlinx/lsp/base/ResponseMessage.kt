@@ -1,6 +1,7 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.base
 
+import kotlinx.serialization.json.JsonElement
 import xqt.kotlinx.rpc.json.protocol.ErrorCode
 import xqt.kotlinx.rpc.json.protocol.ErrorObject
 import xqt.kotlinx.rpc.json.protocol.ResponseObject
@@ -67,3 +68,75 @@ typealias ResponseError = ErrorObject
  * @since 1.0.0
  */
 typealias ResponseMessage = ResponseObject
+
+/**
+ * Invalid JSON was received by the server.
+ *
+ * An error occurred on the server while parsing the JSON text.
+ *
+ * @param message a string providing a short description of the error
+ * @param data a primitive or structured value that contains additional
+ *             information about the error
+ */
+@Suppress("FunctionName")
+fun ParseError(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
+    code = ErrorCodes.ParseError,
+    message = message ?: "Parse Error",
+    data = data
+)
+
+/**
+ * Invalid method parameter(s).
+ *
+ * @param message a string providing a short description of the error
+ * @param data a primitive or structured value that contains additional
+ *             information about the error
+ */
+@Suppress("FunctionName")
+fun InternalError(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
+    code = ErrorCodes.InternalError,
+    message = message ?: "Internal Error",
+    data = data
+)
+
+/**
+ * Invalid method parameter(s).
+ *
+ * @param message a string providing a short description of the error
+ * @param data a primitive or structured value that contains additional
+ *             information about the error
+ */
+@Suppress("FunctionName")
+fun InvalidParams(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
+    code = ErrorCodes.InvalidParams,
+    message = message ?: "Invalid Parameters",
+    data = data
+)
+
+/**
+ * The method does not exist / is not available.
+ *
+ * @param message a string providing a short description of the error
+ * @param data a primitive or structured value that contains additional
+ *             information about the error
+ */
+@Suppress("FunctionName")
+fun MethodNotFound(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
+    code = ErrorCodes.ParseError,
+    message = message ?: "Method Not Found",
+    data = data
+)
+
+/**
+ * The JSON sent is not a valid Request object.
+ *
+ * @param message a string providing a short description of the error
+ * @param data a primitive or structured value that contains additional
+ *             information about the error
+ */
+@Suppress("FunctionName")
+fun InvalidRequest(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
+    code = ErrorCodes.InvalidRequest,
+    message = message ?: "Invalid Request",
+    data = data
+)
