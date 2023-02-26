@@ -4,10 +4,13 @@ package xqt.kotlinx.lsp.lifecycle
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.base.ErrorCodes
 import xqt.kotlinx.lsp.base.Integer
 import xqt.kotlinx.lsp.base.LSPObject
 import xqt.kotlinx.lsp.base.RequestMessage
 import xqt.kotlinx.lsp.textDocument.*
+import xqt.kotlinx.rpc.json.protocol.ErrorCode
+import xqt.kotlinx.rpc.json.protocol.ErrorObject
 import xqt.kotlinx.rpc.json.protocol.params
 import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
@@ -252,3 +255,44 @@ fun RequestMessage.initialize(handler: InitializeParams.() -> InitializeResult) 
         sendResult(result, InitializeResult)
     }
 }
+
+/**
+ * The `initialize` request error data.
+ *
+ * @param message a string providing a short description of the error
+ * @param code a number indicating the error type that occurred
+ * @param data contains additional information about the error
+ *
+ * @since 1.0.0
+ */
+@Suppress("FunctionName", "UnusedReceiverParameter")
+fun InitializeParams.InitializeError(
+    message: String,
+    data: InitializeError,
+    code: ErrorCode = ErrorCodes.InternalError
+): ErrorObject = ErrorObject(
+    code = code,
+    message = message,
+    data = InitializeError.serializeToJson(data)
+)
+
+/**
+ * The `initialize` request error data.
+ *
+ * @param message a string providing a short description of the error
+ * @param code a number indicating the error type that occurred
+ * @param retry indicates whether the client should retry to send the initialize
+ *        request after showing the message provided in the ResponseError
+ *
+ * @since 1.0.0
+ */
+@Suppress("FunctionName")
+fun InitializeParams.InitializeError(
+    message: String,
+    retry: Boolean = false,
+    code: ErrorCode = ErrorCodes.InternalError
+): ErrorObject = InitializeError(
+    code = code,
+    message = message,
+    data = InitializeError(retry = retry)
+)

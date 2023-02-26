@@ -3,6 +3,8 @@ package xqt.kotlinx.lsp.test.lifecycle
 
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.base.ErrorCodes
+import xqt.kotlinx.lsp.lifecycle.InitializeError
 import xqt.kotlinx.lsp.lifecycle.InitializeResult
 import xqt.kotlinx.lsp.lifecycle.ServerCapabilities
 import xqt.kotlinx.lsp.lifecycle.initialize
@@ -70,6 +72,63 @@ class LifecycleDSL {
                 "result" to jsonObjectOf(
                     "capabilities" to jsonObjectOf(
                         "textDocumentSync" to JsonPrimitive(1)
+                    )
+                )
+            ),
+            channel.output[0]
+        )
+    }
+
+    @Test
+    @DisplayName("supports initialize requests throwing an InitializeError")
+    fun supports_initialize_requests_throwing_an_initialize_error() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("initialize"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "processId" to JsonPrimitive(1234),
+                    "rootPath" to JsonNull,
+                    "capabilities" to jsonObjectOf(
+                        "test" to JsonPrimitive("lorem ipsum")
+                    )
+                )
+            )
+        )
+
+        var called = false
+        channel.jsonRpc {
+            request {
+                initialize {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("initialize", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals(1234, processId)
+                    assertEquals(null, rootPath)
+                    assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), capabilities)
+
+                    throw InitializeError(message = "Lorem ipsum", retry = true)
+                }
+            }
+        }
+
+        assertEquals(true, called, "The initialize DSL should have been called.")
+        assertEquals(1, channel.output.size)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "error" to jsonObjectOf(
+                    "code" to JsonPrimitive(ErrorCodes.InternalError.code),
+                    "message" to JsonPrimitive("Lorem ipsum"),
+                    "data" to jsonObjectOf(
+                        "retry" to JsonPrimitive(true)
                     )
                 )
             ),
