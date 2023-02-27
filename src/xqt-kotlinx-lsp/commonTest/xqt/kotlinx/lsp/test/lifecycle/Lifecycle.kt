@@ -8,6 +8,7 @@ import xqt.kotlinx.lsp.lifecycle.*
 import xqt.kotlinx.lsp.test.base.TestJsonRpcChannel
 import xqt.kotlinx.lsp.textDocument.TextDocumentSyncKind
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
+import xqt.kotlinx.rpc.json.protocol.notification
 import xqt.kotlinx.rpc.json.protocol.request
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
@@ -169,5 +170,32 @@ class LifecycleDSL {
             ),
             channel.output[0]
         )
+    }
+
+    @Test
+    @DisplayName("supports exit notifications")
+    fun supports_exit_notifications() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("exit")
+            )
+        )
+
+        var called = false
+        channel.jsonRpc {
+            notification {
+                exit {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("exit", method)
+                }
+            }
+        }
+
+        assertEquals(true, called, "The exit DSL should have been called.")
+        assertEquals(0, channel.output.size)
     }
 }
