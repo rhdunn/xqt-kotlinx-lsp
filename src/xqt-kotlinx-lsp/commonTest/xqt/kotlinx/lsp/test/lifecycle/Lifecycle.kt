@@ -4,10 +4,7 @@ package xqt.kotlinx.lsp.test.lifecycle
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.base.ErrorCodes
-import xqt.kotlinx.lsp.lifecycle.InitializeError
-import xqt.kotlinx.lsp.lifecycle.InitializeResult
-import xqt.kotlinx.lsp.lifecycle.ServerCapabilities
-import xqt.kotlinx.lsp.lifecycle.initialize
+import xqt.kotlinx.lsp.lifecycle.*
 import xqt.kotlinx.lsp.test.base.TestJsonRpcChannel
 import xqt.kotlinx.lsp.textDocument.TextDocumentSyncKind
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
@@ -131,6 +128,44 @@ class LifecycleDSL {
                         "retry" to JsonPrimitive(true)
                     )
                 )
+            ),
+            channel.output[0]
+        )
+    }
+
+    @Test
+    @DisplayName("supports shutdown requests")
+    fun supports_shutdown_requests() {
+        val channel = TestJsonRpcChannel()
+        channel.input.add(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("shutdown"),
+                "id" to JsonPrimitive(1)
+            )
+        )
+
+        var called = false
+        channel.jsonRpc {
+            request {
+                shutdown {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("shutdown", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+                }
+            }
+        }
+
+        assertEquals(true, called, "The shutdown DSL should have been called.")
+        assertEquals(1, channel.output.size)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to JsonNull
             ),
             channel.output[0]
         )
