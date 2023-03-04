@@ -5,7 +5,7 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.base.ErrorCodes
 import xqt.kotlinx.lsp.lifecycle.*
-import xqt.kotlinx.lsp.test.base.TestJsonRpcChannel
+import xqt.kotlinx.lsp.test.base.testJsonRpcChannels
 import xqt.kotlinx.lsp.textDocument.TextDocumentSyncKind
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
@@ -21,8 +21,9 @@ class LifecycleDSL {
     @Test
     @DisplayName("supports initialize requests returning an InitializeResult")
     fun supports_initialize_requests_returning_an_initialize_result() {
-        val channel = TestJsonRpcChannel()
-        channel.input.add(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("initialize"),
@@ -38,7 +39,7 @@ class LifecycleDSL {
         )
 
         var called = false
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 initialize {
                     called = true
@@ -61,7 +62,6 @@ class LifecycleDSL {
         }
 
         assertEquals(true, called, "The initialize DSL should have been called.")
-        assertEquals(1, channel.output.size)
 
         assertEquals(
             jsonObjectOf(
@@ -73,15 +73,18 @@ class LifecycleDSL {
                     )
                 )
             ),
-            channel.output[0]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports initialize requests throwing an InitializeError")
     fun supports_initialize_requests_throwing_an_initialize_error() {
-        val channel = TestJsonRpcChannel()
-        channel.input.add(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("initialize"),
@@ -97,7 +100,7 @@ class LifecycleDSL {
         )
 
         var called = false
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 initialize {
                     called = true
@@ -116,7 +119,6 @@ class LifecycleDSL {
         }
 
         assertEquals(true, called, "The initialize DSL should have been called.")
-        assertEquals(1, channel.output.size)
 
         assertEquals(
             jsonObjectOf(
@@ -130,15 +132,18 @@ class LifecycleDSL {
                     )
                 )
             ),
-            channel.output[0]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports shutdown requests")
     fun supports_shutdown_requests() {
-        val channel = TestJsonRpcChannel()
-        channel.input.add(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("shutdown"),
@@ -147,7 +152,7 @@ class LifecycleDSL {
         )
 
         var called = false
-        channel.jsonRpc {
+        server.jsonRpc {
             request {
                 shutdown {
                     called = true
@@ -160,7 +165,6 @@ class LifecycleDSL {
         }
 
         assertEquals(true, called, "The shutdown DSL should have been called.")
-        assertEquals(1, channel.output.size)
 
         assertEquals(
             jsonObjectOf(
@@ -168,15 +172,18 @@ class LifecycleDSL {
                 "id" to JsonPrimitive(1),
                 "result" to JsonNull
             ),
-            channel.output[0]
+            client.receive()
         )
+
+        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports exit notifications")
     fun supports_exit_notifications() {
-        val channel = TestJsonRpcChannel()
-        channel.input.add(
+        val (client, server) = testJsonRpcChannels()
+
+        client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("exit")
@@ -184,7 +191,7 @@ class LifecycleDSL {
         )
 
         var called = false
-        channel.jsonRpc {
+        server.jsonRpc {
             notification {
                 exit {
                     called = true
@@ -196,6 +203,6 @@ class LifecycleDSL {
         }
 
         assertEquals(true, called, "The exit DSL should have been called.")
-        assertEquals(0, channel.output.size)
+        assertEquals(null, client.receive())
     }
 }
