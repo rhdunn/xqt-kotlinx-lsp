@@ -131,6 +131,64 @@ class LifecycleDSL {
     }
 
     @Test
+    @DisplayName("supports sending initialize requests using InitializeParams")
+    fun supports_sending_initialize_requests_using_initialize_params() = testJsonRpc {
+        client.initialize(
+            id = JsonIntOrString.IntegerValue(1),
+            params = InitializeParams(
+                processId = 1234,
+                capabilities = jsonObjectOf(
+                    "test" to JsonPrimitive("lorem ipsum")
+                )
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("initialize"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "processId" to JsonPrimitive(1234),
+                    "rootPath" to JsonNull,
+                    "capabilities" to jsonObjectOf(
+                        "test" to JsonPrimitive("lorem ipsum")
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending initialize requests using function parameters")
+    fun supports_sending_initialize_requests_using_function_parameters() = testJsonRpc {
+        client.initialize(
+            id = JsonIntOrString.IntegerValue(1),
+            processId = 1234,
+            capabilities = jsonObjectOf(
+                "test" to JsonPrimitive("lorem ipsum")
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("initialize"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "processId" to JsonPrimitive(1234),
+                    "rootPath" to JsonNull,
+                    "capabilities" to jsonObjectOf(
+                        "test" to JsonPrimitive("lorem ipsum")
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
     @DisplayName("supports shutdown requests")
     fun supports_shutdown_requests() = testJsonRpc {
         client.send(
