@@ -5,7 +5,7 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.base.ErrorCodes
 import xqt.kotlinx.lsp.lifecycle.*
-import xqt.kotlinx.lsp.test.base.testJsonRpcChannels
+import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.textDocument.TextDocumentSyncKind
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
@@ -20,9 +20,7 @@ import kotlin.test.assertEquals
 class LifecycleDSL {
     @Test
     @DisplayName("supports initialize requests returning an InitializeResult")
-    fun supports_initialize_requests_returning_an_initialize_result() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_initialize_requests_returning_an_initialize_result() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -75,15 +73,11 @@ class LifecycleDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports initialize requests throwing an InitializeError")
-    fun supports_initialize_requests_throwing_an_initialize_error() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_initialize_requests_throwing_an_initialize_error() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -134,15 +128,11 @@ class LifecycleDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports shutdown requests")
-    fun supports_shutdown_requests() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_shutdown_requests() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -174,15 +164,11 @@ class LifecycleDSL {
             ),
             client.receive()
         )
-
-        assertEquals(null, client.receive())
     }
 
     @Test
     @DisplayName("supports exit notifications")
-    fun supports_exit_notifications() {
-        val (client, server) = testJsonRpcChannels()
-
+    fun supports_exit_notifications() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -203,6 +189,5 @@ class LifecycleDSL {
         }
 
         assertEquals(true, called, "The exit DSL should have been called.")
-        assertEquals(null, client.receive())
     }
 }
