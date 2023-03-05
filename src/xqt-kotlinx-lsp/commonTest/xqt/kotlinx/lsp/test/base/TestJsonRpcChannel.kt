@@ -18,8 +18,13 @@ data class TestJsonRpcChannel(
     }
 }
 
-fun testJsonRpcChannels(): Pair<JsonRpcChannel, JsonRpcChannel> {
+data class TestClientServer(val client: JsonRpcChannel, val server: JsonRpcChannel) {
+    constructor(input: MutableList<JsonElement>, output: MutableList<JsonElement>) :
+            this(TestJsonRpcChannel(input, output), TestJsonRpcChannel(output, input))
+}
+
+fun testJsonRpcChannels(): TestClientServer {
     val input = mutableListOf<JsonElement>()
     val output = mutableListOf<JsonElement>()
-    return TestJsonRpcChannel(input, output) to TestJsonRpcChannel(output, input)
+    return TestClientServer(input, output)
 }
