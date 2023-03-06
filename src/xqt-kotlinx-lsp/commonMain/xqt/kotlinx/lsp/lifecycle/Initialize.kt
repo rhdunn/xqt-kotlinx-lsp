@@ -262,7 +262,7 @@ fun RequestMessage.initialize(handler: InitializeParams.() -> InitializeResult) 
  *
  * @since 1.0.0
  */
-fun JsonRpcChannel.initialize(id: JsonIntOrString, params: InitializeParams) {
+fun JsonRpcServer.initialize(id: JsonIntOrString, params: InitializeParams) {
     sendRequest(
         method = InitializeParams.INITIALIZE,
         id = id,
@@ -282,7 +282,7 @@ fun JsonRpcChannel.initialize(id: JsonIntOrString, params: InitializeParams) {
  *
  * @since 1.0.0
  */
-fun JsonRpcChannel.initialize(
+fun JsonRpcServer.initialize(
     id: JsonIntOrString,
     processId: Int,
     rootPath: String? = null,

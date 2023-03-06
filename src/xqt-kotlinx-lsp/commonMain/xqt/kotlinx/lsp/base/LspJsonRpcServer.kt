@@ -4,7 +4,7 @@ package xqt.kotlinx.lsp.base
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import xqt.kotlinx.rpc.json.io.*
-import xqt.kotlinx.rpc.json.protocol.JsonRpcChannel
+import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
 
 /**
  * Handle LSP JSON-RPC header and content parts.
@@ -12,10 +12,10 @@ import xqt.kotlinx.rpc.json.protocol.JsonRpcChannel
  * The LSP specifies that JSON elements have an HTTP-like header section with a
  * `Content-Length` and optional `Content-Type` header.
  */
-class LspJsonRpcChannel(
+class LspJsonRpcServer(
     private val input: BinaryInputChannel,
     private val output: BinaryOutputChannel
-) : JsonRpcChannel {
+) : JsonRpcServer {
     override fun send(message: JsonElement) {
         val body = message.toString().encodeToByteArray()
         output.writeUtf8String("Content-Length: ${body.size}", lineEnding = LineEnding.CrLf)

@@ -2,13 +2,13 @@
 package xqt.kotlinx.lsp.test.base
 
 import kotlinx.serialization.json.JsonElement
-import xqt.kotlinx.rpc.json.protocol.JsonRpcChannel
+import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
 import kotlin.test.assertEquals
 
-data class TestJsonRpcChannel(
+data class TestJsonRpcServer(
     private val input: MutableList<JsonElement>,
     private val output: MutableList<JsonElement>
-) : JsonRpcChannel {
+) : JsonRpcServer {
     override fun send(message: JsonElement) {
         output.add(message)
     }
@@ -19,9 +19,9 @@ data class TestJsonRpcChannel(
     }
 }
 
-data class TestClientServer(val client: JsonRpcChannel, val server: JsonRpcChannel) {
+data class TestClientServer(val client: JsonRpcServer, val server: JsonRpcServer) {
     constructor(input: MutableList<JsonElement>, output: MutableList<JsonElement>) :
-            this(TestJsonRpcChannel(input, output), TestJsonRpcChannel(output, input))
+            this(TestJsonRpcServer(input, output), TestJsonRpcServer(output, input))
 }
 
 fun testJsonRpc(handler: TestClientServer.() -> Unit) {
