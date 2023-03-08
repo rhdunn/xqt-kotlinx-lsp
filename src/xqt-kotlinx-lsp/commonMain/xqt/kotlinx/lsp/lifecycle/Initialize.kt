@@ -12,7 +12,6 @@ import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
-import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
 /**
@@ -257,15 +256,13 @@ fun RequestMessage.initialize(handler: InitializeParams.() -> InitializeResult) 
 /**
  * Send an initialize request to the server.
  *
- * @param id the request identifier
  * @param params the initialize request parameters
  *
  * @since 1.0.0
  */
-fun JsonRpcServer.initialize(id: JsonIntOrString, params: InitializeParams) {
+fun JsonRpcServer.initialize(params: InitializeParams) {
     sendRequest(
         method = InitializeParams.INITIALIZE,
-        id = id,
         params = InitializeParams.serializeToJson(params)
     )
 }
@@ -275,7 +272,6 @@ fun JsonRpcServer.initialize(id: JsonIntOrString, params: InitializeParams) {
  *
  * The `rootPath` is null if no folder is open.
  *
- * @param id the request identifier
  * @param processId the process ID of the parent process that started the server
  * @param rootPath the rootPath of the workspace
  * @param capabilities the capabilities provided by the client (editor)
@@ -283,13 +279,11 @@ fun JsonRpcServer.initialize(id: JsonIntOrString, params: InitializeParams) {
  * @since 1.0.0
  */
 fun JsonRpcServer.initialize(
-    id: JsonIntOrString,
     processId: Int,
     rootPath: String? = null,
     capabilities: JsonObject
 ) {
     initialize(
-        id = id,
         params = InitializeParams(
             processId = processId,
             rootPath = rootPath,
