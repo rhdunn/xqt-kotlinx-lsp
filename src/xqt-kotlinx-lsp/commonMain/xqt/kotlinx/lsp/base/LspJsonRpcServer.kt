@@ -15,7 +15,7 @@ import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
 class LspJsonRpcServer(
     private val input: BinaryInputChannel,
     private val output: BinaryOutputChannel
-) : JsonRpcServer {
+) : JsonRpcServer() {
     override fun send(message: JsonElement) {
         val body = message.toString().encodeToByteArray()
         output.writeUtf8String("Content-Length: ${body.size}", lineEnding = LineEnding.CrLf)

@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 data class TestJsonRpcServer(
     private val input: MutableList<JsonElement>,
     private val output: MutableList<JsonElement>
-) : JsonRpcServer {
+) : JsonRpcServer() {
     override fun send(message: JsonElement) {
         output.add(message)
     }
