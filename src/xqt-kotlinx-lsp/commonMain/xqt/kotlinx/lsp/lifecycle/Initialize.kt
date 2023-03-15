@@ -12,6 +12,7 @@ import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
 /**
@@ -257,15 +258,14 @@ fun RequestMessage.initialize(handler: InitializeParams.() -> InitializeResult) 
  * Send an initialize request to the server.
  *
  * @param params the initialize request parameters
+ * @return the ID of the request
  *
  * @since 1.0.0
  */
-fun JsonRpcServer.initialize(params: InitializeParams) {
-    sendRequest(
-        method = InitializeParams.INITIALIZE,
-        params = InitializeParams.serializeToJson(params)
-    )
-}
+fun JsonRpcServer.initialize(params: InitializeParams): JsonIntOrString = sendRequest(
+    method = InitializeParams.INITIALIZE,
+    params = InitializeParams.serializeToJson(params)
+)
 
 /**
  * Send an initialize request to the server.
@@ -282,15 +282,13 @@ fun JsonRpcServer.initialize(
     processId: Int,
     rootPath: String? = null,
     capabilities: JsonObject
-) {
-    initialize(
-        params = InitializeParams(
-            processId = processId,
-            rootPath = rootPath,
-            capabilities = capabilities
-        )
+): JsonIntOrString = initialize(
+    params = InitializeParams(
+        processId = processId,
+        rootPath = rootPath,
+        capabilities = capabilities
     )
-}
+)
 
 /**
  * The `initialize` request error data.

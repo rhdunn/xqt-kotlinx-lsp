@@ -133,7 +133,7 @@ class LifecycleDSL {
     @Test
     @DisplayName("supports sending initialize requests using InitializeParams")
     fun supports_sending_initialize_requests_using_initialize_params() = testJsonRpc {
-        client.initialize(
+        val id = client.initialize(
             params = InitializeParams(
                 processId = 1234,
                 capabilities = jsonObjectOf(
@@ -141,6 +141,7 @@ class LifecycleDSL {
                 )
             )
         )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
 
         assertEquals(
             jsonObjectOf(
@@ -162,12 +163,13 @@ class LifecycleDSL {
     @Test
     @DisplayName("supports sending initialize requests using function parameters")
     fun supports_sending_initialize_requests_using_function_parameters() = testJsonRpc {
-        client.initialize(
+        val id = client.initialize(
             processId = 1234,
             capabilities = jsonObjectOf(
                 "test" to JsonPrimitive("lorem ipsum")
             )
         )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
 
         assertEquals(
             jsonObjectOf(
