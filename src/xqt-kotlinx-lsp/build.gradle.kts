@@ -7,6 +7,11 @@ plugins {
 group = "xqt-kotlinx-lsp"
 version = "0.1-SNAPSHOT"
 
+rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {
+    rootProject.the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension>().download =
+        System.getProperty("nodejs.download") != "false"
+}
+
 kotlin {
     jvm {
         compilations.all {

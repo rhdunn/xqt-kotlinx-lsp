@@ -16,13 +16,13 @@ jobs:
           gradle-version: 7.5
 
       - name: Build for Kotlin/JS IR
-        run: gradle jsIrJar
+        run: gradle -D nodejs.download=false jsIrJar
 
       - name: Publish Kotlin/Multiplatform to Maven Local
-        run: gradle publishKotlinMultiplatformPublicationToMavenLocal
+        run: gradle -D nodejs.download=false publishKotlinMultiplatformPublicationToMavenLocal
 
       - name: Publish Kotlin/JS IR to Maven Local
-        run: gradle publishJsPublicationToMavenLocal
+        run: gradle -D nodejs.download=false publishJsPublicationToMavenLocal
 
       - name: Tar XQT Kotlin JSON-RPC Artifacts
         run: tar -cvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/xqt-kotlinx-lsp .
@@ -56,7 +56,7 @@ jobs:
           tar -xvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/xqt-kotlinx-lsp
 
       - name: Build for Kotlin/JS IR
-        run: gradle jsIrJar
+        run: gradle -D nodejs.download=false jsIrJar
 
       - name: Tar Build Artifacts
         run: tar -cvf build-js-ir-artifacts.tar .
@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ 14, 16, 18 ]
+        node: [ 16, 18 ]
     steps:
       - name: Setup Gradle 7.5
         uses: gradle/gradle-build-action@v2
@@ -103,7 +103,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Test for Kotlin/JS IR on Node
-        run: gradle jsIrNodeTest
+        run: gradle -D nodejs.download=false jsIrNodeTest
 
   test-firefox:
     needs: build
@@ -138,7 +138,7 @@ jobs:
           firefox-version: 'latest'
 
       - name: Test for Kotlin/JS IR on Firefox
-        run: gradle -D js.browser=Firefox jsIrBrowserTest
+        run: gradle -D nodejs.download=false -D js.browser=Firefox jsIrBrowserTest
 
   test-chrome:
     needs: build
@@ -173,4 +173,4 @@ jobs:
           chrome-version: 'latest'
 
       - name: Test for Kotlin/JS Legacy on Chrome
-        run: gradle -D js.browser=Chrome jsLegacyBrowserTest
+        run: gradle -D nodejs.download=false -D js.browser=Chrome jsLegacyBrowserTest
