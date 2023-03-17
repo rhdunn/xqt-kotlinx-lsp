@@ -4,10 +4,7 @@ package xqt.kotlinx.lsp.lifecycle
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
-import xqt.kotlinx.lsp.base.ErrorCodes
-import xqt.kotlinx.lsp.base.Integer
-import xqt.kotlinx.lsp.base.LSPObject
-import xqt.kotlinx.lsp.base.RequestMessage
+import xqt.kotlinx.lsp.base.*
 import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
@@ -241,6 +238,35 @@ data class ServerCapabilities(
 }
 
 /**
+ * The response of an initialize request.
+ *
+ * @param response The associated response message.
+ *
+ * @since 1.0.0
+ */
+data class InitializeResponse(private val response: ResponseMessage) {
+    /**
+     * The result of a successful initialize request.
+     */
+    val result: InitializeResult? by lazy {
+        response.result?.let { InitializeResult.deserialize(it) }
+    }
+
+    /**
+     * The result of a failed initialize request.
+     */
+    val initializeError: InitializeError? by lazy {
+        response.error?.data?.let { InitializeError.deserialize(it) }
+    }
+
+    /**
+     * The error object in case a request fails.
+     */
+    val error: ErrorObject?
+        get() = response.error
+}
+
+/**
  * The initialize request is sent as the first request from the client to the server.
  *
  * @return an initialize result response
@@ -258,13 +284,20 @@ fun RequestMessage.initialize(handler: InitializeParams.() -> InitializeResult) 
  * Send an initialize request to the server.
  *
  * @param params the initialize request parameters
+ * @param responseHandler the callback to process the response for the initialize request
  * @return the ID of the request
  *
  * @since 1.0.0
  */
-fun JsonRpcServer.initialize(params: InitializeParams): JsonIntOrString = sendRequest(
+fun JsonRpcServer.initialize(
+    params: InitializeParams,
+    responseHandler: (InitializeResponse.() -> Unit)? = null
+): JsonIntOrString = sendRequest(
     method = InitializeParams.INITIALIZE,
-    params = InitializeParams.serializeToJson(params)
+    params = InitializeParams.serializeToJson(params),
+    responseHandler = responseHandler?.let {
+        { response: ResponseMessage -> responseHandler(InitializeResponse(response)) }
+    }
 )
 
 /**
@@ -275,19 +308,23 @@ fun JsonRpcServer.initialize(params: InitializeParams): JsonIntOrString = sendRe
  * @param processId the process ID of the parent process that started the server
  * @param rootPath the rootPath of the workspace
  * @param capabilities the capabilities provided by the client (editor)
+ * @param responseHandler the callback to process the response for the initialize request
+ * @return the ID of the request
  *
  * @since 1.0.0
  */
 fun JsonRpcServer.initialize(
     processId: Int,
     rootPath: String? = null,
-    capabilities: JsonObject
+    capabilities: JsonObject,
+    responseHandler: (InitializeResponse.() -> Unit)? = null
 ): JsonIntOrString = initialize(
     params = InitializeParams(
         processId = processId,
         rootPath = rootPath,
         capabilities = capabilities
-    )
+    ),
+    responseHandler = responseHandler
 )
 
 /**

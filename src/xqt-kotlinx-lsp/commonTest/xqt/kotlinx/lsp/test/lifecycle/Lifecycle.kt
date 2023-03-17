@@ -161,6 +161,86 @@ class LifecycleDSL {
     }
 
     @Test
+    @DisplayName("supports initialize request callback receiving InitializeResult from InitializeParams object")
+    fun supports_initialize_request_callback_receiving_initialize_result_from_params_object() = testJsonRpc {
+        var called = 0
+
+        client.initialize(
+            params = InitializeParams(
+                processId = 1234,
+                capabilities = jsonObjectOf(
+                    "test" to JsonPrimitive("lorem ipsum")
+                )
+            )
+        ) {
+            ++called
+
+            assertEquals(
+                ServerCapabilities(
+                    textDocumentSync = TextDocumentSyncKind.Full
+                ),
+                result?.capabilities
+            )
+
+            assertEquals(null, error)
+            assertEquals(null, initializeError)
+        }
+
+        server.jsonRpc {
+            request {
+                initialize {
+                    InitializeResult(
+                        capabilities = ServerCapabilities(
+                            textDocumentSync = TextDocumentSyncKind.Full
+                        )
+                    )
+                }
+            }
+        }
+
+        assertEquals(0, called, "The initialize DSL handler should not have been called.")
+        client.jsonRpc {} // The "initialize" response is processed by the handler callback.
+        assertEquals(1, called, "The initialize DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports initialize request callback receiving InitializeError from InitializeParams object")
+    fun supports_initialize_request_callback_receiving_initialize_error_from_params_object() = testJsonRpc {
+        var called = 0
+
+        client.initialize(
+            params = InitializeParams(
+                processId = 1234,
+                capabilities = jsonObjectOf(
+                    "test" to JsonPrimitive("lorem ipsum")
+                )
+            )
+        ) {
+            ++called
+
+            assertEquals(null, result)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+
+            assertEquals(InitializeError(retry = true), initializeError)
+            assertEquals(InitializeError.serializeToJson(initializeError!!), error?.data)
+        }
+
+        server.jsonRpc {
+            request {
+                initialize {
+                    throw InitializeError(message = "Lorem ipsum", retry = true)
+                }
+            }
+        }
+
+        assertEquals(0, called, "The initialize DSL handler should not have been called.")
+        client.jsonRpc {} // The "initialize" response is processed by the handler callback.
+        assertEquals(1, called, "The initialize DSL handler should have been called.")
+    }
+
+    @Test
     @DisplayName("supports sending initialize requests using function parameters")
     fun supports_sending_initialize_requests_using_function_parameters() = testJsonRpc {
         val id = client.initialize(
@@ -186,6 +266,82 @@ class LifecycleDSL {
             ),
             server.receive()
         )
+    }
+
+    @Test
+    @DisplayName("supports initialize request callback receiving InitializeResult")
+    fun supports_initialize_request_callback_receiving_initialize_result() = testJsonRpc {
+        var called = 0
+
+        client.initialize(
+            processId = 1234,
+            capabilities = jsonObjectOf(
+                "test" to JsonPrimitive("lorem ipsum")
+            )
+        ) {
+            ++called
+
+            assertEquals(
+                ServerCapabilities(
+                    textDocumentSync = TextDocumentSyncKind.Full
+                ),
+                result?.capabilities
+            )
+
+            assertEquals(null, error)
+            assertEquals(null, initializeError)
+        }
+
+        server.jsonRpc {
+            request {
+                initialize {
+                    InitializeResult(
+                        capabilities = ServerCapabilities(
+                            textDocumentSync = TextDocumentSyncKind.Full
+                        )
+                    )
+                }
+            }
+        }
+
+        assertEquals(0, called, "The initialize DSL handler should not have been called.")
+        client.jsonRpc {} // The "initialize" response is processed by the handler callback.
+        assertEquals(1, called, "The initialize DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports initialize request callback receiving InitializeError")
+    fun supports_initialize_request_callback_receiving_initialize_error() = testJsonRpc {
+        var called = 0
+
+        client.initialize(
+            processId = 1234,
+            capabilities = jsonObjectOf(
+                "test" to JsonPrimitive("lorem ipsum")
+            )
+        ) {
+            ++called
+
+            assertEquals(null, result)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+
+            assertEquals(InitializeError(retry = true), initializeError)
+            assertEquals(InitializeError.serializeToJson(initializeError!!), error?.data)
+        }
+
+        server.jsonRpc {
+            request {
+                initialize {
+                    throw InitializeError(message = "Lorem ipsum", retry = true)
+                }
+            }
+        }
+
+        assertEquals(0, called, "The initialize DSL handler should not have been called.")
+        client.jsonRpc {} // The "initialize" response is processed by the handler callback.
+        assertEquals(1, called, "The initialize DSL handler should have been called.")
     }
 
     @Test
