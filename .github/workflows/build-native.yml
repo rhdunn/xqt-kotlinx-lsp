@@ -13,25 +13,22 @@ jobs:
         with:
           repository: rhdunn/xqt-kotlinx-json-rpc
 
-      - name: Create a Gradle Wrapper
-        # Use a null gradle file so that if the gradle version cannot parse this gradle
-        # file it will be able to run and generate the gradle wrapper.
-        run: touch null.gradle ; gradle -b null.gradle wrapper --gradle-version 7.5 ; rm null.gradle
-
-      - name: Gradle Version
-        run: ./gradlew --version
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
 
       - name: Build for Kotlin/Native
-        run: ./gradlew nativeMainKlibrary
+        run: gradle nativeMainKlibrary
 
       - name: Test for Kotlin/Native
-        run: ./gradlew nativeTest
+        run: gradle nativeTest
 
       - name: Publish Kotlin/Multiplatform to Maven Local
-        run: ./gradlew publishKotlinMultiplatformPublicationToMavenLocal
+        run: gradle publishKotlinMultiplatformPublicationToMavenLocal
 
       - name: Publish Kotlin/Native to Maven Local
-        run: ./gradlew publishNativePublicationToMavenLocal
+        run: gradle publishNativePublicationToMavenLocal
 
       - name: Tar XQT Kotlin JSON-RPC Artifacts
         run: tar -cvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/xqt-kotlinx-lsp .
@@ -52,13 +49,10 @@ jobs:
       - name: Source Code Checkout
         uses: actions/checkout@v3
 
-      - name: Create a Gradle Wrapper
-        # Use a null gradle file so that if the gradle version cannot parse this gradle
-        # file it will be able to run and generate the gradle wrapper.
-        run: touch null.gradle ; gradle -b null.gradle wrapper --gradle-version 7.5 ; rm null.gradle
-
-      - name: Gradle Version
-        run: ./gradlew --version
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
 
       - name: Download XQT Kotlin JSON-RPC Artifacts
         uses: actions/download-artifact@v3
@@ -71,7 +65,7 @@ jobs:
           tar -xvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/xqt-kotlinx-lsp
 
       - name: Build for Kotlin/Native
-        run: ./gradlew nativeMainKlibrary
+        run: gradle nativeMainKlibrary
 
       - name: Test for Kotlin/Native
-        run: ./gradlew nativeTest
+        run: gradle nativeTest
