@@ -131,6 +131,49 @@ class LifecycleDSL {
     }
 
     @Test
+    @DisplayName("supports initialize requests reporting InvalidParams errors")
+    fun supports_initialize_requests_reporting_invalid_params_errors() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("initialize"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "processId" to JsonPrimitive(false),
+                    "rootPath" to JsonNull,
+                    "capabilities" to jsonObjectOf(
+                        "test" to JsonPrimitive("lorem ipsum")
+                    )
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                initialize {
+                    called = true
+                    throw InitializeError(message = "Should not be called")
+                }
+            }
+        }
+
+        assertEquals(false, called, "The initialize DSL should not have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "error" to jsonObjectOf(
+                    "code" to JsonPrimitive(ErrorCodes.InvalidParams.code),
+                    "message" to JsonPrimitive("Unsupported kind type 'boolean'")
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
     @DisplayName("supports sending initialize requests using InitializeParams")
     fun supports_sending_initialize_requests_using_initialize_params() = testJsonRpc {
         val id = client.initialize(
