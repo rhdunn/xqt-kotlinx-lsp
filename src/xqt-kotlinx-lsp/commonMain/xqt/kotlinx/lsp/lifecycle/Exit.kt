@@ -2,6 +2,8 @@
 package xqt.kotlinx.lsp.lifecycle
 
 import xqt.kotlinx.lsp.base.NotificationMessage
+import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
+import xqt.kotlinx.rpc.json.protocol.sendNotification
 
 private const val EXIT = "exit"
 
@@ -15,3 +17,10 @@ fun NotificationMessage.exit(handler: () -> Unit) {
         handler()
     }
 }
+
+/**
+ * Send an exit notification to the server.
+ *
+ * @since 1.0.0
+ */
+fun JsonRpcServer.exit() = sendNotification(EXIT)

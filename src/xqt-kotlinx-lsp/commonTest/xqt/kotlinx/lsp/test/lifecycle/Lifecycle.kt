@@ -515,4 +515,18 @@ class LifecycleDSL {
 
         assertEquals(true, called, "The exit DSL should have been called.")
     }
+
+    @Test
+    @DisplayName("supports sending exit notifications")
+    fun supports_sending_exit_notifications() = testJsonRpc {
+        client.exit()
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("exit")
+            ),
+            server.receive()
+        )
+    }
 }
