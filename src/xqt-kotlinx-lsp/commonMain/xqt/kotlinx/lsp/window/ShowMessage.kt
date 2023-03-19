@@ -5,6 +5,10 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.lifecycle.InitializeParams
+import xqt.kotlinx.lsp.lifecycle.InitializeResult
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
@@ -27,6 +31,8 @@ data class ShowMessageParams(
     val message: String
 ) {
     companion object : JsonSerialization<ShowMessageParams> {
+        internal const val SHOW_MESSAGE: String = "window/showMessage"
+
         override fun serializeToJson(value: ShowMessageParams): JsonObject = buildJsonObject {
             put("type", value.type, MessageType)
             put("message", value.message, JsonString)
@@ -77,5 +83,16 @@ value class MessageType(val type: Int) {
          * A log message.
          */
         val Log: MessageType = MessageType(4)
+    }
+}
+
+/**
+ * Ask the client to display a particular message in the user interface.
+ *
+ * @since 1.0.0
+ */
+fun WindowNotification.showMessage(handler: ShowMessageParams.() -> Unit) {
+    if (notification.method == ShowMessageParams.SHOW_MESSAGE) {
+        notification.params(ShowMessageParams).handler()
     }
 }
