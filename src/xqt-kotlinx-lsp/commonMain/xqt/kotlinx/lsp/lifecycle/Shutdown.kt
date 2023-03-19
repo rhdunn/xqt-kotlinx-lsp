@@ -2,7 +2,11 @@
 package xqt.kotlinx.lsp.lifecycle
 
 import xqt.kotlinx.lsp.base.RequestMessage
+import xqt.kotlinx.lsp.base.ResponseMessage
+import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
+import xqt.kotlinx.rpc.json.protocol.sendRequest
 import xqt.kotlinx.rpc.json.protocol.sendResult
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 
 private const val SHUTDOWN = "shutdown"
 
@@ -23,3 +27,16 @@ fun RequestMessage.shutdown(handler: () -> Unit) {
         sendResult(null)
     }
 }
+
+/**
+ * Send a shutdown request to the server.
+ *
+ * @param responseHandler the callback to process the response for the shutdown request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun JsonRpcServer.shutdown(responseHandler: (ResponseMessage.() -> Unit)? = null): JsonIntOrString = sendRequest(
+    method = SHUTDOWN,
+    responseHandler = responseHandler
+)

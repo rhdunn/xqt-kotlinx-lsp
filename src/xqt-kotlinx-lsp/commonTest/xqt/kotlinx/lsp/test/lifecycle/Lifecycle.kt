@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.test.lifecycle
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.base.ErrorCodes
+import xqt.kotlinx.lsp.base.InternalError
 import xqt.kotlinx.lsp.lifecycle.*
 import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.textDocument.TextDocumentSyncKind
@@ -421,6 +422,73 @@ class LifecycleDSL {
             ),
             client.receive()
         )
+    }
+
+    @Test
+    @DisplayName("supports sending shutdown requests")
+    fun supports_sending_shutdown_requests() = testJsonRpc {
+        val id = client.shutdown()
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("shutdown"),
+                "id" to JsonPrimitive(1)
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending shutdown requests receiving null responses")
+    fun supports_sending_shutdown_requests_receiving_null_responses() = testJsonRpc {
+        var called = 0
+
+        client.shutdown {
+            ++called
+
+            assertEquals(JsonNull, result)
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                shutdown {
+                }
+            }
+        }
+
+        assertEquals(0, called, "The shutdown DSL handler should not have been called.")
+        client.jsonRpc {} // The "shutdown" response is processed by the handler callback.
+        assertEquals(1, called, "The shutdown DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending shutdown requests receiving error responses")
+    fun supports_sending_shutdown_requests_receiving_error_responses() = testJsonRpc {
+        var called = 0
+
+        client.shutdown {
+            ++called
+
+            assertEquals(null, result)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                shutdown {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The shutdown DSL handler should not have been called.")
+        client.jsonRpc {} // The "shutdown" response is processed by the handler callback.
+        assertEquals(1, called, "The shutdown DSL handler should have been called.")
     }
 
     @Test
