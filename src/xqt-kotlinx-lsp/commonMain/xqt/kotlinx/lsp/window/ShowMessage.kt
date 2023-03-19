@@ -5,10 +5,8 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import xqt.kotlinx.lsp.lifecycle.InitializeParams
-import xqt.kotlinx.lsp.lifecycle.InitializeResult
 import xqt.kotlinx.rpc.json.protocol.params
-import xqt.kotlinx.rpc.json.protocol.sendResult
+import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
@@ -96,3 +94,27 @@ fun WindowNotification.showMessage(handler: ShowMessageParams.() -> Unit) {
         notification.params(ShowMessageParams).handler()
     }
 }
+
+/**
+ * Ask the client to display a particular message in the user interface.
+ *
+ * @param params the show message parameters
+ *
+ * @since 1.0.0
+ */
+fun WindowJsonRpcServer.showMessage(params: ShowMessageParams) = server.sendNotification(
+    method = ShowMessageParams.SHOW_MESSAGE,
+    params = ShowMessageParams.serializeToJson(params)
+)
+
+/**
+ * Ask the client to display a particular message in the user interface.
+ *
+ * @param type the message type
+ * @param message the actual message
+ *
+ * @since 1.0.0
+ */
+fun WindowJsonRpcServer.showMessage(type: MessageType, message: String) = showMessage(
+    params = ShowMessageParams(type = type, message = message)
+)
