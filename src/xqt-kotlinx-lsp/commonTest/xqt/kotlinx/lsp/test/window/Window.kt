@@ -120,4 +120,48 @@ class WindowDSL {
 
         assertEquals(true, called, "The window.logMessage DSL should have been called.")
     }
+
+    @Test
+    @DisplayName("supports sending window/logMessage notifications using LogMessageParams")
+    fun supports_sending_log_message_notifications_using_log_message_params() = testJsonRpc {
+        server.window.logMessage(
+            params = LogMessageParams(
+                type = MessageType.Warning,
+                message = "Lorem Ipsum"
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("window/logMessage"),
+                "params" to jsonObjectOf(
+                    "type" to JsonPrimitive(2),
+                    "message" to JsonPrimitive("Lorem Ipsum")
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending window/logMessage notifications using function parameters")
+    fun supports_sending_log_message_notifications_using_function_parameters() = testJsonRpc {
+        server.window.logMessage(
+            type = MessageType.Warning,
+            message = "Lorem Ipsum"
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("window/logMessage"),
+                "params" to jsonObjectOf(
+                    "type" to JsonPrimitive(2),
+                    "message" to JsonPrimitive("Lorem Ipsum")
+                )
+            ),
+            client.receive()
+        )
+    }
 }

@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
@@ -52,3 +53,27 @@ fun WindowNotification.logMessage(handler: LogMessageParams.() -> Unit) {
         notification.params(LogMessageParams).handler()
     }
 }
+
+/**
+ * Ask the client to log a particular message.
+ *
+ * @param params the log message parameters
+ *
+ * @since 1.0.0
+ */
+fun WindowJsonRpcServer.logMessage(params: LogMessageParams) = server.sendNotification(
+    method = LogMessageParams.LOG_MESSAGE,
+    params = LogMessageParams.serializeToJson(params)
+)
+
+/**
+ * Ask the client to log a particular message.
+ *
+ * @param type the message type
+ * @param message the actual message
+ *
+ * @since 1.0.0
+ */
+fun WindowJsonRpcServer.logMessage(type: MessageType, message: String) = logMessage(
+    params = LogMessageParams(type = type, message = message)
+)
