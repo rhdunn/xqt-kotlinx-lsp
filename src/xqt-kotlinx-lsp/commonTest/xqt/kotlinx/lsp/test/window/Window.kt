@@ -3,10 +3,7 @@ package xqt.kotlinx.lsp.test.window
 
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.test.base.testJsonRpc
-import xqt.kotlinx.lsp.window.MessageType
-import xqt.kotlinx.lsp.window.ShowMessageParams
-import xqt.kotlinx.lsp.window.showMessage
-import xqt.kotlinx.lsp.window.window
+import xqt.kotlinx.lsp.window.*
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
@@ -90,5 +87,37 @@ class WindowDSL {
             ),
             client.receive()
         )
+    }
+
+    @Test
+    @DisplayName("supports window/logMessage notifications")
+    fun supports_log_message_notifications() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("window/logMessage"),
+                "params" to jsonObjectOf(
+                    "type" to JsonPrimitive(2),
+                    "message" to JsonPrimitive("Lorem Ipsum")
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            notification {
+                window.logMessage {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("window/logMessage", method)
+
+                    assertEquals(MessageType.Warning, type)
+                    assertEquals("Lorem Ipsum", message)
+                }
+            }
+        }
+
+        assertEquals(true, called, "The window.logMessage DSL should have been called.")
     }
 }
