@@ -5,9 +5,8 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
-import xqt.kotlinx.lsp.window.ShowMessageParams
-import xqt.kotlinx.lsp.window.WindowNotification
 import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.*
 
 /**
@@ -47,3 +46,26 @@ fun WorkspaceNotification.didChangeConfiguration(handler: DidChangeConfiguration
         notification.params(DidChangeConfigurationParams).handler()
     }
 }
+
+/**
+ * Sent from the client to the server to signal the change of configuration settings.
+ *
+ * @param params the did change configuration parameters
+ *
+ * @since 1.0.0
+ */
+fun WorkspaceJsonRpcServer.didChangeConfiguration(params: DidChangeConfigurationParams) = server.sendNotification(
+    method = DidChangeConfigurationParams.DID_CHANGE_CONFIGURATION,
+    params = DidChangeConfigurationParams.serializeToJson(params)
+)
+
+/**
+ * Sent from the client to the server to signal the change of configuration settings.
+ *
+ * @param settings the actual changed settings
+ *
+ * @since 1.0.0
+ */
+fun WorkspaceJsonRpcServer.didChangeConfiguration(settings: JsonElement) = didChangeConfiguration(
+    params = DidChangeConfigurationParams(settings = settings)
+)

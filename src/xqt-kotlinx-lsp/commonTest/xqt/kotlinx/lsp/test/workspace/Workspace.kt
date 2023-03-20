@@ -3,6 +3,7 @@ package xqt.kotlinx.lsp.test.workspace
 
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.test.base.testJsonRpc
+import xqt.kotlinx.lsp.workspace.DidChangeConfigurationParams
 import xqt.kotlinx.lsp.workspace.didChangeConfiguration
 import xqt.kotlinx.lsp.workspace.workspace
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
@@ -42,5 +43,45 @@ class WorkspaceDSL {
         }
 
         assertEquals(true, called, "The workspace.didChangeConfiguration DSL should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending workspace/didChangeConfiguration notifications using DidChangeConfigurationParams")
+    fun supports_sending_did_change_configuration_notifications_using_class_params() = testJsonRpc {
+        server.workspace.didChangeConfiguration(
+            params = DidChangeConfigurationParams(
+                settings = JsonPrimitive("Lorem Ipsum")
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("workspace/didChangeConfiguration"),
+                "params" to jsonObjectOf(
+                    "settings" to JsonPrimitive("Lorem Ipsum")
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending window/logMessage notifications using function parameters")
+    fun supports_sending_log_message_notifications_using_function_parameters() = testJsonRpc {
+        server.workspace.didChangeConfiguration(
+            settings = JsonPrimitive("Lorem Ipsum")
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("workspace/didChangeConfiguration"),
+                "params" to jsonObjectOf(
+                    "settings" to JsonPrimitive("Lorem Ipsum")
+                )
+            ),
+            client.receive()
+        )
     }
 }
