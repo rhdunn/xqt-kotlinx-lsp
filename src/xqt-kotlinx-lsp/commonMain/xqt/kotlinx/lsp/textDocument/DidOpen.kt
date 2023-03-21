@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.rpc.json.protocol.params
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
@@ -22,6 +23,8 @@ data class DidOpenTextDocumentParams(
     val text: String
 ) : TextDocumentIdentifier {
     companion object : JsonSerialization<DidOpenTextDocumentParams> {
+        internal const val DID_OPEN: String = "textDocument/didOpen"
+
         override fun serializeToJson(value: DidOpenTextDocumentParams): JsonObject = buildJsonObject {
             put("uri", value.uri, JsonString)
             put("text", value.text, JsonString)
@@ -34,5 +37,20 @@ data class DidOpenTextDocumentParams(
                 text = json.get("text", JsonString)
             )
         }
+    }
+}
+
+/**
+ * The document open notification is sent from the client to the server to signal newly
+ * opened text documents.
+ *
+ * The document's content is now managed by the client and the server must not try to read
+ * the document's content using the document's uri.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentNotification.didOpen(handler: DidOpenTextDocumentParams.() -> Unit) {
+    if (notification.method == DidOpenTextDocumentParams.DID_OPEN) {
+        notification.params(DidOpenTextDocumentParams).handler()
     }
 }
