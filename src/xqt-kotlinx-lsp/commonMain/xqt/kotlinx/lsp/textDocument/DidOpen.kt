@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
@@ -54,3 +55,35 @@ fun TextDocumentNotification.didOpen(handler: DidOpenTextDocumentParams.() -> Un
         notification.params(DidOpenTextDocumentParams).handler()
     }
 }
+
+/**
+ * The document open notification is sent from the client to the server to signal newly
+ * opened text documents.
+ *
+ * The document's content is now managed by the client and the server must not try to read
+ * the document's content using the document's uri.
+ *
+ * @param params the show message parameters
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.didOpen(params: DidOpenTextDocumentParams) = server.sendNotification(
+    method = DidOpenTextDocumentParams.DID_OPEN,
+    params = DidOpenTextDocumentParams.serializeToJson(params)
+)
+
+/**
+ * The document open notification is sent from the client to the server to signal newly
+ * opened text documents.
+ *
+ * The document's content is now managed by the client and the server must not try to read
+ * the document's content using the document's uri.
+ *
+ * @param uri the text document's URI
+ * @param text the content of the opened text document
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.didOpen(uri: String, text: String) = didOpen(
+    params = DidOpenTextDocumentParams(uri = uri, text = text)
+)
