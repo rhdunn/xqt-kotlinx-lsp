@@ -4,10 +4,12 @@ package xqt.kotlinx.lsp.test.textDocument
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.textDocument.DidOpenTextDocumentParams
+import xqt.kotlinx.lsp.textDocument.didChange
 import xqt.kotlinx.lsp.textDocument.didOpen
 import xqt.kotlinx.lsp.textDocument.textDocument
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
+import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
@@ -89,5 +91,37 @@ class TextDocumentDSL {
             ),
             client.receive()
         )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/didChange notifications")
+    fun supports_did_change_notifications() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/didChange"),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "contentChanges" to jsonArrayOf()
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            notification {
+                textDocument.didChange {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/didChange", method)
+
+                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals(0, contentChanges.size)
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.didChange DSL should have been called.")
     }
 }

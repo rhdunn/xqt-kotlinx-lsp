@@ -7,6 +7,7 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
 import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.rpc.json.protocol.params
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
@@ -25,6 +26,8 @@ data class DidChangeTextDocumentParams(
     val contentChanges: List<TextDocumentContentChangeEvent>
 ) : TextDocumentIdentifier {
     companion object : JsonSerialization<DidChangeTextDocumentParams> {
+        internal const val DID_CHANGE: String = "textDocument/didChange"
+
         private val TextDocumentContentChangeEventArray = JsonTypedArray(TextDocumentContentChangeEvent)
 
         override fun serializeToJson(value: DidChangeTextDocumentParams): JsonObject = buildJsonObject {
@@ -81,5 +84,17 @@ data class TextDocumentContentChangeEvent(
                 text = json.get("text", JsonString)
             )
         }
+    }
+}
+
+/**
+ * The document change notification is sent from the client to the server to signal changes
+ * to a text document.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentNotification.didChange(handler: DidChangeTextDocumentParams.() -> Unit) {
+    if (notification.method == DidChangeTextDocumentParams.DID_CHANGE) {
+        notification.params(DidChangeTextDocumentParams).handler()
     }
 }
