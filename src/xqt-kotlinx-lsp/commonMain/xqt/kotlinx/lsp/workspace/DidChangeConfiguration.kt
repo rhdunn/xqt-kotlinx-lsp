@@ -21,8 +21,6 @@ data class DidChangeConfigurationParams(
     val settings: JsonElement
 ) {
     companion object : JsonSerialization<DidChangeConfigurationParams> {
-        internal const val DID_CHANGE_CONFIGURATION: String = "workspace/didChangeConfiguration"
-
         override fun serializeToJson(value: DidChangeConfigurationParams): JsonObject = buildJsonObject {
             put("settings", value.settings, LSPAny)
         }
@@ -42,7 +40,7 @@ data class DidChangeConfigurationParams(
  * @since 1.0.0
  */
 fun WorkspaceNotification.didChangeConfiguration(handler: DidChangeConfigurationParams.() -> Unit) {
-    if (notification.method == DidChangeConfigurationParams.DID_CHANGE_CONFIGURATION) {
+    if (notification.method == WorkspaceNotification.DID_CHANGE_CONFIGURATION) {
         notification.params(DidChangeConfigurationParams).handler()
     }
 }
@@ -55,7 +53,7 @@ fun WorkspaceNotification.didChangeConfiguration(handler: DidChangeConfiguration
  * @since 1.0.0
  */
 fun WorkspaceJsonRpcServer.didChangeConfiguration(params: DidChangeConfigurationParams) = server.sendNotification(
-    method = DidChangeConfigurationParams.DID_CHANGE_CONFIGURATION,
+    method = WorkspaceNotification.DID_CHANGE_CONFIGURATION,
     params = DidChangeConfigurationParams.serializeToJson(params)
 )
 

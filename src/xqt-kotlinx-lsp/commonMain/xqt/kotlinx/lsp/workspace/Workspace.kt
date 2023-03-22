@@ -16,7 +16,14 @@ import kotlin.jvm.JvmInline
  * @since 1.0.0
  */
 @JvmInline
-value class WorkspaceNotification(val notification: Notification)
+value class WorkspaceNotification(val notification: Notification) {
+    companion object {
+        /**
+         * Ask the client to display a particular message in the user interface.
+         */
+        const val DID_CHANGE_CONFIGURATION: String = "workspace/didChangeConfiguration"
+    }
+}
 
 /**
  * A method in the `workspace/` namespace.
