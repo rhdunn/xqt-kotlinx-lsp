@@ -30,7 +30,7 @@ class TheTextDocumentIdentifierType {
     @Test
     @DisplayName("supports creating a text document identifier")
     fun supports_creating_a_text_document_identifier() {
-        val tdi = TextDocumentIdentifier.create("file:///home/lorem/ipsum.py")
+        val tdi = TextDocumentIdentifier("file:///home/lorem/ipsum.py")
         assertEquals("file:///home/lorem/ipsum.py", tdi.uri)
     }
 
