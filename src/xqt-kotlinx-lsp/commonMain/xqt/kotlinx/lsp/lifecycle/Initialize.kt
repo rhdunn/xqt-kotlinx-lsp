@@ -283,8 +283,8 @@ fun RequestMessage.initialize(handler: InitializeParams.() -> InitializeResult) 
 /**
  * Send an initialize request to the server.
  *
- * @param params the initialize request parameters
- * @param responseHandler the callback to process the response for the initialize request
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
  * @since 1.0.0
@@ -308,7 +308,7 @@ fun JsonRpcServer.initialize(
  * @param processId the process ID of the parent process that started the server
  * @param rootPath the rootPath of the workspace
  * @param capabilities the capabilities provided by the client (editor)
- * @param responseHandler the callback to process the response for the initialize request
+ * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
  * @since 1.0.0

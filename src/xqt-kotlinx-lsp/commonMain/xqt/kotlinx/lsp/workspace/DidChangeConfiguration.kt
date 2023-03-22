@@ -50,7 +50,7 @@ fun WorkspaceNotification.didChangeConfiguration(handler: DidChangeConfiguration
 /**
  * Sent from the client to the server to signal the change of configuration settings.
  *
- * @param params the did change configuration parameters
+ * @param params the notification parameters
  *
  * @since 1.0.0
  */

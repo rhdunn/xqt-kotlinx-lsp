@@ -31,7 +31,7 @@ fun RequestMessage.shutdown(handler: () -> Unit) {
 /**
  * Send a shutdown request to the server.
  *
- * @param responseHandler the callback to process the response for the shutdown request
+ * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
  * @since 1.0.0

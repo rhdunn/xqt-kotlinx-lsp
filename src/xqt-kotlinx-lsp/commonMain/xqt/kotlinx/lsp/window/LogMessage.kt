@@ -57,7 +57,7 @@ fun WindowNotification.logMessage(handler: LogMessageParams.() -> Unit) {
 /**
  * Ask the client to log a particular message.
  *
- * @param params the log message parameters
+ * @param params the notification parameters
  *
  * @since 1.0.0
  */

@@ -63,7 +63,7 @@ fun TextDocumentNotification.didOpen(handler: DidOpenTextDocumentParams.() -> Un
  * The document's content is now managed by the client and the server must not try to read
  * the document's content using the document's uri.
  *
- * @param params the show message parameters
+ * @param params the notification parameters
  *
  * @since 1.0.0
  */

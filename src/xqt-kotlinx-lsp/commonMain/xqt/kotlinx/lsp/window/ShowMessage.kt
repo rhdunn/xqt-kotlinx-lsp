@@ -98,7 +98,7 @@ fun WindowNotification.showMessage(handler: ShowMessageParams.() -> Unit) {
 /**
  * Ask the client to display a particular message in the user interface.
  *
- * @param params the show message parameters
+ * @param params the notification parameters
  *
  * @since 1.0.0
  */
