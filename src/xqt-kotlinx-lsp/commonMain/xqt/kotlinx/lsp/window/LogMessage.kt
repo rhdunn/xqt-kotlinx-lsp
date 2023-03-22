@@ -26,8 +26,6 @@ data class LogMessageParams(
     val message: String
 ) {
     companion object : JsonSerialization<LogMessageParams> {
-        internal const val LOG_MESSAGE: String = "window/logMessage"
-
         override fun serializeToJson(value: LogMessageParams): JsonObject = buildJsonObject {
             put("type", value.type, MessageType)
             put("message", value.message, JsonString)
@@ -49,7 +47,7 @@ data class LogMessageParams(
  * @since 1.0.0
  */
 fun WindowNotification.logMessage(handler: LogMessageParams.() -> Unit) {
-    if (notification.method == LogMessageParams.LOG_MESSAGE) {
+    if (notification.method == WindowNotification.LOG_MESSAGE) {
         notification.params(LogMessageParams).handler()
     }
 }
@@ -62,7 +60,7 @@ fun WindowNotification.logMessage(handler: LogMessageParams.() -> Unit) {
  * @since 1.0.0
  */
 fun WindowJsonRpcServer.logMessage(params: LogMessageParams) = server.sendNotification(
-    method = LogMessageParams.LOG_MESSAGE,
+    method = WindowNotification.LOG_MESSAGE,
     params = LogMessageParams.serializeToJson(params)
 )
 

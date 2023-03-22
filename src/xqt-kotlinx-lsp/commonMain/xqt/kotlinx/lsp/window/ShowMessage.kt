@@ -29,8 +29,6 @@ data class ShowMessageParams(
     val message: String
 ) {
     companion object : JsonSerialization<ShowMessageParams> {
-        internal const val SHOW_MESSAGE: String = "window/showMessage"
-
         override fun serializeToJson(value: ShowMessageParams): JsonObject = buildJsonObject {
             put("type", value.type, MessageType)
             put("message", value.message, JsonString)
@@ -90,7 +88,7 @@ value class MessageType(val type: Int) {
  * @since 1.0.0
  */
 fun WindowNotification.showMessage(handler: ShowMessageParams.() -> Unit) {
-    if (notification.method == ShowMessageParams.SHOW_MESSAGE) {
+    if (notification.method == WindowNotification.SHOW_MESSAGE) {
         notification.params(ShowMessageParams).handler()
     }
 }
@@ -103,7 +101,7 @@ fun WindowNotification.showMessage(handler: ShowMessageParams.() -> Unit) {
  * @since 1.0.0
  */
 fun WindowJsonRpcServer.showMessage(params: ShowMessageParams) = server.sendNotification(
-    method = ShowMessageParams.SHOW_MESSAGE,
+    method = WindowNotification.SHOW_MESSAGE,
     params = ShowMessageParams.serializeToJson(params)
 )
 

@@ -16,7 +16,19 @@ import kotlin.jvm.JvmInline
  * @since 1.0.0
  */
 @JvmInline
-value class WindowNotification(val notification: Notification)
+value class WindowNotification(val notification: Notification) {
+    companion object {
+        /**
+         * Ask the client to log a particular message.
+         */
+        const val LOG_MESSAGE: String = "window/logMessage"
+
+        /**
+         * Ask the client to display a particular message in the user interface.
+         */
+        const val SHOW_MESSAGE: String = "window/showMessage"
+    }
+}
 
 /**
  * A method in the `window/` namespace.
