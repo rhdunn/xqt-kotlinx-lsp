@@ -24,8 +24,6 @@ data class DidOpenTextDocumentParams(
     val text: String
 ) : TextDocumentIdentifier {
     companion object : JsonSerialization<DidOpenTextDocumentParams> {
-        internal const val DID_OPEN: String = "textDocument/didOpen"
-
         override fun serializeToJson(value: DidOpenTextDocumentParams): JsonObject = buildJsonObject {
             put("uri", value.uri, JsonString)
             put("text", value.text, JsonString)
@@ -51,7 +49,7 @@ data class DidOpenTextDocumentParams(
  * @since 1.0.0
  */
 fun TextDocumentNotification.didOpen(handler: DidOpenTextDocumentParams.() -> Unit) {
-    if (notification.method == DidOpenTextDocumentParams.DID_OPEN) {
+    if (notification.method == TextDocumentNotification.DID_OPEN) {
         notification.params(DidOpenTextDocumentParams).handler()
     }
 }
@@ -68,7 +66,7 @@ fun TextDocumentNotification.didOpen(handler: DidOpenTextDocumentParams.() -> Un
  * @since 1.0.0
  */
 fun TextDocumentJsonRpcServer.didOpen(params: DidOpenTextDocumentParams) = server.sendNotification(
-    method = DidOpenTextDocumentParams.DID_OPEN,
+    method = TextDocumentNotification.DID_OPEN,
     params = DidOpenTextDocumentParams.serializeToJson(params)
 )
 

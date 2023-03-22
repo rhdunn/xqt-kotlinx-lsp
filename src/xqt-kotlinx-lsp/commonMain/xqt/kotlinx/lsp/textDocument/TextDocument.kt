@@ -16,7 +16,24 @@ import kotlin.jvm.JvmInline
  * @since 1.0.0
  */
 @JvmInline
-value class TextDocumentNotification(val notification: Notification)
+value class TextDocumentNotification(val notification: Notification) {
+    companion object {
+        /**
+         * The document change notification is sent from the client to the server to signal changes
+         * to a text document.
+         */
+        const val DID_CHANGE: String = "textDocument/didChange"
+
+        /**
+         * The document open notification is sent from the client to the server to signal newly
+         * opened text documents.
+         *
+         * The document's content is now managed by the client and the server must not try to read
+         * the document's content using the document's uri.
+         */
+        const val DID_OPEN: String = "textDocument/didOpen"
+    }
+}
 
 /**
  * A method in the `textDocument/` namespace.

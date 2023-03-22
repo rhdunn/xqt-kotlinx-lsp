@@ -27,8 +27,6 @@ data class DidChangeTextDocumentParams(
     val contentChanges: List<TextDocumentContentChangeEvent>
 ) : TextDocumentIdentifier {
     companion object : JsonSerialization<DidChangeTextDocumentParams> {
-        internal const val DID_CHANGE: String = "textDocument/didChange"
-
         private val TextDocumentContentChangeEventArray = JsonTypedArray(TextDocumentContentChangeEvent)
 
         override fun serializeToJson(value: DidChangeTextDocumentParams): JsonObject = buildJsonObject {
@@ -95,7 +93,7 @@ data class TextDocumentContentChangeEvent(
  * @since 1.0.0
  */
 fun TextDocumentNotification.didChange(handler: DidChangeTextDocumentParams.() -> Unit) {
-    if (notification.method == DidChangeTextDocumentParams.DID_CHANGE) {
+    if (notification.method == TextDocumentNotification.DID_CHANGE) {
         notification.params(DidChangeTextDocumentParams).handler()
     }
 }
@@ -112,7 +110,7 @@ fun TextDocumentNotification.didChange(handler: DidChangeTextDocumentParams.() -
  * @since 1.0.0
  */
 fun TextDocumentJsonRpcServer.didChange(params: DidChangeTextDocumentParams) = server.sendNotification(
-    method = DidChangeTextDocumentParams.DID_CHANGE,
+    method = TextDocumentNotification.DID_CHANGE,
     params = DidChangeTextDocumentParams.serializeToJson(params)
 )
 
