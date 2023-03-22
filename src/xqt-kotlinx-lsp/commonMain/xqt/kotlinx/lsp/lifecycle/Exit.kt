@@ -5,15 +5,13 @@ import xqt.kotlinx.lsp.base.NotificationMessage
 import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 
-private const val EXIT = "exit"
-
 /**
  * A notification to ask the server to exit its process.
  *
  * @since 1.0.0
  */
 fun NotificationMessage.exit(handler: () -> Unit) {
-    if (method == EXIT) {
+    if (method == LifecycleNotification.EXIT) {
         handler()
     }
 }
@@ -23,4 +21,4 @@ fun NotificationMessage.exit(handler: () -> Unit) {
  *
  * @since 1.0.0
  */
-fun JsonRpcServer.exit() = sendNotification(EXIT)
+fun JsonRpcServer.exit() = sendNotification(LifecycleNotification.EXIT)

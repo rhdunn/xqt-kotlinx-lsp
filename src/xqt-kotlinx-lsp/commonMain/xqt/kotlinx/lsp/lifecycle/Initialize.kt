@@ -36,8 +36,6 @@ data class InitializeParams(
     val capabilities: JsonObject
 ) {
     companion object : JsonSerialization<InitializeParams> {
-        internal const val INITIALIZE: String = "initialize"
-
         override fun serializeToJson(value: InitializeParams): JsonObject = buildJsonObject {
             put("processId", value.processId, Integer)
             putNullable("rootPath", value.rootPath, JsonString)
@@ -274,7 +272,7 @@ data class InitializeResponse(private val response: ResponseMessage) {
  * @since 1.0.0
  */
 fun RequestMessage.initialize(handler: InitializeParams.() -> InitializeResult) {
-    if (method == InitializeParams.INITIALIZE) {
+    if (method == LifecycleRequest.INITIALIZE) {
         val result = params(InitializeParams).handler()
         sendResult(result, InitializeResult)
     }
@@ -293,7 +291,7 @@ fun JsonRpcServer.initialize(
     params: InitializeParams,
     responseHandler: (InitializeResponse.() -> Unit)? = null
 ): JsonIntOrString = sendRequest(
-    method = InitializeParams.INITIALIZE,
+    method = LifecycleRequest.INITIALIZE,
     params = InitializeParams.serializeToJson(params),
     responseHandler = responseHandler?.let {
         { response: ResponseMessage -> responseHandler(InitializeResponse(response)) }

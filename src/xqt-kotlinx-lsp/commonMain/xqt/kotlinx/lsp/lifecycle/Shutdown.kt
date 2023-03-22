@@ -8,8 +8,6 @@ import xqt.kotlinx.rpc.json.protocol.sendRequest
 import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 
-private const val SHUTDOWN = "shutdown"
-
 /**
  * Asks the server to shut down, but to not exit.
  *
@@ -22,7 +20,7 @@ private const val SHUTDOWN = "shutdown"
  * @since 1.0.0
  */
 fun RequestMessage.shutdown(handler: () -> Unit) {
-    if (method == SHUTDOWN) {
+    if (method == LifecycleRequest.SHUTDOWN) {
         handler()
         sendResult(null)
     }
@@ -37,6 +35,6 @@ fun RequestMessage.shutdown(handler: () -> Unit) {
  * @since 1.0.0
  */
 fun JsonRpcServer.shutdown(responseHandler: (ResponseMessage.() -> Unit)? = null): JsonIntOrString = sendRequest(
-    method = SHUTDOWN,
+    method = LifecycleRequest.SHUTDOWN,
     responseHandler = responseHandler
 )
