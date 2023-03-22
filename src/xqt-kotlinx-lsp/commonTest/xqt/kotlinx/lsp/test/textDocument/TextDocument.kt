@@ -165,4 +165,34 @@ class TextDocumentDSL {
             client.receive()
         )
     }
+
+    @Test
+    @DisplayName("supports textDocument/didClose notifications")
+    fun supports_did_close_notifications() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/didClose"),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            notification {
+                textDocument.didClose {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/didClose", method)
+
+                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.didClose DSL should have been called.")
+    }
 }

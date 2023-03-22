@@ -25,6 +25,15 @@ value class TextDocumentNotification(val notification: Notification) {
         const val DID_CHANGE: String = "textDocument/didChange"
 
         /**
+         * The document close notification is sent from the client to the server when the document
+         * got closed in the client.
+         *
+         * The document's master now exists where the document's URI points to (e.g. if the document's
+         * URI is a file uri the master now exists on disk).
+         */
+        const val DID_CLOSE: String = "textDocument/didClose"
+
+        /**
          * The document open notification is sent from the client to the server to signal newly
          * opened text documents.
          *
