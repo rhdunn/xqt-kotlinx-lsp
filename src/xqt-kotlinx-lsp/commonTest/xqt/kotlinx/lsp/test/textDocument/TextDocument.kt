@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.test.textDocument
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.textDocument.*
+import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -194,5 +195,45 @@ class TextDocumentDSL {
         }
 
         assertEquals(true, called, "The textDocument.didClose DSL should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/didClose notifications using TextDocumentIdentifier")
+    fun supports_sending_did_close_notifications_using_class_params() = testJsonRpc {
+        server.textDocument.didClose(
+            params = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/didClose"),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/didClose notifications using function parameters")
+    fun supports_sending_did_close_notifications_using_function_parameters() = testJsonRpc {
+        server.textDocument.didClose(
+            uri = "file:///home/lorem/ipsum.py"
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/didClose"),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                )
+            ),
+            client.receive()
+        )
     }
 }
