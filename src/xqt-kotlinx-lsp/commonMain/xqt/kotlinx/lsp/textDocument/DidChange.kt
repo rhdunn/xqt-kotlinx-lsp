@@ -8,6 +8,7 @@ import xqt.kotlinx.lsp.base.UInteger
 import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
@@ -98,3 +99,38 @@ fun TextDocumentNotification.didChange(handler: DidChangeTextDocumentParams.() -
         notification.params(DidChangeTextDocumentParams).handler()
     }
 }
+
+/**
+ * The document open notification is sent from the client to the server to signal newly
+ * opened text documents.
+ *
+ * The document's content is now managed by the client and the server must not try to read
+ * the document's content using the document's uri.
+ *
+ * @param params the notification parameters
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.didChange(params: DidChangeTextDocumentParams) = server.sendNotification(
+    method = DidChangeTextDocumentParams.DID_CHANGE,
+    params = DidChangeTextDocumentParams.serializeToJson(params)
+)
+
+/**
+ * The document open notification is sent from the client to the server to signal newly
+ * opened text documents.
+ *
+ * The document's content is now managed by the client and the server must not try to read
+ * the document's content using the document's uri.
+ *
+ * @param uri the text document's URI
+ * @param contentChanges the actual content changes
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.didChange(
+    uri: String,
+    contentChanges: List<TextDocumentContentChangeEvent>
+) = didChange(
+    params = DidChangeTextDocumentParams(uri = uri, contentChanges = contentChanges)
+)

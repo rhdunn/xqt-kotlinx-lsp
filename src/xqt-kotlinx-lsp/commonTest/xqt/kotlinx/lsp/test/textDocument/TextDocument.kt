@@ -3,10 +3,7 @@ package xqt.kotlinx.lsp.test.textDocument
 
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.test.base.testJsonRpc
-import xqt.kotlinx.lsp.textDocument.DidOpenTextDocumentParams
-import xqt.kotlinx.lsp.textDocument.didChange
-import xqt.kotlinx.lsp.textDocument.didOpen
-import xqt.kotlinx.lsp.textDocument.textDocument
+import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -123,5 +120,49 @@ class TextDocumentDSL {
         }
 
         assertEquals(true, called, "The textDocument.didChange DSL should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/didChange notifications using DidChangeTextDocumentParams")
+    fun supports_sending_did_change_notifications_using_class_params() = testJsonRpc {
+        server.textDocument.didChange(
+            params = DidChangeTextDocumentParams(
+                uri = "file:///home/lorem/ipsum.py",
+                contentChanges = listOf()
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/didChange"),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "contentChanges" to jsonArrayOf()
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/didChange notifications using function parameters")
+    fun supports_sending_did_change_notifications_using_function_parameters() = testJsonRpc {
+        server.textDocument.didChange(
+            uri = "file:///home/lorem/ipsum.py",
+            contentChanges = listOf()
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/didChange"),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "contentChanges" to jsonArrayOf()
+                )
+            ),
+            client.receive()
+        )
     }
 }
