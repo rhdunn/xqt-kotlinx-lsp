@@ -67,8 +67,8 @@ class WorkspaceDSL {
     }
 
     @Test
-    @DisplayName("supports sending window/logMessage notifications using function parameters")
-    fun supports_sending_log_message_notifications_using_function_parameters() = testJsonRpc {
+    @DisplayName("supports sending workspace/didChangeConfiguration notifications using function parameters")
+    fun supports_sending_did_change_configuration_notifications_using_function_parameters() = testJsonRpc {
         server.workspace.didChangeConfiguration(
             settings = JsonPrimitive("Lorem Ipsum")
         )
