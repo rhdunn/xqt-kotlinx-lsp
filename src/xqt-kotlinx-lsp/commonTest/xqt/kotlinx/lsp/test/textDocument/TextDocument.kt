@@ -268,4 +268,48 @@ class TextDocumentDSL {
 
         assertEquals(true, called, "The textDocument.publishDiagnostics DSL should have been called.")
     }
+
+    @Test
+    @DisplayName("supports sending textDocument/publishDiagnostics notifications using TextDocumentIdentifier")
+    fun supports_sending_publish_diagnostics_notifications_using_class_params() = testJsonRpc {
+        server.textDocument.publishDiagnostics(
+            params = PublishDiagnosticsParams(
+                uri = "file:///home/lorem/ipsum.py",
+                diagnostics = listOf()
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/publishDiagnostics"),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "diagnostics" to jsonArrayOf()
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/publishDiagnostics notifications using function parameters")
+    fun supports_sending_publish_diagnostics_notifications_using_function_parameters() = testJsonRpc {
+        server.textDocument.publishDiagnostics(
+            uri = "file:///home/lorem/ipsum.py",
+            diagnostics = listOf()
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/publishDiagnostics"),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "diagnostics" to jsonArrayOf()
+                )
+            ),
+            client.receive()
+        )
+    }
 }

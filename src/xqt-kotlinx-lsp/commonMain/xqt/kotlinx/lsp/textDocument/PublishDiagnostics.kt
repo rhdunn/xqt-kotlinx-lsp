@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Diagnostic
 import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
@@ -55,3 +56,29 @@ fun TextDocumentNotification.publishDiagnostics(handler: PublishDiagnosticsParam
         notification.params(PublishDiagnosticsParams).handler()
     }
 }
+
+/**
+ * The diagnostics notification is sent from the server to the client to signal results of
+ * validation runs.
+ *
+ * @param params the notification parameters
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.publishDiagnostics(params: PublishDiagnosticsParams) = server.sendNotification(
+    method = TextDocumentNotification.PUBLISH_DIAGNOSTICS,
+    params = PublishDiagnosticsParams.serializeToJson(params)
+)
+
+/**
+ * The diagnostics notification is sent from the server to the client to signal results of
+ * validation runs.
+ *
+ * @param uri the URI for which diagnostic information is reported
+ * @param diagnostics an array of diagnostic information items
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.publishDiagnostics(uri: String, diagnostics: List<Diagnostic>) = publishDiagnostics(
+    params = PublishDiagnosticsParams(uri = uri, diagnostics = diagnostics)
+)
