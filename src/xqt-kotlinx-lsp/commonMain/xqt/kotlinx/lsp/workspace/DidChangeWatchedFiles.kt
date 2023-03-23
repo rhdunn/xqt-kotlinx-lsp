@@ -7,6 +7,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
@@ -116,3 +117,26 @@ fun WorkspaceNotification.didChangeWatchedFiles(handler: DidChangeWatchedFilesPa
         notification.params(DidChangeWatchedFilesParams).handler()
     }
 }
+
+/**
+ * Sent from the client to the server to signal the change of configuration settings.
+ *
+ * @param params the notification parameters
+ *
+ * @since 1.0.0
+ */
+fun WorkspaceJsonRpcServer.didChangeWatchedFiles(params: DidChangeWatchedFilesParams) = server.sendNotification(
+    method = WorkspaceNotification.DID_CHANGE_WATCHED_FILES,
+    params = DidChangeWatchedFilesParams.serializeToJson(params)
+)
+
+/**
+ * Sent from the client to the server to signal the change of configuration settings.
+ *
+ * @param changes the actual file events
+ *
+ * @since 1.0.0
+ */
+fun WorkspaceJsonRpcServer.didChangeWatchedFiles(changes: List<FileEvent>) = didChangeWatchedFiles(
+    params = DidChangeWatchedFilesParams(changes = changes)
+)

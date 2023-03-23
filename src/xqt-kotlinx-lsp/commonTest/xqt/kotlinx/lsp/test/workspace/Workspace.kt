@@ -3,10 +3,7 @@ package xqt.kotlinx.lsp.test.workspace
 
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.test.base.testJsonRpc
-import xqt.kotlinx.lsp.workspace.DidChangeConfigurationParams
-import xqt.kotlinx.lsp.workspace.didChangeConfiguration
-import xqt.kotlinx.lsp.workspace.didChangeWatchedFiles
-import xqt.kotlinx.lsp.workspace.workspace
+import xqt.kotlinx.lsp.workspace.*
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -115,5 +112,45 @@ class WorkspaceDSL {
         }
 
         assertEquals(true, called, "The workspace.didChangeWatchedFiles DSL should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending workspace/didChangeWatchedFiles notifications using DidChangeWatchedFilesParams")
+    fun supports_sending_did_change_watched_files_notifications_using_class_params() = testJsonRpc {
+        server.workspace.didChangeWatchedFiles(
+            params = DidChangeWatchedFilesParams(
+                changes = listOf()
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("workspace/didChangeWatchedFiles"),
+                "params" to jsonObjectOf(
+                    "changes" to jsonArrayOf()
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending workspace/didChangeWatchedFiles notifications using function parameters")
+    fun supports_sending_did_change_watched_files_notifications_using_function_parameters() = testJsonRpc {
+        server.workspace.didChangeWatchedFiles(
+            changes = listOf()
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("workspace/didChangeWatchedFiles"),
+                "params" to jsonObjectOf(
+                    "changes" to jsonArrayOf()
+                )
+            ),
+            client.receive()
+        )
     }
 }
