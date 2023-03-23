@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.rpc.json.protocol.params
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
@@ -101,5 +102,17 @@ data class FileEvent(
                 type = json.get("type", FileChangeType)
             )
         }
+    }
+}
+
+/**
+ * The watched files notification is sent from the client to the server when
+ * the client detects changes to file watched by the language client.
+ *
+ * @since 1.0.0
+ */
+fun WorkspaceNotification.didChangeWatchedFiles(handler: DidChangeWatchedFilesParams.() -> Unit) {
+    if (notification.method == WorkspaceNotification.DID_CHANGE_WATCHED_FILES) {
+        notification.params(DidChangeWatchedFilesParams).handler()
     }
 }

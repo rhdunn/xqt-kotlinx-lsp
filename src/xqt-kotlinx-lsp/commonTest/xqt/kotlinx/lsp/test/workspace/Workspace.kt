@@ -5,9 +5,11 @@ import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.workspace.DidChangeConfigurationParams
 import xqt.kotlinx.lsp.workspace.didChangeConfiguration
+import xqt.kotlinx.lsp.workspace.didChangeWatchedFiles
 import xqt.kotlinx.lsp.workspace.workspace
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
+import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
@@ -83,5 +85,35 @@ class WorkspaceDSL {
             ),
             client.receive()
         )
+    }
+
+    @Test
+    @DisplayName("supports workspace/didChangeWatchedFiles notifications")
+    fun supports_did_change_watched_files_notifications() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("workspace/didChangeWatchedFiles"),
+                "params" to jsonObjectOf(
+                    "changes" to jsonArrayOf()
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            notification {
+                workspace.didChangeWatchedFiles {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("workspace/didChangeWatchedFiles", method)
+
+                    assertEquals(0, changes.size)
+                }
+            }
+        }
+
+        assertEquals(true, called, "The workspace.didChangeWatchedFiles DSL should have been called.")
     }
 }
