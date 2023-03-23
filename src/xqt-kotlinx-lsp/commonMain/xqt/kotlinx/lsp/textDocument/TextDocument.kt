@@ -41,6 +41,12 @@ value class TextDocumentNotification(val notification: Notification) {
          * the document's content using the document's uri.
          */
         const val DID_OPEN: String = "textDocument/didOpen"
+
+        /**
+         * The diagnostics notification is sent from the server to the client to signal results of
+         * validation runs.
+         */
+        const val PUBLISH_DIAGNOSTICS: String = "textDocument/publishDiagnostics"
     }
 }
 

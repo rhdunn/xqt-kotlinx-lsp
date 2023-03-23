@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Diagnostic
+import xqt.kotlinx.rpc.json.protocol.params
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
@@ -40,5 +41,17 @@ data class PublishDiagnosticsParams(
                 diagnostics = json.get("diagnostics", DiagnosticArray)
             )
         }
+    }
+}
+
+/**
+ * The diagnostics notification is sent from the server to the client to signal results of
+ * validation runs.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentNotification.publishDiagnostics(handler: PublishDiagnosticsParams.() -> Unit) {
+    if (notification.method == TextDocumentNotification.PUBLISH_DIAGNOSTICS) {
+        notification.params(PublishDiagnosticsParams).handler()
     }
 }
