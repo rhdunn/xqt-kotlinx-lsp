@@ -6,7 +6,13 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
+import xqt.kotlinx.lsp.lifecycle.InitializeParams
+import xqt.kotlinx.lsp.lifecycle.InitializeResult
+import xqt.kotlinx.lsp.lifecycle.LifecycleRequest
+import xqt.kotlinx.lsp.types.TextDocumentPosition
 import xqt.kotlinx.lsp.types.TextEdit
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
@@ -252,5 +258,26 @@ value class CompletionItemKind(val kind: Int) {
          * A reference completion entry.
          */
         val Reference: CompletionItemKind = CompletionItemKind(18)
+    }
+}
+
+private val CompletionItemArray = JsonTypedArray(CompletionItem)
+
+/**
+ * The completion request is sent from the client to the server to compute completion items
+ * at a given cursor position.
+ *
+ * If computing complete completion items is expensive, servers can additionally provide a
+ * handler for the resolve completion item request. This request is sent when a completion
+ * item is selected in the user interface.
+ *
+ * @return an initialize result response
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentRequest.completion(handler: TextDocumentPosition.() -> List<CompletionItem>) {
+    if (request.method == TextDocumentRequest.COMPLETION) {
+        val result = request.params(TextDocumentPosition).handler()
+        request.sendResult(result, CompletionItemArray)
     }
 }

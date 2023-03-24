@@ -17,7 +17,19 @@ import kotlin.jvm.JvmInline
  * @since 1.0.0
  */
 @JvmInline
-value class TextDocumentRequest(val request: RequestMessage)
+value class TextDocumentRequest(val request: RequestMessage) {
+    companion object {
+        /**
+         * The completion request is sent from the client to the server to compute completion items
+         * at a given cursor position.
+         *
+         * If computing complete completion items is expensive, servers can additionally provide a
+         * handler for the resolve completion item request. This request is sent when a completion
+         * item is selected in the user interface.
+         */
+        const val COMPLETION: String = "textDocument/completion"
+    }
+}
 
 /**
  * A notification in the `textDocument/` namespace.

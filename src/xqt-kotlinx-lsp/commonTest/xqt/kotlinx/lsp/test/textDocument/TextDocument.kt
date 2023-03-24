@@ -1,14 +1,21 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.test.textDocument
 
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.lifecycle.InitializeResult
+import xqt.kotlinx.lsp.lifecycle.ServerCapabilities
+import xqt.kotlinx.lsp.lifecycle.initialize
 import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.textDocument.*
+import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
+import xqt.kotlinx.rpc.json.protocol.request
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -307,6 +314,64 @@ class TextDocumentDSL {
                 "params" to jsonObjectOf(
                     "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
                     "diagnostics" to jsonArrayOf()
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/completion requests returning a CompletionItem[]")
+    fun supports_completion_requests_returning_a_completion_item_array() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/completion"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    )
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.completion {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/completion", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals(Position(2u, 6u), position)
+
+                    listOf(
+                        CompletionItem(
+                            label = "Lorem Ipsum",
+                            kind = CompletionItemKind.Text
+                        )
+                    )
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.completion DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonArrayOf(
+                    jsonObjectOf(
+                        "label" to JsonPrimitive("Lorem Ipsum"),
+                        "kind" to JsonPrimitive(1)
+                    )
                 )
             ),
             client.receive()
