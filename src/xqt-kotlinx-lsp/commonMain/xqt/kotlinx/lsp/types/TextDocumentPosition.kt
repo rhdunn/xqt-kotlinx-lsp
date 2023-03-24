@@ -26,7 +26,7 @@ interface TextDocumentPosition : TextDocumentIdentifier {
 
         override fun deserialize(json: JsonElement): TextDocumentPosition = when (json) {
             !is JsonObject -> unsupportedKindType(json)
-            else -> TextDocumentPositionImpl(
+            else -> TextDocumentPosition(
                 uri = json.get("uri", JsonString),
                 position = json.get("position", Position)
             )
@@ -34,7 +34,18 @@ interface TextDocumentPosition : TextDocumentIdentifier {
     }
 }
 
-internal data class TextDocumentPositionImpl(
-    override val uri: String,
-    override val position: Position
-) : TextDocumentPosition
+/**
+ * Identifies a position in a text document.
+ *
+ * @param uri the text document's URI
+ * @param position the position inside the text document
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentPosition(
+    uri: String,
+    position: Position
+): TextDocumentPosition = object : TextDocumentPosition {
+    override val uri: String = uri
+    override val position: Position = position
+}
