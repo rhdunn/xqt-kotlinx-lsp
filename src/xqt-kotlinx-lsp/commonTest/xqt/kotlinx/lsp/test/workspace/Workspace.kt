@@ -14,6 +14,8 @@ import kotlin.test.assertEquals
 
 @DisplayName("Workspace DSL")
 class WorkspaceDSL {
+    // region workspace/didChangeConfiguration notification
+
     @Test
     @DisplayName("supports workspace/didChangeConfiguration notifications")
     fun supports_did_change_configuration_notifications() = testJsonRpc {
@@ -84,6 +86,9 @@ class WorkspaceDSL {
         )
     }
 
+    // endregion
+    // region textDocument/didChangeWatchedFiles notification
+
     @Test
     @DisplayName("supports workspace/didChangeWatchedFiles notifications")
     fun supports_did_change_watched_files_notifications() = testJsonRpc {
@@ -153,4 +158,6 @@ class WorkspaceDSL {
             client.receive()
         )
     }
+
+    // endregion
 }

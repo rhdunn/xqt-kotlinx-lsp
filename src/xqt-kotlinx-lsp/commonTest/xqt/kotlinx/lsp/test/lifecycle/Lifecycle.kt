@@ -19,6 +19,8 @@ import kotlin.test.assertEquals
 
 @DisplayName("Lifecycle DSL")
 class LifecycleDSL {
+    // region initialize request
+
     @Test
     @DisplayName("supports initialize requests returning an InitializeResult")
     fun supports_initialize_requests_returning_an_initialize_result() = testJsonRpc {
@@ -388,6 +390,9 @@ class LifecycleDSL {
         assertEquals(1, called, "The initialize DSL handler should have been called.")
     }
 
+    // endregion
+    // region shutdown request
+
     @Test
     @DisplayName("supports shutdown requests")
     fun supports_shutdown_requests() = testJsonRpc {
@@ -491,6 +496,9 @@ class LifecycleDSL {
         assertEquals(1, called, "The shutdown DSL handler should have been called.")
     }
 
+    // endregion
+    // region exit notification
+
     @Test
     @DisplayName("supports exit notifications")
     fun supports_exit_notifications() = testJsonRpc {
@@ -529,4 +537,6 @@ class LifecycleDSL {
             server.receive()
         )
     }
+
+    // endregion
 }

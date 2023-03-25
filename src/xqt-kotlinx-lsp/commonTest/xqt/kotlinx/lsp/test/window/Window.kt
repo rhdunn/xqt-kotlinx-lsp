@@ -13,6 +13,8 @@ import kotlin.test.assertEquals
 
 @DisplayName("Window DSL")
 class WindowDSL {
+    // region window/showMessage notification
+
     @Test
     @DisplayName("supports window/showMessage notifications")
     fun supports_show_message_notifications() = testJsonRpc {
@@ -89,6 +91,9 @@ class WindowDSL {
         )
     }
 
+    // endregion
+    // region window/logMessage notification
+
     @Test
     @DisplayName("supports window/logMessage notifications")
     fun supports_log_message_notifications() = testJsonRpc {
@@ -164,4 +169,6 @@ class WindowDSL {
             client.receive()
         )
     }
+
+    // endregion
 }

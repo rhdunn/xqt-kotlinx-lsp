@@ -1,11 +1,7 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.test.textDocument
 
-import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
-import xqt.kotlinx.lsp.lifecycle.InitializeResult
-import xqt.kotlinx.lsp.lifecycle.ServerCapabilities
-import xqt.kotlinx.lsp.lifecycle.initialize
 import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.lsp.types.Position
@@ -22,6 +18,8 @@ import kotlin.test.assertEquals
 
 @DisplayName("Text Document DSL")
 class TextDocumentDSL {
+    // region textDocument/didOpen notification
+
     @Test
     @DisplayName("supports textDocument/didOpen notifications")
     fun supports_did_open_notifications() = testJsonRpc {
@@ -97,6 +95,9 @@ class TextDocumentDSL {
             client.receive()
         )
     }
+
+    // endregion
+    // region textDocument/didChange notification
 
     @Test
     @DisplayName("supports textDocument/didChange notifications")
@@ -174,6 +175,9 @@ class TextDocumentDSL {
         )
     }
 
+    // endregion
+    // region textDocument/didClose notification
+
     @Test
     @DisplayName("supports textDocument/didClose notifications")
     fun supports_did_close_notifications() = testJsonRpc {
@@ -243,6 +247,9 @@ class TextDocumentDSL {
             client.receive()
         )
     }
+
+    // endregion
+    // region textDocument/publishDiagnostics notification
 
     @Test
     @DisplayName("supports textDocument/publishDiagnostics notifications")
@@ -320,6 +327,9 @@ class TextDocumentDSL {
         )
     }
 
+    // endregion
+    // region textDocument/completion request
+
     @Test
     @DisplayName("supports textDocument/completion requests returning a CompletionItem[]")
     fun supports_completion_requests_returning_a_completion_item_array() = testJsonRpc {
@@ -377,4 +387,6 @@ class TextDocumentDSL {
             client.receive()
         )
     }
+
+    // endregion
 }
