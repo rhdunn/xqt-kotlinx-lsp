@@ -15,7 +15,15 @@ import kotlin.jvm.JvmInline
  * @since 1.0.0
  */
 @JvmInline
-value class CompletionItemRequest(val request: RequestMessage)
+value class CompletionItemRequest(val request: RequestMessage) {
+    companion object {
+        /**
+         * The request is sent from the client to the server to resolve additional information for
+         * a given completion item.
+         */
+        const val RESOLVE: String = "completionItem/resolve"
+    }
+}
 
 /**
  * A request in the `completionItem/` namespace.
