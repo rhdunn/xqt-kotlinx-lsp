@@ -6,18 +6,15 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
-import xqt.kotlinx.lsp.lifecycle.InitializeParams
-import xqt.kotlinx.lsp.lifecycle.InitializeResult
-import xqt.kotlinx.lsp.lifecycle.LifecycleRequest
+import xqt.kotlinx.lsp.base.ResponseMessage
+import xqt.kotlinx.lsp.lifecycle.*
+import xqt.kotlinx.lsp.lifecycle.InitializeResponse
+import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.TextDocumentPosition
 import xqt.kotlinx.lsp.types.TextEdit
-import xqt.kotlinx.rpc.json.protocol.params
-import xqt.kotlinx.rpc.json.protocol.sendResult
+import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
-import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
-import xqt.kotlinx.rpc.json.serialization.types.JsonInt
-import xqt.kotlinx.rpc.json.serialization.types.JsonString
-import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
+import xqt.kotlinx.rpc.json.serialization.types.*
 import kotlin.jvm.JvmInline
 
 /**
@@ -263,6 +260,29 @@ value class CompletionItemKind(val kind: Int) {
 
 private val CompletionItemArray = JsonTypedArray(CompletionItem)
 
+
+/**
+ * The response of a completion request.
+ *
+ * @param response The associated response message.
+ *
+ * @since 1.0.0
+ */
+data class CompletionResponse(private val response: ResponseMessage) {
+    /**
+     * The result of a successful completion request.
+     */
+    val result: List<CompletionItem> by lazy {
+        response.result?.let { CompletionItemArray.deserialize(it) } ?: listOf()
+    }
+
+    /**
+     * The error object in case a request fails.
+     */
+    val error: ErrorObject?
+        get() = response.error
+}
+
 /**
  * The completion request is sent from the client to the server to compute completion items
  * at a given cursor position.
@@ -281,3 +301,52 @@ fun TextDocumentRequest.completion(handler: TextDocumentPosition.() -> List<Comp
         request.sendResult(result, CompletionItemArray)
     }
 }
+
+/**
+ * The completion request is sent from the client to the server to compute completion items
+ * at a given cursor position.
+ *
+ * If computing complete completion items is expensive, servers can additionally provide a
+ * handler for the resolve completion item request. This request is sent when a completion
+ * item is selected in the user interface.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.completion(
+    params: TextDocumentPosition,
+    responseHandler: (CompletionResponse.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = TextDocumentRequest.COMPLETION,
+    params = TextDocumentPosition.serializeToJson(params),
+    responseHandler = responseHandler?.let {
+        { response: ResponseMessage -> responseHandler(CompletionResponse(response)) }
+    }
+)
+
+/**
+ * The completion request is sent from the client to the server to compute completion items
+ * at a given cursor position.
+ *
+ * If computing complete completion items is expensive, servers can additionally provide a
+ * handler for the resolve completion item request. This request is sent when a completion
+ * item is selected in the user interface.
+ *
+ * @param uri the text document's URI
+ * @param position the position inside the text document
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.completion(
+    uri: String,
+    position: Position,
+    responseHandler: (CompletionResponse.() -> Unit)? = null
+): JsonIntOrString = completion(
+    params = TextDocumentPosition(uri = uri, position = position),
+    responseHandler = responseHandler
+)

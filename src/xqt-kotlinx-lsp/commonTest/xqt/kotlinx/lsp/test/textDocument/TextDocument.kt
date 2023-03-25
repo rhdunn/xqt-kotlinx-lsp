@@ -2,10 +2,14 @@
 package xqt.kotlinx.lsp.test.textDocument
 
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.base.ErrorCodes
+import xqt.kotlinx.lsp.base.InternalError
+import xqt.kotlinx.lsp.lifecycle.*
 import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.lsp.types.TextDocumentPosition
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
 import xqt.kotlinx.rpc.json.protocol.request
@@ -386,6 +390,206 @@ class TextDocumentDSL {
             ),
             client.receive()
         )
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/completion requests using TextDocumentPosition")
+    fun supports_sending_completion_requests_using_text_document_position() = testJsonRpc {
+        val id = client.textDocument.completion(
+            params = TextDocumentPosition(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u)
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/completion"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/completion request callback receiving CompletionResponse using params object")
+    fun supports_completion_request_callback_receiving_completion_response_from_params_object() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.completion(
+            params = TextDocumentPosition(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u)
+            )
+        ) {
+            ++called
+
+            assertEquals(1, result.size)
+            assertEquals(
+                CompletionItem(
+                    label = "Lorem Ipsum",
+                    kind = CompletionItemKind.Text
+                ),
+                result[0]
+            )
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.completion {
+                    listOf(
+                        CompletionItem(
+                            label = "Lorem Ipsum",
+                            kind = CompletionItemKind.Text
+                        )
+                    )
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.completion DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/completion" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.completion DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/completion request callback receiving ErrorObject using params object")
+    fun supports_completion_request_callback_receiving_error_object_from_params_object() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.completion(
+            params = TextDocumentPosition(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u)
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.completion {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.completion DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/completion" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.completion DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/completion requests using function parameters")
+    fun supports_sending_completion_requests_using_function_parameters() = testJsonRpc {
+        val id = client.textDocument.completion(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u)
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/completion"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/completion request callback receiving CompletionResponse")
+    fun supports_completion_request_callback_receiving_completion_response() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.completion(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u)
+        ) {
+            ++called
+
+            assertEquals(1, result.size)
+            assertEquals(
+                CompletionItem(
+                    label = "Lorem Ipsum",
+                    kind = CompletionItemKind.Text
+                ),
+                result[0]
+            )
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.completion {
+                    listOf(
+                        CompletionItem(
+                            label = "Lorem Ipsum",
+                            kind = CompletionItemKind.Text
+                        )
+                    )
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.completion DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/completion" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.completion DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/completion request callback receiving ErrorObject")
+    fun supports_completion_request_callback_receiving_error_object() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.completion(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u)
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.completion {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.completion DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/completion" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.completion DSL handler should have been called.")
     }
 
     // endregion
