@@ -261,23 +261,28 @@ data class InitializeErrorObject(
 /**
  * The response of an initialize request.
  *
- * @param response The associated response message.
+ * @param id the request id
+ * @param result the result of the request
+ * @param error the error object in case the request failed
+ * @param jsonrpc the version of the JSON-RPC protocol
  *
  * @since 1.0.0
  */
-data class InitializeResponse(private val response: ResponseMessage) {
-    /**
-     * The result of a successful initialize request.
-     */
-    val result: InitializeResult? by lazy {
-        response.result?.let { InitializeResult.deserialize(it) }
-    }
-
-    /**
-     * The error object in case a request fails.
-     */
-    val error: TypedErrorObject<InitializeError>? by lazy {
-        response.error?.let { InitializeErrorObject.convert(it) }
+data class InitializeResponse(
+    override val id: JsonIntOrString?,
+    override val result: InitializeResult?,
+    override val error: TypedErrorObject<InitializeError>?,
+    override val jsonrpc: String
+) : TypedResponseObject<InitializeResult?, InitializeError> {
+    companion object : TypedResponseObjectConverter<InitializeResult?, InitializeError> {
+        override fun convert(response: ResponseObject): TypedResponseObject<InitializeResult?, InitializeError> {
+            return InitializeResponse(
+                id = response.id,
+                result = response.result?.let { InitializeResult.deserialize(it) },
+                error = response.error?.let { InitializeErrorObject.convert(it) },
+                jsonrpc = response.jsonrpc
+            )
+        }
     }
 }
 
@@ -306,12 +311,12 @@ fun RequestMessage.initialize(handler: InitializeParams.() -> InitializeResult) 
  */
 fun JsonRpcServer.initialize(
     params: InitializeParams,
-    responseHandler: (InitializeResponse.() -> Unit)? = null
+    responseHandler: (TypedResponseObject<InitializeResult?, InitializeError>.() -> Unit)? = null
 ): JsonIntOrString = sendRequest(
     method = LifecycleRequest.INITIALIZE,
     params = InitializeParams.serializeToJson(params),
     responseHandler = responseHandler?.let {
-        { response: ResponseMessage -> responseHandler(InitializeResponse(response)) }
+        { response: ResponseMessage -> responseHandler(InitializeResponse.convert(response)) }
     }
 )
 
@@ -332,7 +337,7 @@ fun JsonRpcServer.initialize(
     processId: Int,
     rootPath: String? = null,
     capabilities: JsonObject,
-    responseHandler: (InitializeResponse.() -> Unit)? = null
+    responseHandler: (TypedResponseObject<InitializeResult?, InitializeError>.() -> Unit)? = null
 ): JsonIntOrString = initialize(
     params = InitializeParams(
         processId = processId,
