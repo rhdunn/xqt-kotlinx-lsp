@@ -229,7 +229,6 @@ class LifecycleDSL {
             )
 
             assertEquals(null, error)
-            assertEquals(null, initializeError)
         }
 
         server.jsonRpc {
@@ -268,9 +267,7 @@ class LifecycleDSL {
 
             assertEquals(ErrorCodes.InternalError, error?.code)
             assertEquals("Lorem ipsum", error?.message)
-
-            assertEquals(InitializeError(retry = true), initializeError)
-            assertEquals(InitializeError.serializeToJson(initializeError!!), error?.data)
+            assertEquals(InitializeError(retry = true), error?.data)
         }
 
         server.jsonRpc {
@@ -335,7 +332,6 @@ class LifecycleDSL {
             )
 
             assertEquals(null, error)
-            assertEquals(null, initializeError)
         }
 
         server.jsonRpc {
@@ -372,9 +368,7 @@ class LifecycleDSL {
 
             assertEquals(ErrorCodes.InternalError, error?.code)
             assertEquals("Lorem ipsum", error?.message)
-
-            assertEquals(InitializeError(retry = true), initializeError)
-            assertEquals(InitializeError.serializeToJson(initializeError!!), error?.data)
+            assertEquals(InitializeError(retry = true), error?.data)
         }
 
         server.jsonRpc {

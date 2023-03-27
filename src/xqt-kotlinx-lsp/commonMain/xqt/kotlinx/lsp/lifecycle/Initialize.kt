@@ -236,6 +236,29 @@ data class ServerCapabilities(
 }
 
 /**
+ * The error object of an initialize request.
+ *
+ * @param code a number indicating the error type that occurred
+ * @param message a string providing a short description of the error
+ * @param data the optional initialization error
+ *
+ * @since 1.0.0
+ */
+data class InitializeErrorObject(
+    override val code: ErrorCode,
+    override val message: String,
+    override val data: InitializeError? = null
+) : TypedErrorObject<InitializeError> {
+    companion object : TypedErrorObjectConverter<InitializeError> {
+        override fun convert(error: ErrorObject): TypedErrorObject<InitializeError> = InitializeErrorObject(
+            code = error.code,
+            message = error.message,
+            data = error.data?.let { InitializeError.deserialize(it) }
+        )
+    }
+}
+
+/**
  * The response of an initialize request.
  *
  * @param response The associated response message.
@@ -251,17 +274,11 @@ data class InitializeResponse(private val response: ResponseMessage) {
     }
 
     /**
-     * The result of a failed initialize request.
-     */
-    val initializeError: InitializeError? by lazy {
-        response.error?.data?.let { InitializeError.deserialize(it) }
-    }
-
-    /**
      * The error object in case a request fails.
      */
-    val error: ErrorObject?
-        get() = response.error
+    val error: TypedErrorObject<InitializeError>? by lazy {
+        response.error?.let { InitializeErrorObject.convert(it) }
+    }
 }
 
 /**
