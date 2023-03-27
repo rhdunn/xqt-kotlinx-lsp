@@ -6,9 +6,6 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
-import xqt.kotlinx.lsp.base.ResponseMessage
-import xqt.kotlinx.lsp.lifecycle.*
-import xqt.kotlinx.lsp.lifecycle.InitializeResponse
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.TextDocumentPosition
 import xqt.kotlinx.lsp.types.TextEdit
@@ -327,9 +324,8 @@ fun TextDocumentJsonRpcServer.completion(
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.COMPLETION,
     params = TextDocumentPosition.serializeToJson(params),
-    responseHandler = responseHandler?.let {
-        { response: ResponseMessage -> responseHandler(CompletionResponse.convert(response)) }
-    }
+    responseHandler = responseHandler,
+    responseObjectConverter = CompletionResponse
 )
 
 /**

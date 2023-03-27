@@ -315,9 +315,8 @@ fun JsonRpcServer.initialize(
 ): JsonIntOrString = sendRequest(
     method = LifecycleRequest.INITIALIZE,
     params = InitializeParams.serializeToJson(params),
-    responseHandler = responseHandler?.let {
-        { response: ResponseMessage -> responseHandler(InitializeResponse.convert(response)) }
-    }
+    responseHandler = responseHandler,
+    responseObjectConverter = InitializeResponse
 )
 
 /**

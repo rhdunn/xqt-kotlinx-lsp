@@ -1,9 +1,10 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.lifecycle
 
+import kotlinx.serialization.json.JsonElement
 import xqt.kotlinx.lsp.base.RequestMessage
-import xqt.kotlinx.lsp.base.ResponseMessage
 import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
+import xqt.kotlinx.rpc.json.protocol.TypedResponseObject
 import xqt.kotlinx.rpc.json.protocol.sendRequest
 import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
@@ -34,7 +35,9 @@ fun RequestMessage.shutdown(handler: () -> Unit) {
  *
  * @since 1.0.0
  */
-fun JsonRpcServer.shutdown(responseHandler: (ResponseMessage.() -> Unit)? = null): JsonIntOrString = sendRequest(
+fun JsonRpcServer.shutdown(
+    responseHandler: (TypedResponseObject<JsonElement?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = sendRequest(
     method = LifecycleRequest.SHUTDOWN,
     responseHandler = responseHandler
 )
