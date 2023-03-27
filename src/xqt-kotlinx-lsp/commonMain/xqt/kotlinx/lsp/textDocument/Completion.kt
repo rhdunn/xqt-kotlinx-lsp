@@ -260,27 +260,32 @@ value class CompletionItemKind(val kind: Int) {
 
 private val CompletionItemArray = JsonTypedArray(CompletionItem)
 
-
 /**
  * The response of a completion request.
  *
- * @param response The associated response message.
+ * @param id the request id
+ * @param result the result of the request
+ * @param error the error object in case the request failed
+ * @param jsonrpc the version of the JSON-RPC protocol
  *
  * @since 1.0.0
  */
-data class CompletionResponse(private val response: ResponseMessage) {
-    /**
-     * The result of a successful completion request.
-     */
-    val result: List<CompletionItem> by lazy {
-        response.result?.let { CompletionItemArray.deserialize(it) } ?: listOf()
+data class CompletionResponse(
+    override val id: JsonIntOrString?,
+    override val result: List<CompletionItem>,
+    override val error: TypedErrorObject<JsonElement>?,
+    override val jsonrpc: String
+) : TypedResponseObject<List<CompletionItem>, JsonElement> {
+    companion object : TypedResponseObjectConverter<List<CompletionItem>, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<List<CompletionItem>, JsonElement> {
+            return CompletionResponse(
+                id = response.id,
+                result = response.result?.let { CompletionItemArray.deserialize(it) } ?: listOf(),
+                error = response.error,
+                jsonrpc = response.jsonrpc
+            )
+        }
     }
-
-    /**
-     * The error object in case a request fails.
-     */
-    val error: ErrorObject?
-        get() = response.error
 }
 
 /**
@@ -318,12 +323,12 @@ fun TextDocumentRequest.completion(handler: TextDocumentPosition.() -> List<Comp
  */
 fun TextDocumentJsonRpcServer.completion(
     params: TextDocumentPosition,
-    responseHandler: (CompletionResponse.() -> Unit)? = null
+    responseHandler: (TypedResponseObject<List<CompletionItem>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.COMPLETION,
     params = TextDocumentPosition.serializeToJson(params),
     responseHandler = responseHandler?.let {
-        { response: ResponseMessage -> responseHandler(CompletionResponse(response)) }
+        { response: ResponseMessage -> responseHandler(CompletionResponse.convert(response)) }
     }
 )
 
@@ -345,7 +350,7 @@ fun TextDocumentJsonRpcServer.completion(
 fun TextDocumentJsonRpcServer.completion(
     uri: String,
     position: Position,
-    responseHandler: (CompletionResponse.() -> Unit)? = null
+    responseHandler: (TypedResponseObject<List<CompletionItem>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = completion(
     params = TextDocumentPosition(uri = uri, position = position),
     responseHandler = responseHandler
