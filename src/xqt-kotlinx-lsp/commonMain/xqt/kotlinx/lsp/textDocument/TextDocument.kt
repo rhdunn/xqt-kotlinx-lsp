@@ -28,6 +28,12 @@ value class TextDocumentRequest(val request: RequestMessage) {
          * item is selected in the user interface.
          */
         const val COMPLETION: String = "textDocument/completion"
+
+        /**
+         * The hover request is sent from the client to the server to request hover information at
+         * a given text document position.
+         */
+        const val HOVER: String = "textDocument/hover"
     }
 }
 

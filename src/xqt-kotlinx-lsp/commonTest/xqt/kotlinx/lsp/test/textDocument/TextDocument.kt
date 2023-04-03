@@ -8,6 +8,7 @@ import xqt.kotlinx.lsp.lifecycle.*
 import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.lsp.types.Position
+import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.lsp.types.TextDocumentPosition
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
@@ -590,6 +591,72 @@ class TextDocumentDSL {
         assertEquals(0, called, "The textDocument.completion DSL handler should not have been called.")
         client.jsonRpc {} // The "textDocument/completion" response is processed by the handler callback.
         assertEquals(1, called, "The textDocument.completion DSL handler should have been called.")
+    }
+
+    // endregion
+    // region textDocument/hover request
+
+    @Test
+    @DisplayName("supports textDocument/hover requests returning a Hover object")
+    fun supports_hover_requests_returning_a_hover_object() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/hover"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    )
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.hover {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/hover", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals(Position(2u, 6u), position)
+
+                    Hover(
+                        contents = listOf(),
+                        range = Range(position, position)
+                    )
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.hover DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonObjectOf(
+                    "contents" to jsonArrayOf(),
+                    "range" to jsonObjectOf(
+                        "start" to jsonObjectOf(
+                            "line" to JsonPrimitive(2),
+                            "character" to JsonPrimitive(6)
+                        ),
+                        "end" to jsonObjectOf(
+                            "line" to JsonPrimitive(2),
+                            "character" to JsonPrimitive(6)
+                        )
+                    )
+                )
+            ),
+            client.receive()
+        )
     }
 
     // endregion

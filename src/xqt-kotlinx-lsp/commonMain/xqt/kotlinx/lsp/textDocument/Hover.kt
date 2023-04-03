@@ -6,6 +6,9 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Range
+import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedObjectOrArray
@@ -82,5 +85,18 @@ data class MarkedString(
 
             else -> unsupportedKindType(json)
         }
+    }
+}
+
+/**
+ * The hover request is sent from the client to the server to request hover information at
+ * a given text document position.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentRequest.hover(handler: TextDocumentPosition.() -> Hover) {
+    if (request.method == TextDocumentRequest.HOVER) {
+        val result = request.params(TextDocumentPosition).handler()
+        request.sendResult(result, Hover)
     }
 }
