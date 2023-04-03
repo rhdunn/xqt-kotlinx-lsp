@@ -4,7 +4,6 @@ package xqt.kotlinx.lsp.test.textDocument
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.base.ErrorCodes
 import xqt.kotlinx.lsp.base.InternalError
-import xqt.kotlinx.lsp.lifecycle.*
 import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.lsp.types.Position
@@ -847,6 +846,59 @@ class TextDocumentDSL {
         assertEquals(0, called, "The textDocument.hover DSL handler should not have been called.")
         client.jsonRpc {} // The "textDocument/hover" response is processed by the handler callback.
         assertEquals(1, called, "The textDocument.hover DSL handler should have been called.")
+    }
+
+    // endregion
+    // region textDocument/signatureHelp request
+
+    @Test
+    @DisplayName("supports textDocument/signatureHelp requests returning a SignatureHelp object")
+    fun supports_signature_help_requests_returning_a_signature_help_object() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/signatureHelp"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    )
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.signatureHelp {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/signatureHelp", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals(Position(2u, 6u), position)
+
+                    SignatureHelp(signatures = listOf())
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.signatureHelp DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonObjectOf(
+                    "signatures" to jsonArrayOf()
+                )
+            ),
+            client.receive()
+        )
     }
 
     // endregion

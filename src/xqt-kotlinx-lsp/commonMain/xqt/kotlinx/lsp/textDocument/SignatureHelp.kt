@@ -5,6 +5,9 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
+import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
@@ -158,5 +161,18 @@ data class ParameterInformation(
                 documentation = json.getOptional("documentation", JsonString),
             )
         }
+    }
+}
+
+/**
+ * The signature help request is sent from the client to the server to request signature
+ * information at a given cursor position.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentRequest.signatureHelp(handler: TextDocumentPosition.() -> SignatureHelp) {
+    if (request.method == TextDocumentRequest.SIGNATURE_HELP) {
+        val result = request.params(TextDocumentPosition).handler()
+        request.sendResult(result, SignatureHelp)
     }
 }

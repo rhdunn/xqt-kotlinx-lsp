@@ -34,6 +34,12 @@ value class TextDocumentRequest(val request: RequestMessage) {
          * a given text document position.
          */
         const val HOVER: String = "textDocument/hover"
+
+        /**
+         * The signature help request is sent from the client to the server to request signature
+         * information at a given cursor position.
+         */
+        const val SIGNATURE_HELP: String = "textDocument/signatureHelp"
     }
 }
 
