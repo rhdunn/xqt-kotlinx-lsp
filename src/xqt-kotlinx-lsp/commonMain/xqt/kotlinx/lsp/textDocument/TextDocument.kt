@@ -30,6 +30,12 @@ value class TextDocumentRequest(val request: RequestMessage) {
         const val COMPLETION: String = "textDocument/completion"
 
         /**
+         * The goto definition request is sent from the client to the server to resolve the definition
+         * location of a symbol at a given text document position.
+         */
+        const val DEFINITION: String = "textDocument/definition"
+
+        /**
          * The hover request is sent from the client to the server to request hover information at
          * a given text document position.
          */
