@@ -5,10 +5,11 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
+import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.TextDocumentPosition
-import xqt.kotlinx.rpc.json.protocol.params
-import xqt.kotlinx.rpc.json.protocol.sendResult
+import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
@@ -165,6 +166,34 @@ data class ParameterInformation(
 }
 
 /**
+ * The response of a signature help request.
+ *
+ * @param id the request id
+ * @param result the result of the request
+ * @param error the error object in case the request failed
+ * @param jsonrpc the version of the JSON-RPC protocol
+ *
+ * @since 1.0.0
+ */
+data class SignatureHelpResponse(
+    override val id: JsonIntOrString?,
+    override val result: SignatureHelp?,
+    override val error: TypedErrorObject<JsonElement>?,
+    override val jsonrpc: String
+) : TypedResponseObject<SignatureHelp?, JsonElement> {
+    companion object : TypedResponseObjectConverter<SignatureHelp?, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<SignatureHelp?, JsonElement> {
+            return SignatureHelpResponse(
+                id = response.id,
+                result = response.result?.let { SignatureHelp.deserialize(it) },
+                error = response.error,
+                jsonrpc = response.jsonrpc
+            )
+        }
+    }
+}
+
+/**
  * The signature help request is sent from the client to the server to request signature
  * information at a given cursor position.
  *
@@ -176,3 +205,43 @@ fun TextDocumentRequest.signatureHelp(handler: TextDocumentPosition.() -> Signat
         request.sendResult(result, SignatureHelp)
     }
 }
+
+/**
+ * The signature help request is sent from the client to the server to request signature
+ * information at a given cursor position.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.signatureHelp(
+    params: TextDocumentPosition,
+    responseHandler: (TypedResponseObject<SignatureHelp?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = TextDocumentRequest.SIGNATURE_HELP,
+    params = TextDocumentPosition.serializeToJson(params),
+    responseHandler = responseHandler,
+    responseObjectConverter = SignatureHelpResponse
+)
+
+/**
+ * The signature help request is sent from the client to the server to request signature
+ * information at a given cursor position.
+ *
+ * @param uri the text document's URI
+ * @param position the position inside the text document
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.signatureHelp(
+    uri: String,
+    position: Position,
+    responseHandler: (TypedResponseObject<SignatureHelp?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = signatureHelp(
+    params = TextDocumentPosition(uri = uri, position = position),
+    responseHandler = responseHandler
+)
