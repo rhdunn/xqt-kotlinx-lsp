@@ -6,6 +6,9 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Range
+import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import kotlin.jvm.JvmInline
@@ -78,5 +81,18 @@ value class DocumentHighlightKind(val kind: Int) {
          * Write-access of a symbol, like writing to a variable.
          */
         val Write: DocumentHighlightKind = DocumentHighlightKind(3)
+    }
+}
+
+/**
+ * The document highlight request is sent from the client to the server to resolve the document
+ * highlights for a given text document position.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentRequest.documentHighlight(handler: TextDocumentPosition.() -> DocumentHighlight) {
+    if (request.method == TextDocumentRequest.DOCUMENT_HIGHLIGHT) {
+        val result = request.params(TextDocumentPosition).handler()
+        request.sendResult(result, DocumentHighlight)
     }
 }

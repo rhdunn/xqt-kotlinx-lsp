@@ -36,6 +36,12 @@ value class TextDocumentRequest(val request: RequestMessage) {
         const val DEFINITION: String = "textDocument/definition"
 
         /**
+         * The document highlight request is sent from the client to the server to resolve the document
+         * highlights for a given text document position.
+         */
+        const val DOCUMENT_HIGHLIGHT: String = "textDocument/documentHighlight"
+
+        /**
          * The hover request is sent from the client to the server to request hover information at
          * a given text document position.
          */
