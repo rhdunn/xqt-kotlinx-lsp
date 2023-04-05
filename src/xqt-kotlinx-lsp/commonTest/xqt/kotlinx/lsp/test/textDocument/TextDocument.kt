@@ -1495,5 +1495,205 @@ class TextDocumentDSL {
         )
     }
 
+    @Test
+    @DisplayName("supports sending textDocument/references requests using ReferencePrams")
+    fun supports_sending_references_requests_using_reference_params() = testJsonRpc {
+        val id = client.textDocument.references(
+            params = ReferencesParams(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u),
+                context = ReferenceContext(
+                    includeDeclaration = false
+                )
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/references"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    ),
+                    "context" to jsonObjectOf(
+                        "includeDeclaration" to JsonPrimitive(false)
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/references request callback receiving a Location list using params object")
+    fun supports_references_request_callback_receiving_a_location_list_response_from_params_object() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.references(
+            params = ReferencesParams(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u),
+                context = ReferenceContext(
+                    includeDeclaration = false
+                )
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.references {
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.references DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/references" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.references DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/references request callback receiving ErrorObject using params object")
+    fun supports_references_request_callback_receiving_error_object_from_params_object() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.references(
+            params = ReferencesParams(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u),
+                context = ReferenceContext(
+                    includeDeclaration = false
+                )
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.references {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.references DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/references" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.references DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/references requests using function parameters")
+    fun supports_sending_references_requests_using_function_parameters() = testJsonRpc {
+        val id = client.textDocument.references(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u),
+            context = ReferenceContext(
+                includeDeclaration = false
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/references"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    ),
+                    "context" to jsonObjectOf(
+                        "includeDeclaration" to JsonPrimitive(false)
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/references request callback receiving ReferencesResponse")
+    fun supports_references_request_callback_receiving_references_response() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.references(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u),
+            context = ReferenceContext(
+                includeDeclaration = false
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.references {
+                    GoTo()
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.references DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/references" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.references DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/references request callback receiving ErrorObject")
+    fun supports_references_request_callback_receiving_error_object() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.references(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u),
+            context = ReferenceContext(
+                includeDeclaration = false
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.references {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.references DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/references" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.references DSL handler should have been called.")
+    }
+
     // endregion
 }
