@@ -1263,5 +1263,181 @@ class TextDocumentDSL {
         )
     }
 
+    @Test
+    @DisplayName("supports sending textDocument/definition requests using TextDocumentPosition")
+    fun supports_sending_definition_requests_using_text_document_position() = testJsonRpc {
+        val id = client.textDocument.definition(
+            params = TextDocumentPosition(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u)
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/definition"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/definition request callback receiving Hover using params object")
+    fun supports_definition_request_callback_receiving_hover_response_from_params_object() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.definition(
+            params = TextDocumentPosition(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u)
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.definition {
+                    GoTo()
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.definition DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/definition" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.definition DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/definition request callback receiving ErrorObject using params object")
+    fun supports_definition_request_callback_receiving_error_object_from_params_object() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.definition(
+            params = TextDocumentPosition(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u)
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.definition {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.definition DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/definition" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.definition DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/definition requests using function parameters")
+    fun supports_sending_definition_requests_using_function_parameters() = testJsonRpc {
+        val id = client.textDocument.definition(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u)
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/definition"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/definition request callback receiving HoverResponse")
+    fun supports_definition_request_callback_receiving_hover_response() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.definition(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u)
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.definition {
+                    GoTo()
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.definition DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/definition" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.definition DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/definition request callback receiving ErrorObject")
+    fun supports_definition_request_callback_receiving_error_object() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.definition(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u)
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.definition {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.definition DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/definition" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.definition DSL handler should have been called.")
+    }
+
     // endregion
 }
