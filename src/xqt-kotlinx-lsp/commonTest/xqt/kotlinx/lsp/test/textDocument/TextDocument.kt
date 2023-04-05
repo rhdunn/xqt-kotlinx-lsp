@@ -1108,7 +1108,7 @@ class TextDocumentDSL {
                     assertEquals("file:///home/lorem/ipsum.py", uri)
                     assertEquals(Position(2u, 6u), position)
 
-                    listOf()
+                    GoTo()
                 }
             }
         }
@@ -1156,7 +1156,7 @@ class TextDocumentDSL {
                     assertEquals("file:///home/lorem/ipsum.py", uri)
                     assertEquals(Position(2u, 6u), position)
 
-                    listOf(Location(uri = uri, range = Range(start = position, end = position)))
+                    GoTo(Location(uri = uri, range = Range(start = position, end = position)))
                 }
             }
         }
@@ -1216,7 +1216,7 @@ class TextDocumentDSL {
                     assertEquals("file:///home/lorem/ipsum.py", uri)
                     assertEquals(Position(2u, 6u), position)
 
-                    listOf(
+                    GoTo(
                         Location(uri = uri, range = Range(start = position, end = position)),
                         Location(uri = uri, range = Range(start = position, end = position))
                     )
