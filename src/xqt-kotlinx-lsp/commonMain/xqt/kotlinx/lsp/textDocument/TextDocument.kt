@@ -42,6 +42,12 @@ value class TextDocumentRequest(val request: RequestMessage) {
         const val HOVER: String = "textDocument/hover"
 
         /**
+         * The references request is sent from the client to the server to resolve project-wide
+         * references for the symbol denoted by the given text document position.
+         */
+        const val REFERENCES: String = "textDocument/references"
+
+        /**
          * The signature help request is sent from the client to the server to request signature
          * information at a given cursor position.
          */
