@@ -6,9 +6,14 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Location
+import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import kotlin.jvm.JvmInline
 
 /**
@@ -163,5 +168,20 @@ value class SymbolKind(val kind: Int) {
          * An array.
          */
         val Array: SymbolKind = SymbolKind(18)
+    }
+}
+
+private val SymbolInformationArray = JsonTypedArray(SymbolInformation)
+
+/**
+ * The document symbol request is sent from the client to the server to list all symbols
+ * found in a given text document.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentRequest.documentSymbol(handler: TextDocumentIdentifier.() -> List<SymbolInformation>) {
+    if (request.method == TextDocumentRequest.DOCUMENT_SYMBOL) {
+        val result = request.params(TextDocumentIdentifier).handler()
+        request.sendResult(result, SymbolInformationArray)
     }
 }

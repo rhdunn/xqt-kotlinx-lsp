@@ -1942,4 +1942,50 @@ class TextDocumentDSL {
     }
 
     // endregion
+    // region textDocument/documentSymbol request
+
+    @Test
+    @DisplayName("supports textDocument/documentSymbol requests")
+    fun supports_document_symbol_requests() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/documentSymbol"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.documentSymbol {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/documentSymbol", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", uri)
+
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.documentSymbol DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonArrayOf()
+            ),
+            client.receive()
+        )
+    }
+
+    // endregion
 }
