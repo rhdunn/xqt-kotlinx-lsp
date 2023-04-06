@@ -5,12 +5,13 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentPosition
-import xqt.kotlinx.rpc.json.protocol.params
-import xqt.kotlinx.rpc.json.protocol.sendResult
+import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import kotlin.jvm.JvmInline
 
 /**
@@ -85,6 +86,34 @@ value class DocumentHighlightKind(val kind: Int) {
 }
 
 /**
+ * The response of a document highlight request.
+ *
+ * @param id the request id
+ * @param result the result of the request
+ * @param error the error object in case the request failed
+ * @param jsonrpc the version of the JSON-RPC protocol
+ *
+ * @since 1.0.0
+ */
+data class DocumentHighlightResponse(
+    override val id: JsonIntOrString?,
+    override val result: DocumentHighlight?,
+    override val error: TypedErrorObject<JsonElement>?,
+    override val jsonrpc: String
+) : TypedResponseObject<DocumentHighlight?, JsonElement> {
+    companion object : TypedResponseObjectConverter<DocumentHighlight?, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<DocumentHighlight?, JsonElement> {
+            return DocumentHighlightResponse(
+                id = response.id,
+                result = response.result?.let { DocumentHighlight.deserialize(it) },
+                error = response.error,
+                jsonrpc = response.jsonrpc
+            )
+        }
+    }
+}
+
+/**
  * The document highlight request is sent from the client to the server to resolve the document
  * highlights for a given text document position.
  *
@@ -96,3 +125,43 @@ fun TextDocumentRequest.documentHighlight(handler: TextDocumentPosition.() -> Do
         request.sendResult(result, DocumentHighlight)
     }
 }
+
+/**
+ * The document highlight request is sent from the client to the server to resolve the document
+ * highlights for a given text document position.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.documentHighlight(
+    params: TextDocumentPosition,
+    responseHandler: (TypedResponseObject<DocumentHighlight?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = TextDocumentRequest.DOCUMENT_HIGHLIGHT,
+    params = TextDocumentPosition.serializeToJson(params),
+    responseHandler = responseHandler,
+    responseObjectConverter = DocumentHighlightResponse
+)
+
+/**
+ * The document highlight request is sent from the client to the server to resolve the document
+ * highlights for a given text document position.
+ *
+ * @param uri the text document's URI
+ * @param position the position inside the text document
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.documentHighlight(
+    uri: String,
+    position: Position,
+    responseHandler: (TypedResponseObject<DocumentHighlight?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = documentHighlight(
+    params = TextDocumentPosition(uri = uri, position = position),
+    responseHandler = responseHandler
+)

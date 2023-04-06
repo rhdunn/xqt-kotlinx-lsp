@@ -1759,5 +1759,187 @@ class TextDocumentDSL {
         )
     }
 
+    @Test
+    @DisplayName("supports sending textDocument/documentHighlight requests using parameter objects")
+    fun supports_sending_document_highlight_requests_using_parameter_objects() = testJsonRpc {
+        val id = client.textDocument.documentHighlight(
+            params = TextDocumentPosition(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u)
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/documentHighlight"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/documentHighlight request callback receiving a result using parameter objects")
+    fun supports_document_highlight_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.documentHighlight(
+            params = TextDocumentPosition(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u)
+            )
+        ) {
+            ++called
+
+            assertEquals(Position(2u, 6u), result?.range?.start)
+            assertEquals(Position(2u, 6u), result?.range?.end)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.documentHighlight {
+                    DocumentHighlight(
+                        range = Range(start = position, end = position)
+                    )
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.documentHighlight DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/documentHighlight" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.documentHighlight DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/documentHighlight request callback receiving an error using parameter objects")
+    fun supports_document_highlight_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.documentHighlight(
+            params = TextDocumentPosition(
+                uri = "file:///home/lorem/ipsum.py",
+                position = Position(2u, 6u)
+            )
+        ) {
+            ++called
+
+            assertEquals(null, result)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.documentHighlight {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.documentHighlight DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/documentHighlight" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.documentHighlight DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/documentHighlight requests using function parameters")
+    fun supports_sending_document_highlight_requests_using_function_parameters() = testJsonRpc {
+        val id = client.textDocument.documentHighlight(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u)
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/documentHighlight"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(2),
+                        "character" to JsonPrimitive(6)
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/documentHighlight request callback receiving a result using function parameters")
+    fun supports_document_highlight_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.documentHighlight(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u)
+        ) {
+            ++called
+
+            assertEquals(Position(2u, 6u), result?.range?.start)
+            assertEquals(Position(2u, 6u), result?.range?.end)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.documentHighlight {
+                    DocumentHighlight(
+                        range = Range(start = position, end = position)
+                    )
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.documentHighlight DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/documentHighlight" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.documentHighlight DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/documentHighlight request callback receiving an error using function parameters")
+    fun supports_document_highlight_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.documentHighlight(
+            uri = "file:///home/lorem/ipsum.py",
+            position = Position(2u, 6u)
+        ) {
+            ++called
+
+            assertEquals(null, result)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.documentHighlight {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.documentHighlight DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/documentHighlight" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.documentHighlight DSL handler should have been called.")
+    }
+
     // endregion
 }
