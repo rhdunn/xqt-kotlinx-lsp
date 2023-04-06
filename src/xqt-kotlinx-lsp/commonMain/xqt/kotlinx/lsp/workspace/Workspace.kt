@@ -19,6 +19,11 @@ import kotlin.jvm.JvmInline
 @JvmInline
 value class WorkspaceRequest(val request: RequestMessage) {
     companion object {
+        /**
+         * The workspace symbol request is sent from the client to the server to list project-wide
+         * symbols matching the query string.
+         */
+        const val SYMBOL: String = "workspace/symbol"
     }
 }
 

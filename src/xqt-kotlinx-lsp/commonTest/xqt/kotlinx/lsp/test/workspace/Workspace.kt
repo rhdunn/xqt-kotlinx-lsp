@@ -6,8 +6,10 @@ import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.workspace.*
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
+import xqt.kotlinx.rpc.json.protocol.request
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -154,6 +156,52 @@ class WorkspaceDSL {
                 "params" to jsonObjectOf(
                     "changes" to jsonArrayOf()
                 )
+            ),
+            client.receive()
+        )
+    }
+
+    // endregion
+    // region textDocument/documentSymbol request
+
+    @Test
+    @DisplayName("supports workspace/symbol requests")
+    fun supports_symbol_requests() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("workspace/symbol"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "query" to JsonPrimitive("lorem")
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                workspace.symbol {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("workspace/symbol", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("lorem", query)
+
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(true, called, "The workspace.symbol DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonArrayOf()
             ),
             client.receive()
         )
