@@ -7,11 +7,10 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Location
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
-import xqt.kotlinx.lsp.types.TextDocumentPosition
-import xqt.kotlinx.rpc.json.protocol.params
-import xqt.kotlinx.rpc.json.protocol.sendResult
+import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import kotlin.jvm.JvmInline
@@ -174,6 +173,34 @@ value class SymbolKind(val kind: Int) {
 private val SymbolInformationArray = JsonTypedArray(SymbolInformation)
 
 /**
+ * The response of a document symbol information request.
+ *
+ * @param id the request id
+ * @param result the result of the request
+ * @param error the error object in case the request failed
+ * @param jsonrpc the version of the JSON-RPC protocol
+ *
+ * @since 1.0.0
+ */
+data class SymbolInformationResponse(
+    override val id: JsonIntOrString?,
+    override val result: List<SymbolInformation>,
+    override val error: TypedErrorObject<JsonElement>?,
+    override val jsonrpc: String
+) : TypedResponseObject<List<SymbolInformation>, JsonElement> {
+    companion object : TypedResponseObjectConverter<List<SymbolInformation>, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<List<SymbolInformation>, JsonElement> {
+            return SymbolInformationResponse(
+                id = response.id,
+                result = response.result?.let { SymbolInformationArray.deserialize(it) } ?: listOf(),
+                error = response.error,
+                jsonrpc = response.jsonrpc
+            )
+        }
+    }
+}
+
+/**
  * The document symbol request is sent from the client to the server to list all symbols
  * found in a given text document.
  *
@@ -185,3 +212,41 @@ fun TextDocumentRequest.documentSymbol(handler: TextDocumentIdentifier.() -> Lis
         request.sendResult(result, SymbolInformationArray)
     }
 }
+
+/**
+ * The document symbol request is sent from the client to the server to list all symbols
+ * found in a given text document.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.documentSymbol(
+    params: TextDocumentIdentifier,
+    responseHandler: (TypedResponseObject<List<SymbolInformation>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = TextDocumentRequest.DOCUMENT_SYMBOL,
+    params = TextDocumentIdentifier.serializeToJson(params),
+    responseHandler = responseHandler,
+    responseObjectConverter = SymbolInformationResponse
+)
+
+/**
+ * The document symbol request is sent from the client to the server to list all symbols
+ * found in a given text document.
+ *
+ * @param uri the text document's URI
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.documentSymbol(
+    uri: String,
+    responseHandler: (TypedResponseObject<List<SymbolInformation>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = documentSymbol(
+    params = TextDocumentIdentifier(uri = uri),
+    responseHandler = responseHandler
+)
