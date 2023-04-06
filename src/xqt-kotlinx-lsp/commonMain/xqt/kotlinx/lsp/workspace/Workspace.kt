@@ -1,9 +1,26 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.workspace
 
+import xqt.kotlinx.lsp.base.RequestMessage
 import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
 import xqt.kotlinx.rpc.json.protocol.Notification
 import kotlin.jvm.JvmInline
+
+/**
+ * A request in the `workspace/` namespace.
+ *
+ * Note that this does not check the namespace. Therefore, method DSLs need to
+ * check the fully qualified method name.
+ *
+ * @param request the underlying request message
+ *
+ * @since 1.0.0
+ */
+@JvmInline
+value class WorkspaceRequest(val request: RequestMessage) {
+    companion object {
+    }
+}
 
 /**
  * A notification in the `workspace/` namespace.
@@ -43,6 +60,17 @@ value class WorkspaceNotification(val notification: Notification) {
  */
 @JvmInline
 value class WorkspaceJsonRpcServer(val server: JsonRpcServer)
+
+/**
+ * A request in the `workspace/` namespace.
+ *
+ * Note that this does not check the namespace. Therefore, method DSLs need to
+ * check the fully qualified method name.
+ *
+ * @since 1.0.0
+ */
+val RequestMessage.workspace: WorkspaceRequest
+    get() = WorkspaceRequest(this)
 
 /**
  * A notification in the `workspace/` namespace.
