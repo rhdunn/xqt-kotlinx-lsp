@@ -206,12 +206,14 @@ data class SymbolInformationResponse(
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.documentSymbol(handler: TextDocumentIdentifier.() -> List<SymbolInformation>) {
-    if (request.method == TextDocumentRequest.DOCUMENT_SYMBOL) {
-        val result = request.params(TextDocumentIdentifier).handler()
-        request.sendResult(result, SymbolInformationArray)
-    }
-}
+fun TextDocumentRequest.documentSymbol(
+    handler: TextDocumentIdentifier.() -> List<SymbolInformation>
+): Unit = request.method(
+    method = TextDocumentRequest.DOCUMENT_SYMBOL,
+    handler = handler,
+    paramsSerializer = TextDocumentIdentifier,
+    resultSerializer = SymbolInformationArray
+)
 
 /**
  * The document symbol request is sent from the client to the server to list all symbols

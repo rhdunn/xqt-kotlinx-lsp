@@ -135,12 +135,14 @@ data class FormattingResponse(
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.formatting(handler: DocumentFormattingParams.() -> List<TextEdit>) {
-    if (request.method == TextDocumentRequest.FORMATTING) {
-        val result = request.params(DocumentFormattingParams).handler()
-        request.sendResult(result, TextEditArray)
-    }
-}
+fun TextDocumentRequest.formatting(
+    handler: DocumentFormattingParams.() -> List<TextEdit>
+): Unit = request.method(
+    method = TextDocumentRequest.FORMATTING,
+    handler = handler,
+    paramsSerializer = DocumentFormattingParams,
+    resultSerializer = TextEditArray
+)
 
 /**
  * The document formatting request is sent from the server to the client to format a whole

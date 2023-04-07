@@ -119,12 +119,14 @@ data class CommandResponse(
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.codeAction(handler: CodeActionParams.() -> List<Command>) {
-    if (request.method == TextDocumentRequest.CODE_ACTION) {
-        val result = request.params(CodeActionParams).handler()
-        request.sendResult(result, CommandArray)
-    }
-}
+fun TextDocumentRequest.codeAction(
+    handler: CodeActionParams.() -> List<Command>
+): Unit = request.method(
+    method = TextDocumentRequest.CODE_ACTION,
+    handler = handler,
+    paramsSerializer = CodeActionParams,
+    resultSerializer = CommandArray
+)
 
 /**
  * The code action request is sent from the client to the server to compute commands for

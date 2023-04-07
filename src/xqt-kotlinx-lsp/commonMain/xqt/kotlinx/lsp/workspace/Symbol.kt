@@ -7,9 +7,8 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.textDocument.SymbolInformation
 import xqt.kotlinx.lsp.textDocument.SymbolInformationResponse
 import xqt.kotlinx.rpc.json.protocol.TypedResponseObject
-import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendRequest
-import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
 import xqt.kotlinx.rpc.json.serialization.put
@@ -51,12 +50,14 @@ private val SymbolInformationArray = JsonTypedArray(SymbolInformation)
  *
  * @since 1.0.0
  */
-fun WorkspaceRequest.symbol(handler: WorkspaceSymbolParams.() -> List<SymbolInformation>) {
-    if (request.method == WorkspaceRequest.SYMBOL) {
-        val result = request.params(WorkspaceSymbolParams).handler()
-        request.sendResult(result, SymbolInformationArray)
-    }
-}
+fun WorkspaceRequest.symbol(
+    handler: WorkspaceSymbolParams.() -> List<SymbolInformation>
+): Unit = request.method(
+    method = WorkspaceRequest.SYMBOL,
+    handler = handler,
+    paramsSerializer = WorkspaceSymbolParams,
+    resultSerializer = SymbolInformationArray
+)
 
 /**
  * The workspace symbol request is sent from the client to the server to list project-wide

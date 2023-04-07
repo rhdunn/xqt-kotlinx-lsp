@@ -296,12 +296,14 @@ data class InitializeResponse(
  *
  * @since 1.0.0
  */
-fun RequestMessage.initialize(handler: InitializeParams.() -> InitializeResult) {
-    if (method == LifecycleRequest.INITIALIZE) {
-        val result = params(InitializeParams).handler()
-        sendResult(result, InitializeResult)
-    }
-}
+fun RequestMessage.initialize(
+    handler: InitializeParams.() -> InitializeResult
+): Unit = method(
+    method = LifecycleRequest.INITIALIZE,
+    handler = handler,
+    paramsSerializer = InitializeParams,
+    resultSerializer = InitializeResult
+)
 
 /**
  * Send an initialize request to the server.

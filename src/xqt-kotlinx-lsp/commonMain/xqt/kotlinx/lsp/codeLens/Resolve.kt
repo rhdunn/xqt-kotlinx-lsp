@@ -40,12 +40,14 @@ data class ResolveResponse(
  *
  * @since 1.0.0
  */
-fun CodeLensRequest.resolve(handler: CodeLens.() -> CodeLens) {
-    if (request.method == CodeLensRequest.RESOLVE) {
-        val result = request.params(CodeLens).handler()
-        request.sendResult(result, CodeLens)
-    }
-}
+fun CodeLensRequest.resolve(
+    handler: CodeLens.() -> CodeLens
+): Unit = request.method(
+    method = CodeLensRequest.RESOLVE,
+    handler = handler,
+    paramsSerializer = CodeLens,
+    resultSerializer = CodeLens
+)
 
 /**
  * The code lens resolve request is sent from the client to the server to resolve the

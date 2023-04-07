@@ -199,12 +199,14 @@ data class SignatureHelpResponse(
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.signatureHelp(handler: TextDocumentPosition.() -> SignatureHelp) {
-    if (request.method == TextDocumentRequest.SIGNATURE_HELP) {
-        val result = request.params(TextDocumentPosition).handler()
-        request.sendResult(result, SignatureHelp)
-    }
-}
+fun TextDocumentRequest.signatureHelp(
+    handler: TextDocumentPosition.() -> SignatureHelp
+): Unit = request.method(
+    method = TextDocumentRequest.SIGNATURE_HELP,
+    handler = handler,
+    paramsSerializer = TextDocumentPosition,
+    resultSerializer = SignatureHelp
+)
 
 /**
  * The signature help request is sent from the client to the server to request signature

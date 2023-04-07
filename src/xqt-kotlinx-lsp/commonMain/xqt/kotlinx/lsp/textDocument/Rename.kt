@@ -91,12 +91,14 @@ data class RenameResponse(
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.rename(handler: RenameParams.() -> WorkspaceEdit) {
-    if (request.method == TextDocumentRequest.RENAME) {
-        val result = request.params(RenameParams).handler()
-        request.sendResult(result, WorkspaceEdit)
-    }
-}
+fun TextDocumentRequest.rename(
+    handler: RenameParams.() -> WorkspaceEdit
+): Unit = request.method(
+    method = TextDocumentRequest.RENAME,
+    handler = handler,
+    paramsSerializer = RenameParams,
+    resultSerializer = WorkspaceEdit
+)
 
 /**
  * The rename request is sent from the client to the server to do a workspace wide rename

@@ -123,12 +123,14 @@ data class HoverResponse(
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.hover(handler: TextDocumentPosition.() -> Hover) {
-    if (request.method == TextDocumentRequest.HOVER) {
-        val result = request.params(TextDocumentPosition).handler()
-        request.sendResult(result, Hover)
-    }
-}
+fun TextDocumentRequest.hover(
+    handler: TextDocumentPosition.() -> Hover
+): Unit = request.method(
+    method = TextDocumentRequest.HOVER,
+    handler = handler,
+    paramsSerializer = TextDocumentPosition,
+    resultSerializer = Hover
+)
 
 /**
  * The hover request is sent from the client to the server to request hover information at

@@ -8,9 +8,8 @@ import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.lsp.types.TextEdit
 import xqt.kotlinx.rpc.json.protocol.TypedResponseObject
-import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendRequest
-import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
 import xqt.kotlinx.rpc.json.serialization.put
@@ -65,12 +64,14 @@ private val TextEditArray = JsonTypedArray(TextEdit)
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.rangeFormatting(handler: DocumentRangeFormattingParams.() -> List<TextEdit>) {
-    if (request.method == TextDocumentRequest.RANGE_FORMATTING) {
-        val result = request.params(DocumentRangeFormattingParams).handler()
-        request.sendResult(result, TextEditArray)
-    }
-}
+fun TextDocumentRequest.rangeFormatting(
+    handler: DocumentRangeFormattingParams.() -> List<TextEdit>
+): Unit = request.method(
+    method = TextDocumentRequest.RANGE_FORMATTING,
+    handler = handler,
+    paramsSerializer = DocumentRangeFormattingParams,
+    resultSerializer = TextEditArray
+)
 
 /**
  * The document range formatting request is sent from the client to the server to format a

@@ -5,8 +5,8 @@ import kotlinx.serialization.json.JsonElement
 import xqt.kotlinx.lsp.base.RequestMessage
 import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
 import xqt.kotlinx.rpc.json.protocol.TypedResponseObject
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendRequest
-import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 
 /**
@@ -20,12 +20,10 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
  *
  * @since 1.0.0
  */
-fun RequestMessage.shutdown(handler: () -> Unit) {
-    if (method == LifecycleRequest.SHUTDOWN) {
-        handler()
-        sendResult(null)
-    }
-}
+fun RequestMessage.shutdown(handler: () -> Unit): Unit = method(
+    method = LifecycleRequest.SHUTDOWN,
+    handler = handler
+)
 
 /**
  * Send a shutdown request to the server.

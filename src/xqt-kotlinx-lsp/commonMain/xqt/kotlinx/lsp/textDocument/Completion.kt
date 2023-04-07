@@ -297,12 +297,14 @@ data class CompletionResponse(
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.completion(handler: TextDocumentPosition.() -> List<CompletionItem>) {
-    if (request.method == TextDocumentRequest.COMPLETION) {
-        val result = request.params(TextDocumentPosition).handler()
-        request.sendResult(result, CompletionItemArray)
-    }
-}
+fun TextDocumentRequest.completion(
+    handler: TextDocumentPosition.() -> List<CompletionItem>
+): Unit = request.method(
+    method = TextDocumentRequest.COMPLETION,
+    handler = handler,
+    paramsSerializer = TextDocumentPosition,
+    resultSerializer = CompletionItemArray
+)
 
 /**
  * The completion request is sent from the client to the server to compute completion items

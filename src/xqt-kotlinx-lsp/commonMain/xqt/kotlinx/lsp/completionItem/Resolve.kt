@@ -40,12 +40,14 @@ data class ResolveResponse(
  *
  * @since 1.0.0
  */
-fun CompletionItemRequest.resolve(handler: CompletionItem.() -> CompletionItem) {
-    if (request.method == CompletionItemRequest.RESOLVE) {
-        val result = request.params(CompletionItem).handler()
-        request.sendResult(result, CompletionItem)
-    }
-}
+fun CompletionItemRequest.resolve(
+    handler: CompletionItem.() -> CompletionItem
+): Unit = request.method(
+    method = CompletionItemRequest.RESOLVE,
+    handler = handler,
+    paramsSerializer = CompletionItem,
+    resultSerializer = CompletionItem
+)
 
 /**
  * The request is sent from the client to the server to resolve additional information for

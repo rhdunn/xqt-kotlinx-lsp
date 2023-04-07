@@ -119,12 +119,14 @@ data class DocumentHighlightResponse(
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.documentHighlight(handler: TextDocumentPosition.() -> DocumentHighlight) {
-    if (request.method == TextDocumentRequest.DOCUMENT_HIGHLIGHT) {
-        val result = request.params(TextDocumentPosition).handler()
-        request.sendResult(result, DocumentHighlight)
-    }
-}
+fun TextDocumentRequest.documentHighlight(
+    handler: TextDocumentPosition.() -> DocumentHighlight
+): Unit = request.method(
+    method = TextDocumentRequest.DOCUMENT_HIGHLIGHT,
+    handler = handler,
+    paramsSerializer = TextDocumentPosition,
+    resultSerializer = DocumentHighlight
+)
 
 /**
  * The document highlight request is sent from the client to the server to resolve the document

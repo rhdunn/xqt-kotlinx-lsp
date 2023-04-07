@@ -89,12 +89,14 @@ data class GoToResponse(
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.definition(handler: TextDocumentPosition.() -> GoTo) {
-    if (request.method == TextDocumentRequest.DEFINITION) {
-        val result = request.params(TextDocumentPosition).handler()
-        request.sendResult(result, GoTo)
-    }
-}
+fun TextDocumentRequest.definition(
+    handler: TextDocumentPosition.() -> GoTo
+): Unit = request.method(
+    method = TextDocumentRequest.DEFINITION,
+    handler = handler,
+    paramsSerializer = TextDocumentPosition,
+    resultSerializer = GoTo
+)
 
 /**
  * The goto definition request is sent from the client to the server to resolve the definition

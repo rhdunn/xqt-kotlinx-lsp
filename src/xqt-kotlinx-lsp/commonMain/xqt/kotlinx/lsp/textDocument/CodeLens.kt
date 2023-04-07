@@ -123,12 +123,14 @@ data class CodeLensResponse(
  *
  * @since 1.0.0
  */
-fun TextDocumentRequest.codeLens(handler: TextDocumentIdentifier.() -> List<CodeLens>) {
-    if (request.method == TextDocumentRequest.CODE_LENS) {
-        val result = request.params(TextDocumentIdentifier).handler()
-        request.sendResult(result, CodeLensArray)
-    }
-}
+fun TextDocumentRequest.codeLens(
+    handler: TextDocumentIdentifier.() -> List<CodeLens>
+): Unit = request.method(
+    method = TextDocumentRequest.CODE_LENS,
+    handler = handler,
+    paramsSerializer = TextDocumentIdentifier,
+    resultSerializer = CodeLensArray
+)
 
 /**
  * The code lens request is sent from the client to the server to compute code lenses for
