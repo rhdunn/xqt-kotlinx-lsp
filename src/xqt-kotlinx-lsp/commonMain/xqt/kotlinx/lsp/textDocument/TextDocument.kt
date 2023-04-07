@@ -75,6 +75,12 @@ value class TextDocumentRequest(val request: RequestMessage) {
         const val HOVER: String = "textDocument/hover"
 
         /**
+         * The document range formatting request is sent from the client to the server to format a
+         * given range in a document.
+         */
+        const val RANGE_FORMATTING: String = "textDocument/rangeFormatting"
+
+        /**
          * The references request is sent from the client to the server to resolve project-wide
          * references for the symbol denoted by the given text document position.
          */
