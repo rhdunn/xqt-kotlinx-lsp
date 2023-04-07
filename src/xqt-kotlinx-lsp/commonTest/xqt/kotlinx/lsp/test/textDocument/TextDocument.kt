@@ -2507,5 +2507,167 @@ class TextDocumentDSL {
         )
     }
 
+    @Test
+    @DisplayName("supports sending textDocument/codeLens requests using parameter objects")
+    fun supports_sending_code_lens_requests_using_parameter_objects() = testJsonRpc {
+        val id = client.textDocument.codeLens(
+            params = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/codeLens"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/codeLens request callback receiving a result using parameter objects")
+    fun supports_code_lens_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.codeLens(
+            params = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.codeLens {
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.codeLens DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/codeLens" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.codeLens DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/codeLens request callback receiving an error using parameter objects")
+    fun supports_code_lens_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.codeLens(
+            params = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.codeLens {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.codeLens DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/codeLens" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.codeLens DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/codeLens requests using function parameters")
+    fun supports_sending_code_lens_requests_using_function_parameters() = testJsonRpc {
+        val id = client.textDocument.codeLens(
+            uri = "file:///home/lorem/ipsum.py"
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/codeLens"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/codeLens request callback receiving a result using function parameters")
+    fun supports_code_lens_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.codeLens(
+            uri = "file:///home/lorem/ipsum.py"
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.codeLens {
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.codeLens DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/codeLens" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.codeLens DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/codeLens request callback receiving an error using function parameters")
+    fun supports_code_lens_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.codeLens(
+            uri = "file:///home/lorem/ipsum.py"
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.codeLens {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.codeLens DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/codeLens" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.codeLens DSL handler should have been called.")
+    }
+
     // endregion
 }

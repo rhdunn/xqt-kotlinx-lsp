@@ -8,10 +8,10 @@ import xqt.kotlinx.lsp.base.LSPAny
 import xqt.kotlinx.lsp.types.Command
 import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
-import xqt.kotlinx.rpc.json.protocol.params
-import xqt.kotlinx.rpc.json.protocol.sendResult
+import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
 /**
@@ -90,6 +90,34 @@ data class CodeLens(
 private val CodeLensArray = JsonTypedArray(CodeLens)
 
 /**
+ * The response of a code lens request.
+ *
+ * @param id the request id
+ * @param result the result of the request
+ * @param error the error object in case the request failed
+ * @param jsonrpc the version of the JSON-RPC protocol
+ *
+ * @since 1.0.0
+ */
+data class CodeLensResponse(
+    override val id: JsonIntOrString?,
+    override val result: List<CodeLens>,
+    override val error: TypedErrorObject<JsonElement>?,
+    override val jsonrpc: String
+) : TypedResponseObject<List<CodeLens>, JsonElement> {
+    companion object : TypedResponseObjectConverter<List<CodeLens>, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<List<CodeLens>, JsonElement> {
+            return CodeLensResponse(
+                id = response.id,
+                result = response.result?.let { CodeLensArray.deserialize(it) } ?: listOf(),
+                error = response.error,
+                jsonrpc = response.jsonrpc
+            )
+        }
+    }
+}
+
+/**
  * The code lens request is sent from the client to the server to compute code lenses for
  * a given text document.
  *
@@ -101,3 +129,41 @@ fun TextDocumentRequest.codeLens(handler: TextDocumentIdentifier.() -> List<Code
         request.sendResult(result, CodeLensArray)
     }
 }
+
+/**
+ * The code lens request is sent from the client to the server to compute code lenses for
+ * a given text document.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.codeLens(
+    params: TextDocumentIdentifier,
+    responseHandler: (TypedResponseObject<List<CodeLens>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = TextDocumentRequest.CODE_LENS,
+    params = TextDocumentIdentifier.serializeToJson(params),
+    responseHandler = responseHandler,
+    responseObjectConverter = CodeLensResponse
+)
+
+/**
+ * The code lens request is sent from the client to the server to compute code lenses for
+ * a given text document.
+ *
+ * @param uri the text document's URI
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.codeLens(
+    uri: String,
+    responseHandler: (TypedResponseObject<List<CodeLens>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = codeLens(
+    params = TextDocumentIdentifier(uri = uri),
+    responseHandler = responseHandler
+)
