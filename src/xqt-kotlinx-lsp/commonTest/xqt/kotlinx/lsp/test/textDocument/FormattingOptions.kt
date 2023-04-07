@@ -19,16 +19,16 @@ class TheFormattingOptions {
     fun supports_the_non_optional_properties() {
         val json = jsonObjectOf(
             "tabSize" to JsonPrimitive(8),
-            "insertSpace" to JsonPrimitive(true)
+            "insertSpaces" to JsonPrimitive(true)
         )
 
         val options = FormattingOptions.deserialize(json)
         assertEquals(8u, options.tabSize)
-        assertEquals(true, options.insertSpace)
+        assertEquals(true, options.insertSpaces)
 
         assertEquals(2, options.size)
         assertEquals(JsonPrimitive(8), options["tabSize"])
-        assertEquals(JsonPrimitive(true), options["insertSpace"])
+        assertEquals(JsonPrimitive(true), options["insertSpaces"])
 
         assertEquals(json, FormattingOptions.serializeToJson(options))
     }
@@ -38,17 +38,17 @@ class TheFormattingOptions {
     fun supports_additional_options() {
         val json = jsonObjectOf(
             "tabSize" to JsonPrimitive(8),
-            "insertSpace" to JsonPrimitive(true),
+            "insertSpaces" to JsonPrimitive(true),
             "loremIpsum" to JsonPrimitive("Lorem Ipsum")
         )
 
         val options = FormattingOptions.deserialize(json)
         assertEquals(8u, options.tabSize)
-        assertEquals(true, options.insertSpace)
+        assertEquals(true, options.insertSpaces)
 
         assertEquals(3, options.size)
         assertEquals(JsonPrimitive(8), options["tabSize"])
-        assertEquals(JsonPrimitive(true), options["insertSpace"])
+        assertEquals(JsonPrimitive(true), options["insertSpaces"])
         assertEquals(JsonPrimitive("Lorem Ipsum"), options["loremIpsum"])
 
         assertEquals(json, FormattingOptions.serializeToJson(options))

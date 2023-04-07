@@ -29,7 +29,7 @@ class TheTextDocumentOnTypeFormattingParameters {
             "ch" to JsonPrimitive("x"),
             "options" to jsonObjectOf(
                 "tabSize" to JsonPrimitive(8),
-                "insertSpace" to JsonPrimitive(true)
+                "insertSpaces" to JsonPrimitive(true)
             )
         )
 
@@ -39,7 +39,7 @@ class TheTextDocumentOnTypeFormattingParameters {
         assertEquals("x", params.ch)
 
         assertEquals(8u, params.options.tabSize)
-        assertEquals(true, params.options.insertSpace)
+        assertEquals(true, params.options.insertSpaces)
         assertEquals(2, params.options.size)
 
         assertEquals(json, DocumentOnTypeFormattingParams.serializeToJson(params))

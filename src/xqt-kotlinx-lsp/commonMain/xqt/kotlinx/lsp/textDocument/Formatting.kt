@@ -57,7 +57,7 @@ data class FormattingOptions(
     /**
      * Prefer using spaces over tabs.
      */
-    val insertSpace: Boolean,
+    val insertSpaces: Boolean,
 
     /**
      * Signature for further options.
@@ -73,7 +73,7 @@ data class FormattingOptions(
             !is JsonObject -> unsupportedKindType(json)
             else -> FormattingOptions(
                 tabSize = json.get("tabSize", UInteger),
-                insertSpace = json.get("insertSpace", JsonBoolean),
+                insertSpaces = json.get("insertSpaces", JsonBoolean),
                 options = json.mapValues { (_, value) -> JsonPrimitiveValue.deserialize(value) }
             )
         }

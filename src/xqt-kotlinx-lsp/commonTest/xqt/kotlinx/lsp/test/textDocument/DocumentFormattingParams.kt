@@ -23,7 +23,7 @@ class TheTextDocumentFormattingParameters {
             ),
             "options" to jsonObjectOf(
                 "tabSize" to JsonPrimitive(8),
-                "insertSpace" to JsonPrimitive(true)
+                "insertSpaces" to JsonPrimitive(true)
             )
         )
 
@@ -31,7 +31,7 @@ class TheTextDocumentFormattingParameters {
         assertEquals("file:///home/lorem/ipsum.py", params.textDocument.uri)
 
         assertEquals(8u, params.options.tabSize)
-        assertEquals(true, params.options.insertSpace)
+        assertEquals(true, params.options.insertSpaces)
         assertEquals(2, params.options.size)
 
         assertEquals(json, DocumentFormattingParams.serializeToJson(params))
