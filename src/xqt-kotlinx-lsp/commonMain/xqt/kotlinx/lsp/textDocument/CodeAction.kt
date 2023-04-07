@@ -4,9 +4,12 @@ package xqt.kotlinx.lsp.textDocument
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.lsp.types.Command
 import xqt.kotlinx.lsp.types.Diagnostic
 import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
@@ -74,5 +77,23 @@ data class CodeActionContext(
                 diagnostics = json.getOptional("diagnostics", DiagnosticArray)
             )
         }
+    }
+}
+
+private val CommandArray = JsonTypedArray(Command)
+
+/**
+ * The code action request is sent from the client to the server to compute commands for
+ * a given text document and range.
+ *
+ * The request is trigger when the user moves the cursor into an problem marker in the
+ * editor or presses the lightbulb associated with a marker.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentRequest.codeAction(handler: CodeActionParams.() -> List<Command>) {
+    if (request.method == TextDocumentRequest.CODE_ACTION) {
+        val result = request.params(CodeActionParams).handler()
+        request.sendResult(result, CommandArray)
     }
 }

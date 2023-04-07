@@ -2150,4 +2150,70 @@ class TextDocumentDSL {
     }
 
     // endregion
+    // region textDocument/documentSymbol request
+
+    @Test
+    @DisplayName("supports textDocument/codeAction requests")
+    fun supports_code_action_requests() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/codeAction"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
+                    "range" to jsonObjectOf(
+                        "start" to jsonObjectOf(
+                            "line" to JsonPrimitive(5),
+                            "character" to JsonPrimitive(12)
+                        ),
+                        "end" to jsonObjectOf(
+                            "line" to JsonPrimitive(5),
+                            "character" to JsonPrimitive(21)
+                        )
+                    ),
+                    "context" to jsonObjectOf(
+                        "diagnostics" to jsonArrayOf()
+                    )
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.codeAction {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/codeAction", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+
+                    assertEquals(Position(5u, 12u), range.start)
+                    assertEquals(Position(5u, 21u), range.end)
+
+                    assertEquals(0, context.diagnostics.size)
+
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.codeAction DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonArrayOf()
+            ),
+            client.receive()
+        )
+    }
+
+    // endregion
 }
