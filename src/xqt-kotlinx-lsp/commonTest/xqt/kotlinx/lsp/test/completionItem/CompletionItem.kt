@@ -22,8 +22,8 @@ class CompletionItemDSL {
     // region completionItem/resolve request
 
     @Test
-    @DisplayName("supports completionItem/resolve requests returning a CompletionItem")
-    fun supports_resolve_requests_returning_a_completion_item_array() = testJsonRpc {
+    @DisplayName("supports completionItem/resolve requests")
+    fun supports_resolve_requests() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -70,8 +70,8 @@ class CompletionItemDSL {
     }
 
     @Test
-    @DisplayName("supports sending completionItem/resolve requests")
-    fun supports_sending_resolve_requests() = testJsonRpc {
+    @DisplayName("supports sending completionItem/resolve requests using parameter objects")
+    fun supports_sending_resolve_requests_using_parameter_objects() = testJsonRpc {
         val id = client.completionItem.resolve(
             params = CompletionItem(
                 label = "Lorem Ipsum",
@@ -95,8 +95,8 @@ class CompletionItemDSL {
     }
 
     @Test
-    @DisplayName("supports completionItem/resolve request callback receiving CompletionItem")
-    fun supports_resolve_request_callback_receiving_completion_item() = testJsonRpc {
+    @DisplayName("supports completionItem/resolve request callback receiving a result using parameter objects")
+    fun supports_resolve_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.completionItem.resolve(
@@ -135,8 +135,8 @@ class CompletionItemDSL {
     }
 
     @Test
-    @DisplayName("supports completionItem/resolve request callback receiving ErrorObject")
-    fun supports_resolve_request_callback_receiving_error_object() = testJsonRpc {
+    @DisplayName("supports completionItem/resolve request callback receiving an error using parameter objects")
+    fun supports_resolve_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.completionItem.resolve(

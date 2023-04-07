@@ -51,8 +51,8 @@ class WorkspaceDSL {
     }
 
     @Test
-    @DisplayName("supports sending workspace/didChangeConfiguration notifications using DidChangeConfigurationParams")
-    fun supports_sending_did_change_configuration_notifications_using_class_params() = testJsonRpc {
+    @DisplayName("supports sending workspace/didChangeConfiguration notifications using parameter objects")
+    fun supports_sending_did_change_configuration_notifications_using_parameter_objects() = testJsonRpc {
         server.workspace.didChangeConfiguration(
             params = DidChangeConfigurationParams(
                 settings = JsonPrimitive("Lorem Ipsum")
@@ -124,8 +124,8 @@ class WorkspaceDSL {
     }
 
     @Test
-    @DisplayName("supports sending workspace/didChangeWatchedFiles notifications using DidChangeWatchedFilesParams")
-    fun supports_sending_did_change_watched_files_notifications_using_class_params() = testJsonRpc {
+    @DisplayName("supports sending workspace/didChangeWatchedFiles notifications using parameter objects")
+    fun supports_sending_did_change_watched_files_notifications_using_parameter_objects() = testJsonRpc {
         server.workspace.didChangeWatchedFiles(
             params = DidChangeWatchedFilesParams(
                 changes = listOf()

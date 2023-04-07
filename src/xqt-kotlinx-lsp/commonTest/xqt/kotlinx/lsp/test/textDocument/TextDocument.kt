@@ -54,8 +54,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports sending textDocument/didOpen notifications using DidOpenTextDocumentParams")
-    fun supports_sending_did_open_notifications_using_class_params() = testJsonRpc {
+    @DisplayName("supports sending textDocument/didOpen notifications using parameter objects")
+    fun supports_sending_did_open_notifications_using_parameter_objects() = testJsonRpc {
         server.textDocument.didOpen(
             params = DidOpenTextDocumentParams(
                 uri = "file:///home/lorem/ipsum.py",
@@ -133,8 +133,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports sending textDocument/didChange notifications using DidChangeTextDocumentParams")
-    fun supports_sending_did_change_notifications_using_class_params() = testJsonRpc {
+    @DisplayName("supports sending textDocument/didChange notifications using parameter objects")
+    fun supports_sending_did_change_notifications_using_parameter_objects() = testJsonRpc {
         server.textDocument.didChange(
             params = DidChangeTextDocumentParams(
                 uri = "file:///home/lorem/ipsum.py",
@@ -210,8 +210,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports sending textDocument/didClose notifications using TextDocumentIdentifier")
-    fun supports_sending_did_close_notifications_using_class_params() = testJsonRpc {
+    @DisplayName("supports sending textDocument/didClose notifications using parameter objects")
+    fun supports_sending_did_close_notifications_using_parameter_objects() = testJsonRpc {
         server.textDocument.didClose(
             params = TextDocumentIdentifier(
                 uri = "file:///home/lorem/ipsum.py"
@@ -285,8 +285,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports sending textDocument/publishDiagnostics notifications using TextDocumentIdentifier")
-    fun supports_sending_publish_diagnostics_notifications_using_class_params() = testJsonRpc {
+    @DisplayName("supports sending textDocument/publishDiagnostics notifications using parameter objects")
+    fun supports_sending_publish_diagnostics_notifications_using_parameter_objects() = testJsonRpc {
         server.textDocument.publishDiagnostics(
             params = PublishDiagnosticsParams(
                 uri = "file:///home/lorem/ipsum.py",
@@ -332,8 +332,8 @@ class TextDocumentDSL {
     // region textDocument/completion request
 
     @Test
-    @DisplayName("supports textDocument/completion requests returning a CompletionItem[]")
-    fun supports_completion_requests_returning_a_completion_item_array() = testJsonRpc {
+    @DisplayName("supports textDocument/completion requests")
+    fun supports_completion_requests() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -390,8 +390,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports sending textDocument/completion requests using TextDocumentPosition")
-    fun supports_sending_completion_requests_using_text_document_position() = testJsonRpc {
+    @DisplayName("supports sending textDocument/completion requests using parameter objects")
+    fun supports_sending_completion_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.completion(
             params = TextDocumentPosition(
                 uri = "file:///home/lorem/ipsum.py",
@@ -418,8 +418,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/completion request callback receiving CompletionResponse using params object")
-    fun supports_completion_request_callback_receiving_completion_response_from_params_object() = testJsonRpc {
+    @DisplayName("supports textDocument/completion request callback receiving a result using parameter objects")
+    fun supports_completion_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.textDocument.completion(
@@ -461,8 +461,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/completion request callback receiving ErrorObject using params object")
-    fun supports_completion_request_callback_receiving_error_object_from_params_object() = testJsonRpc {
+    @DisplayName("supports textDocument/completion request callback receiving an error using parameter objects")
+    fun supports_completion_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.textDocument.completion(
@@ -519,8 +519,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/completion request callback receiving CompletionResponse")
-    fun supports_completion_request_callback_receiving_completion_response() = testJsonRpc {
+    @DisplayName("supports textDocument/completion request callback receiving a result using function parameters")
+    fun supports_completion_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.textDocument.completion(
@@ -560,8 +560,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/completion request callback receiving ErrorObject")
-    fun supports_completion_request_callback_receiving_error_object() = testJsonRpc {
+    @DisplayName("supports textDocument/completion request callback receiving an error using function parameters")
+    fun supports_completion_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.textDocument.completion(
@@ -593,8 +593,8 @@ class TextDocumentDSL {
     // region textDocument/hover request
 
     @Test
-    @DisplayName("supports textDocument/hover requests returning a Hover object")
-    fun supports_hover_requests_returning_a_hover_object() = testJsonRpc {
+    @DisplayName("supports textDocument/hover requests")
+    fun supports_hover_requests() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -656,8 +656,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports sending textDocument/hover requests using TextDocumentPosition")
-    fun supports_sending_hover_requests_using_text_document_position() = testJsonRpc {
+    @DisplayName("supports sending textDocument/hover requests using parameter objects")
+    fun supports_sending_hover_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.hover(
             params = TextDocumentPosition(
                 uri = "file:///home/lorem/ipsum.py",
@@ -684,8 +684,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/hover request callback receiving Hover using params object")
-    fun supports_hover_request_callback_receiving_hover_response_from_params_object() = testJsonRpc {
+    @DisplayName("supports textDocument/hover request callback receiving a result using parameter objects")
+    fun supports_hover_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.textDocument.hover(
@@ -722,8 +722,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/hover request callback receiving ErrorObject using params object")
-    fun supports_hover_request_callback_receiving_error_object_from_params_object() = testJsonRpc {
+    @DisplayName("supports textDocument/hover request callback receiving an error using parameter objects")
+    fun supports_hover_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.textDocument.hover(
@@ -780,8 +780,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/hover request callback receiving HoverResponse")
-    fun supports_hover_request_callback_receiving_hover_response() = testJsonRpc {
+    @DisplayName("supports textDocument/hover request callback receiving a result using function parameters")
+    fun supports_hover_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.textDocument.hover(
@@ -816,8 +816,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/hover request callback receiving ErrorObject")
-    fun supports_hover_request_callback_receiving_error_object() = testJsonRpc {
+    @DisplayName("supports textDocument/hover request callback receiving an error using function parameters")
+    fun supports_hover_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.textDocument.hover(
@@ -849,8 +849,8 @@ class TextDocumentDSL {
     // region textDocument/signatureHelp request
 
     @Test
-    @DisplayName("supports textDocument/signatureHelp requests returning a SignatureHelp object")
-    fun supports_signature_help_requests_returning_a_signature_help_object() = testJsonRpc {
+    @DisplayName("supports textDocument/signatureHelp requests")
+    fun supports_signature_help_requests() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -899,8 +899,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports sending textDocument/signatureHelp requests using TextDocumentPosition")
-    fun supports_sending_signature_help_requests_using_text_document_position() = testJsonRpc {
+    @DisplayName("supports sending textDocument/signatureHelp requests using parameter objects")
+    fun supports_sending_signature_help_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.signatureHelp(
             params = TextDocumentPosition(
                 uri = "file:///home/lorem/ipsum.py",
@@ -927,8 +927,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/signatureHelp request callback receiving Hover using params object")
-    fun supports_signature_help_request_callback_receiving_hover_response_from_params_object() = testJsonRpc {
+    @DisplayName("supports textDocument/signatureHelp request callback receiving a result using parameter objects")
+    fun supports_signature_help_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.textDocument.signatureHelp(
@@ -958,8 +958,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/signatureHelp request callback receiving ErrorObject using params object")
-    fun supports_signature_help_request_callback_receiving_error_object_from_params_object() = testJsonRpc {
+    @DisplayName("supports textDocument/signatureHelp request callback receiving an error using parameter objects")
+    fun supports_signature_help_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.textDocument.signatureHelp(
@@ -1016,8 +1016,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/signatureHelp request callback receiving HoverResponse")
-    fun supports_signature_help_request_callback_receiving_hover_response() = testJsonRpc {
+    @DisplayName("supports textDocument/signatureHelp request callback receiving a result using function parameters")
+    fun supports_signature_help_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.textDocument.signatureHelp(
@@ -1045,8 +1045,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/signatureHelp request callback receiving ErrorObject")
-    fun supports_signature_help_request_callback_receiving_error_object() = testJsonRpc {
+    @DisplayName("supports textDocument/signatureHelp request callback receiving an error using function parameters")
+    fun supports_signature_help_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.textDocument.signatureHelp(
@@ -1078,8 +1078,8 @@ class TextDocumentDSL {
     // region textDocument/definition request
 
     @Test
-    @DisplayName("supports textDocument/definition requests returning no locations")
-    fun supports_definition_requests_returning_no_locations() = testJsonRpc {
+    @DisplayName("supports textDocument/definition requests")
+    fun supports_definition_requests() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -1264,8 +1264,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports sending textDocument/definition requests using TextDocumentPosition")
-    fun supports_sending_definition_requests_using_text_document_position() = testJsonRpc {
+    @DisplayName("supports sending textDocument/definition requests using parameter objects")
+    fun supports_sending_definition_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.definition(
             params = TextDocumentPosition(
                 uri = "file:///home/lorem/ipsum.py",
@@ -1292,8 +1292,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/definition request callback receiving Hover using params object")
-    fun supports_definition_request_callback_receiving_hover_response_from_params_object() = testJsonRpc {
+    @DisplayName("supports textDocument/definition request callback receiving a result using parameter objects")
+    fun supports_definition_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.textDocument.definition(
@@ -1323,8 +1323,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/definition request callback receiving ErrorObject using params object")
-    fun supports_definition_request_callback_receiving_error_object_from_params_object() = testJsonRpc {
+    @DisplayName("supports textDocument/definition request callback receiving an error using parameter objects")
+    fun supports_definition_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.textDocument.definition(
@@ -1381,8 +1381,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/definition request callback receiving HoverResponse")
-    fun supports_definition_request_callback_receiving_hover_response() = testJsonRpc {
+    @DisplayName("supports textDocument/definition request callback receiving a result using function parameters")
+    fun supports_definition_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.textDocument.definition(
@@ -1410,8 +1410,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/definition request callback receiving ErrorObject")
-    fun supports_definition_request_callback_receiving_error_object() = testJsonRpc {
+    @DisplayName("supports textDocument/definition request callback receiving an error using function parameters")
+    fun supports_definition_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.textDocument.definition(
@@ -1443,8 +1443,8 @@ class TextDocumentDSL {
     // region textDocument/references request
 
     @Test
-    @DisplayName("supports textDocument/references requests returning a locations array")
-    fun supports_references_requests_returning_a_locations_array() = testJsonRpc {
+    @DisplayName("supports textDocument/references requests")
+    fun supports_references_requests() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -1496,8 +1496,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports sending textDocument/references requests using ReferencePrams")
-    fun supports_sending_references_requests_using_reference_params() = testJsonRpc {
+    @DisplayName("supports sending textDocument/references requests using parameter objects")
+    fun supports_sending_references_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.references(
             params = ReferencesParams(
                 uri = "file:///home/lorem/ipsum.py",
@@ -1530,8 +1530,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/references request callback receiving a Location list using params object")
-    fun supports_references_request_callback_receiving_a_location_list_response_from_params_object() = testJsonRpc {
+    @DisplayName("supports textDocument/references request callback receiving a result using parameter objects")
+    fun supports_references_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.textDocument.references(
@@ -1564,8 +1564,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/references request callback receiving ErrorObject using params object")
-    fun supports_references_request_callback_receiving_error_object_from_params_object() = testJsonRpc {
+    @DisplayName("supports textDocument/references request callback receiving an error using parameter objects")
+    fun supports_references_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.textDocument.references(
@@ -1631,8 +1631,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/references request callback receiving ReferencesResponse")
-    fun supports_references_request_callback_receiving_references_response() = testJsonRpc {
+    @DisplayName("supports textDocument/references request callback receiving a result using function parameters")
+    fun supports_references_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.textDocument.references(
@@ -1663,8 +1663,8 @@ class TextDocumentDSL {
     }
 
     @Test
-    @DisplayName("supports textDocument/references request callback receiving ErrorObject")
-    fun supports_references_request_callback_receiving_error_object() = testJsonRpc {
+    @DisplayName("supports textDocument/references request callback receiving an error using function parameters")
+    fun supports_references_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.textDocument.references(

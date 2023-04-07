@@ -22,8 +22,8 @@ class LifecycleDSL {
     // region initialize request
 
     @Test
-    @DisplayName("supports initialize requests returning an InitializeResult")
-    fun supports_initialize_requests_returning_an_initialize_result() = testJsonRpc {
+    @DisplayName("supports initialize requests")
+    fun supports_initialize_requests() = testJsonRpc {
         client.send(
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
@@ -177,8 +177,8 @@ class LifecycleDSL {
     }
 
     @Test
-    @DisplayName("supports sending initialize requests using InitializeParams")
-    fun supports_sending_initialize_requests_using_initialize_params() = testJsonRpc {
+    @DisplayName("supports sending initialize requests using parameter objects")
+    fun supports_sending_initialize_requests_using_parameter_objects() = testJsonRpc {
         val id = client.initialize(
             params = InitializeParams(
                 processId = 1234,
@@ -207,8 +207,8 @@ class LifecycleDSL {
     }
 
     @Test
-    @DisplayName("supports initialize request callback receiving InitializeResult from InitializeParams object")
-    fun supports_initialize_request_callback_receiving_initialize_result_from_params_object() = testJsonRpc {
+    @DisplayName("supports initialize request callback receiving a result from parameter objects")
+    fun supports_initialize_request_callback_receiving_a_result_from_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.initialize(
@@ -249,8 +249,8 @@ class LifecycleDSL {
     }
 
     @Test
-    @DisplayName("supports initialize request callback receiving InitializeError from InitializeParams object")
-    fun supports_initialize_request_callback_receiving_initialize_error_from_params_object() = testJsonRpc {
+    @DisplayName("supports initialize request callback receiving an error from parameter objects")
+    fun supports_initialize_request_callback_receiving_an_error_from_parameter_objects() = testJsonRpc {
         var called = 0
 
         client.initialize(
@@ -312,8 +312,8 @@ class LifecycleDSL {
     }
 
     @Test
-    @DisplayName("supports initialize request callback receiving InitializeResult")
-    fun supports_initialize_request_callback_receiving_initialize_result() = testJsonRpc {
+    @DisplayName("supports initialize request callback receiving a result using function parameters")
+    fun supports_initialize_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.initialize(
@@ -352,8 +352,8 @@ class LifecycleDSL {
     }
 
     @Test
-    @DisplayName("supports initialize request callback receiving InitializeError")
-    fun supports_initialize_request_callback_receiving_initialize_error() = testJsonRpc {
+    @DisplayName("supports initialize request callback receiving an error using function parameters")
+    fun supports_initialize_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
         var called = 0
 
         client.initialize(

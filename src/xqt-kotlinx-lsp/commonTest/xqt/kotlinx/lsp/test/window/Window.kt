@@ -48,8 +48,8 @@ class WindowDSL {
     }
 
     @Test
-    @DisplayName("supports sending window/showMessage notifications using ShowMessageParams")
-    fun supports_sending_show_message_notifications_using_show_message_params() = testJsonRpc {
+    @DisplayName("supports sending window/showMessage notifications using parameter objects")
+    fun supports_sending_show_message_notifications_using_parameter_objects() = testJsonRpc {
         server.window.showMessage(
             params = ShowMessageParams(
                 type = MessageType.Warning,
@@ -127,8 +127,8 @@ class WindowDSL {
     }
 
     @Test
-    @DisplayName("supports sending window/logMessage notifications using LogMessageParams")
-    fun supports_sending_log_message_notifications_using_log_message_params() = testJsonRpc {
+    @DisplayName("supports sending window/logMessage notifications using parameter objects")
+    fun supports_sending_log_message_notifications_using_parameter_objects() = testJsonRpc {
         server.window.logMessage(
             params = LogMessageParams(
                 type = MessageType.Warning,
