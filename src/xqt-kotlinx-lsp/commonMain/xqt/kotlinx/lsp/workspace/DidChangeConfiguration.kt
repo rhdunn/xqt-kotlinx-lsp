@@ -7,7 +7,10 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
 import xqt.kotlinx.rpc.json.protocol.params
 import xqt.kotlinx.rpc.json.protocol.sendNotification
-import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.JsonSerialization
+import xqt.kotlinx.rpc.json.serialization.get
+import xqt.kotlinx.rpc.json.serialization.put
+import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
  * Parameters for `workspace/didChangeConfiguration` notification.

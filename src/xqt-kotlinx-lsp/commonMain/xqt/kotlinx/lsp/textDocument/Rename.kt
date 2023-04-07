@@ -6,12 +6,14 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
-import xqt.kotlinx.lsp.types.TextDocumentPosition
 import xqt.kotlinx.lsp.types.WorkspaceEdit
 import xqt.kotlinx.rpc.json.protocol.*
-import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.JsonSerialization
+import xqt.kotlinx.rpc.json.serialization.get
+import xqt.kotlinx.rpc.json.serialization.put
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
  * Parameters for `textDocument/rename` request.

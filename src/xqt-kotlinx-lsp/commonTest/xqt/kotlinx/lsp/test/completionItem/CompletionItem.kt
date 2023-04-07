@@ -7,7 +7,8 @@ import xqt.kotlinx.lsp.base.InternalError
 import xqt.kotlinx.lsp.completionItem.completionItem
 import xqt.kotlinx.lsp.completionItem.resolve
 import xqt.kotlinx.lsp.test.base.testJsonRpc
-import xqt.kotlinx.lsp.textDocument.*
+import xqt.kotlinx.lsp.textDocument.CompletionItem
+import xqt.kotlinx.lsp.textDocument.CompletionItemKind
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.request
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf

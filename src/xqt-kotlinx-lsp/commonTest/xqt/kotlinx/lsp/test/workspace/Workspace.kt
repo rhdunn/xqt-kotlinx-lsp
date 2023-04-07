@@ -5,7 +5,6 @@ import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.base.ErrorCodes
 import xqt.kotlinx.lsp.base.InternalError
 import xqt.kotlinx.lsp.test.base.testJsonRpc
-import xqt.kotlinx.lsp.workspace.workspace
 import xqt.kotlinx.lsp.workspace.*
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification

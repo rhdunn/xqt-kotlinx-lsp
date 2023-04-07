@@ -4,10 +4,13 @@ package xqt.kotlinx.lsp.types
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
-import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.JsonSerialization
+import xqt.kotlinx.rpc.json.serialization.get
+import xqt.kotlinx.rpc.json.serialization.put
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedObject
+import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
  * A workspace edit represents changes to many resources managed in the workspace.

@@ -3,12 +3,16 @@ package xqt.kotlinx.lsp.test.types
 
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
-import xqt.kotlinx.lsp.types.*
+import xqt.kotlinx.lsp.types.Position
+import xqt.kotlinx.lsp.types.WorkspaceEdit
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
 import xqt.kotlinx.test.DisplayName
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFails
+import kotlin.test.assertNotNull
 
 @DisplayName("The WorkspaceEdit type")
 class TheWorkspaceEditType {

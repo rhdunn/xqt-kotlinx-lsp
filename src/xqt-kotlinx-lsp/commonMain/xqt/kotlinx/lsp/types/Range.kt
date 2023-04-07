@@ -1,8 +1,13 @@
 // Copyright (C) 2022 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.types
 
-import kotlinx.serialization.json.*
-import xqt.kotlinx.rpc.json.serialization.*
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.rpc.json.serialization.JsonSerialization
+import xqt.kotlinx.rpc.json.serialization.get
+import xqt.kotlinx.rpc.json.serialization.put
+import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
  * A range in a text document expressed as (zero-based) start and end positions.
