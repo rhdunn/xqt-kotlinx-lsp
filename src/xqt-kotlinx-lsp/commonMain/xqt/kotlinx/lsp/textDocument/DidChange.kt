@@ -7,7 +7,7 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
 import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
-import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
@@ -92,11 +92,13 @@ data class TextDocumentContentChangeEvent(
  *
  * @since 1.0.0
  */
-fun TextDocumentNotification.didChange(handler: DidChangeTextDocumentParams.() -> Unit) {
-    if (notification.method == TextDocumentNotification.DID_CHANGE) {
-        notification.params(DidChangeTextDocumentParams).handler()
-    }
-}
+fun TextDocumentNotification.didChange(
+    handler: DidChangeTextDocumentParams.() -> Unit
+): Unit = notification.method(
+    method = TextDocumentNotification.DID_CHANGE,
+    handler = handler,
+    paramsSerializer = DidChangeTextDocumentParams
+)
 
 /**
  * The document open notification is sent from the client to the server to signal newly

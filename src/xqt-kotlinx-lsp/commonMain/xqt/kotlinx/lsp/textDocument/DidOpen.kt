@@ -5,7 +5,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
-import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
@@ -51,11 +51,13 @@ data class DidOpenTextDocumentParams(
  *
  * @since 1.0.0
  */
-fun TextDocumentNotification.didOpen(handler: DidOpenTextDocumentParams.() -> Unit) {
-    if (notification.method == TextDocumentNotification.DID_OPEN) {
-        notification.params(DidOpenTextDocumentParams).handler()
-    }
-}
+fun TextDocumentNotification.didOpen(
+    handler: DidOpenTextDocumentParams.() -> Unit
+): Unit = notification.method(
+    method = TextDocumentNotification.DID_OPEN,
+    handler = handler,
+    paramsSerializer = DidOpenTextDocumentParams
+)
 
 /**
  * The document open notification is sent from the client to the server to signal newly

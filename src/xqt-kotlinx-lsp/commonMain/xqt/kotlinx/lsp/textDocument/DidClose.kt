@@ -2,7 +2,7 @@
 package xqt.kotlinx.lsp.textDocument
 
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
-import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 
 /**
@@ -14,11 +14,13 @@ import xqt.kotlinx.rpc.json.protocol.sendNotification
  *
  * @since 1.0.0
  */
-fun TextDocumentNotification.didClose(handler: TextDocumentIdentifier.() -> Unit) {
-    if (notification.method == TextDocumentNotification.DID_CLOSE) {
-        notification.params(TextDocumentIdentifier).handler()
-    }
-}
+fun TextDocumentNotification.didClose(
+    handler: TextDocumentIdentifier.() -> Unit
+): Unit = notification.method(
+    method = TextDocumentNotification.DID_CLOSE,
+    handler = handler,
+    paramsSerializer = TextDocumentIdentifier
+)
 
 /**
  * The document close notification is sent from the client to the server when the document

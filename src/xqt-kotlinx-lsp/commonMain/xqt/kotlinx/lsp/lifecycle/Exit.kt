@@ -3,6 +3,7 @@ package xqt.kotlinx.lsp.lifecycle
 
 import xqt.kotlinx.lsp.base.NotificationMessage
 import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 
 /**
@@ -10,11 +11,10 @@ import xqt.kotlinx.rpc.json.protocol.sendNotification
  *
  * @since 1.0.0
  */
-fun NotificationMessage.exit(handler: () -> Unit) {
-    if (method == LifecycleNotification.EXIT) {
-        handler()
-    }
-}
+fun NotificationMessage.exit(handler: () -> Unit): Unit = method(
+    method = LifecycleNotification.EXIT,
+    handler = handler
+)
 
 /**
  * Send an exit notification to the server.

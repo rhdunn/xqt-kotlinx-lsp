@@ -5,7 +5,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
@@ -90,11 +90,13 @@ value class MessageType(val type: Int) {
  *
  * @since 1.0.0
  */
-fun WindowNotification.showMessage(handler: ShowMessageParams.() -> Unit) {
-    if (notification.method == WindowNotification.SHOW_MESSAGE) {
-        notification.params(ShowMessageParams).handler()
-    }
-}
+fun WindowNotification.showMessage(
+    handler: ShowMessageParams.() -> Unit
+): Unit = notification.method(
+    method = WindowNotification.SHOW_MESSAGE,
+    handler = handler,
+    paramsSerializer = ShowMessageParams
+)
 
 /**
  * Ask the client to display a particular message in the user interface.

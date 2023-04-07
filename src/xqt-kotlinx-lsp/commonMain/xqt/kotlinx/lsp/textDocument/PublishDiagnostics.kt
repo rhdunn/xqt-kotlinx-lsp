@@ -5,7 +5,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Diagnostic
-import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
@@ -54,11 +54,13 @@ data class PublishDiagnosticsParams(
  *
  * @since 1.0.0
  */
-fun TextDocumentNotification.publishDiagnostics(handler: PublishDiagnosticsParams.() -> Unit) {
-    if (notification.method == TextDocumentNotification.PUBLISH_DIAGNOSTICS) {
-        notification.params(PublishDiagnosticsParams).handler()
-    }
-}
+fun TextDocumentNotification.publishDiagnostics(
+    handler: PublishDiagnosticsParams.() -> Unit
+): Unit = notification.method(
+    method = TextDocumentNotification.PUBLISH_DIAGNOSTICS,
+    handler = handler,
+    paramsSerializer = PublishDiagnosticsParams
+)
 
 /**
  * The diagnostics notification is sent from the server to the client to signal results of

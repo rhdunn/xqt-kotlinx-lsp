@@ -4,7 +4,7 @@ package xqt.kotlinx.lsp.window
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
-import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
@@ -49,11 +49,13 @@ data class LogMessageParams(
  *
  * @since 1.0.0
  */
-fun WindowNotification.logMessage(handler: LogMessageParams.() -> Unit) {
-    if (notification.method == WindowNotification.LOG_MESSAGE) {
-        notification.params(LogMessageParams).handler()
-    }
-}
+fun WindowNotification.logMessage(
+    handler: LogMessageParams.() -> Unit
+): Unit = notification.method(
+    method = WindowNotification.LOG_MESSAGE,
+    handler = handler,
+    paramsSerializer = LogMessageParams
+)
 
 /**
  * Ask the client to log a particular message.
