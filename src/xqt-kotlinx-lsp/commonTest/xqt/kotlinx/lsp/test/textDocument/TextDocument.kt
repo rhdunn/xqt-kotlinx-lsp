@@ -3554,4 +3554,61 @@ class TextDocumentDSL {
     }
 
     // endregion
+    // region textDocument/rename request
+
+    @Test
+    @DisplayName("supports textDocument/rename requests")
+    fun supports_rename_requests() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/rename"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(5),
+                        "character" to JsonPrimitive(12)
+                    ),
+                    "newName" to JsonPrimitive("dolor")
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.rename {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/rename", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(Position(5u, 12u), position)
+                    assertEquals("dolor", newName)
+
+                    WorkspaceEdit(changes = mapOf())
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.rename DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonObjectOf(
+                    "changes" to jsonObjectOf()
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    // endregion
 }

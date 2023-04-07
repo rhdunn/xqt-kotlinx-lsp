@@ -6,6 +6,10 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.lsp.types.WorkspaceEdit
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
@@ -48,5 +52,18 @@ data class RenameParams(
                 newName = json.get("newName", JsonString)
             )
         }
+    }
+}
+
+/**
+ * The rename request is sent from the client to the server to do a workspace wide rename
+ * of a symbol.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentRequest.rename(handler: RenameParams.() -> WorkspaceEdit) {
+    if (request.method == TextDocumentRequest.RENAME) {
+        val result = request.params(RenameParams).handler()
+        request.sendResult(result, WorkspaceEdit)
     }
 }
