@@ -3259,4 +3259,67 @@ class TextDocumentDSL {
     }
 
     // endregion
+    // region textDocument/onTypeFormatting request
+
+    @Test
+    @DisplayName("supports textDocument/onTypeFormatting requests")
+    fun supports_on_type_formatting_requests() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/onTypeFormatting"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
+                    "position" to jsonObjectOf(
+                        "line" to JsonPrimitive(5),
+                        "character" to JsonPrimitive(12)
+                    ),
+                    "ch" to JsonPrimitive("c"),
+                    "options" to jsonObjectOf(
+                        "tabSize" to JsonPrimitive(4),
+                        "insertSpaces" to JsonPrimitive(false)
+                    )
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.onTypeFormatting {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/onTypeFormatting", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(Position(5u, 12u), position)
+                    assertEquals("c", ch)
+
+                    assertEquals(2, options.size)
+                    assertEquals(4u, options.tabSize)
+                    assertEquals(false, options.insertSpaces)
+
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.onTypeFormatting DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonArrayOf()
+            ),
+            client.receive()
+        )
+    }
+
+    // endregion
 }

@@ -75,6 +75,12 @@ value class TextDocumentRequest(val request: RequestMessage) {
         const val HOVER: String = "textDocument/hover"
 
         /**
+         * The document on type formatting request is sent from the client to the server to format
+         * parts of the document during typing.
+         */
+        const val ON_TYPE_FORMATTING: String = "textDocument/onTypeFormatting"
+
+        /**
          * The document range formatting request is sent from the client to the server to format a
          * given range in a document.
          */

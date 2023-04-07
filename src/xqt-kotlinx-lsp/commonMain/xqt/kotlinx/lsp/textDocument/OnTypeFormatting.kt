@@ -7,6 +7,9 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.lsp.types.TextEdit
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
@@ -90,5 +93,20 @@ data class DocumentOnTypeFormattingParams(
                 options = json.get("options", FormattingOptions)
             )
         }
+    }
+}
+
+private val TextEditArray = JsonTypedArray(TextEdit)
+
+/**
+ * The document on type formatting request is sent from the client to the server to format
+ * parts of the document during typing.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentRequest.onTypeFormatting(handler: DocumentOnTypeFormattingParams.() -> List<TextEdit>) {
+    if (request.method == TextDocumentRequest.ON_TYPE_FORMATTING) {
+        val result = request.params(DocumentOnTypeFormattingParams).handler()
+        request.sendResult(result, TextEditArray)
     }
 }
