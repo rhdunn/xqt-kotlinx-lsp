@@ -15,7 +15,15 @@ import kotlin.jvm.JvmInline
  * @since 1.0.0
  */
 @JvmInline
-value class CodeLensRequest(val request: RequestMessage)
+value class CodeLensRequest(val request: RequestMessage) {
+    companion object {
+        /**
+         * The code lens resolve request is sent from the client to the server to resolve the
+         * command for a given code lens item.
+         */
+        const val RESOLVE: String = "codeLens/resolve"
+    }
+}
 
 /**
  * A request in the `codeLens/` namespace.
