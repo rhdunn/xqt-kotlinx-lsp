@@ -5,12 +5,14 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Position
-import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.lsp.types.TextEdit
+import xqt.kotlinx.rpc.json.protocol.TypedResponseObject
 import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendRequest
 import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
@@ -110,3 +112,52 @@ fun TextDocumentRequest.onTypeFormatting(handler: DocumentOnTypeFormattingParams
         request.sendResult(result, TextEditArray)
     }
 }
+
+/**
+ * The document on type formatting request is sent from the client to the server to format
+ * parts of the document during typing.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.onTypeFormatting(
+    params: DocumentOnTypeFormattingParams,
+    responseHandler: (TypedResponseObject<List<TextEdit>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = TextDocumentRequest.ON_TYPE_FORMATTING,
+    params = DocumentOnTypeFormattingParams.serializeToJson(params),
+    responseHandler = responseHandler,
+    responseObjectConverter = FormattingResponse
+)
+
+/**
+ * The document on type formatting request is sent from the client to the server to format
+ * parts of the document during typing.
+ *
+ * @param textDocument the document in which the command was invoked
+ * @param position the position at which this request was send
+ * @param ch the character that has been typed
+ * @param options the format options
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.onTypeFormatting(
+    textDocument: TextDocumentIdentifier,
+    position: Position,
+    ch: String,
+    options: FormattingOptions,
+    responseHandler: (TypedResponseObject<List<TextEdit>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = onTypeFormatting(
+    params = DocumentOnTypeFormattingParams(
+        textDocument = textDocument,
+        position = position,
+        ch = ch,
+        options = options
+    ),
+    responseHandler = responseHandler
+)
