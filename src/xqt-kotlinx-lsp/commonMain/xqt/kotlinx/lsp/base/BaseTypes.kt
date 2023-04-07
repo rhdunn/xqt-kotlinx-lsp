@@ -2,6 +2,7 @@
 package xqt.kotlinx.lsp.base
 
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.types.*
 import xqt.kotlinx.rpc.json.serialization.valueOutOfRange
@@ -24,7 +25,7 @@ typealias Integer = JsonInt
  * @since 3.16.0
  */
 object UInteger : JsonSerialization<UInt> {
-    override fun serializeToJson(value: UInt): JsonElement {
+    override fun serializeToJson(value: UInt): JsonPrimitive {
         if (value > Int.MAX_VALUE.toUInt()) valueOutOfRange(value)
         return JsonUInt.serializeToJson(value)
     }
