@@ -2150,7 +2150,7 @@ class TextDocumentDSL {
     }
 
     // endregion
-    // region textDocument/documentSymbol request
+    // region textDocument/codeAction request
 
     @Test
     @DisplayName("supports textDocument/codeAction requests")
@@ -2459,6 +2459,52 @@ class TextDocumentDSL {
         assertEquals(0, called, "The textDocument.codeAction DSL handler should not have been called.")
         client.jsonRpc {} // The "textDocument/codeAction" response is processed by the handler callback.
         assertEquals(1, called, "The textDocument.codeAction DSL handler should have been called.")
+    }
+
+    // endregion
+    // region textDocument/codeLens request
+
+    @Test
+    @DisplayName("supports textDocument/codeLens requests")
+    fun supports_code_lens_requests() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/codeLens"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.codeLens {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/codeLens", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", uri)
+
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.codeLens DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonArrayOf()
+            ),
+            client.receive()
+        )
     }
 
     // endregion

@@ -29,6 +29,12 @@ value class TextDocumentRequest(val request: RequestMessage) {
         const val CODE_ACTION: String = "textDocument/codeAction"
 
         /**
+         * The code lens request is sent from the client to the server to compute code lenses for
+         * a given text document.
+         */
+        const val CODE_LENS: String = "textDocument/codeLens"
+
+        /**
          * The completion request is sent from the client to the server to compute completion items
          * at a given cursor position.
          *

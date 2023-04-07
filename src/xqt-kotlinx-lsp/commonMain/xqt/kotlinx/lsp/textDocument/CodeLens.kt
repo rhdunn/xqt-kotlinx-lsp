@@ -7,8 +7,12 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
 import xqt.kotlinx.lsp.types.Command
 import xqt.kotlinx.lsp.types.Range
+import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
 /**
  * Code lens options.
@@ -80,5 +84,20 @@ data class CodeLens(
                 data = json.getOptional("data", LSPAny),
             )
         }
+    }
+}
+
+private val CodeLensArray = JsonTypedArray(CodeLens)
+
+/**
+ * The code lens request is sent from the client to the server to compute code lenses for
+ * a given text document.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentRequest.codeLens(handler: TextDocumentIdentifier.() -> List<CodeLens>) {
+    if (request.method == TextDocumentRequest.CODE_LENS) {
+        val result = request.params(TextDocumentIdentifier).handler()
+        request.sendResult(result, CodeLensArray)
     }
 }
