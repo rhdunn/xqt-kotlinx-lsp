@@ -68,7 +68,9 @@ fun TextDocumentNotification.publishDiagnostics(handler: PublishDiagnosticsParam
  *
  * @since 1.0.0
  */
-fun TextDocumentJsonRpcServer.publishDiagnostics(params: PublishDiagnosticsParams) = server.sendNotification(
+fun TextDocumentJsonRpcServer.publishDiagnostics(
+    params: PublishDiagnosticsParams
+): Unit = server.sendNotification(
     method = TextDocumentNotification.PUBLISH_DIAGNOSTICS,
     params = PublishDiagnosticsParams.serializeToJson(params)
 )
@@ -82,6 +84,9 @@ fun TextDocumentJsonRpcServer.publishDiagnostics(params: PublishDiagnosticsParam
  *
  * @since 1.0.0
  */
-fun TextDocumentJsonRpcServer.publishDiagnostics(uri: String, diagnostics: List<Diagnostic>) = publishDiagnostics(
+fun TextDocumentJsonRpcServer.publishDiagnostics(
+    uri: String,
+    diagnostics: List<Diagnostic>
+): Unit = publishDiagnostics(
     params = PublishDiagnosticsParams(uri = uri, diagnostics = diagnostics)
 )

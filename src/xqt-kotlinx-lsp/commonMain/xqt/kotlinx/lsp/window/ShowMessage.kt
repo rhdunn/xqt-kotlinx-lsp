@@ -103,7 +103,9 @@ fun WindowNotification.showMessage(handler: ShowMessageParams.() -> Unit) {
  *
  * @since 1.0.0
  */
-fun WindowJsonRpcServer.showMessage(params: ShowMessageParams) = server.sendNotification(
+fun WindowJsonRpcServer.showMessage(
+    params: ShowMessageParams
+): Unit = server.sendNotification(
     method = WindowNotification.SHOW_MESSAGE,
     params = ShowMessageParams.serializeToJson(params)
 )
@@ -116,6 +118,9 @@ fun WindowJsonRpcServer.showMessage(params: ShowMessageParams) = server.sendNoti
  *
  * @since 1.0.0
  */
-fun WindowJsonRpcServer.showMessage(type: MessageType, message: String) = showMessage(
+fun WindowJsonRpcServer.showMessage(
+    type: MessageType,
+    message: String
+): Unit = showMessage(
     params = ShowMessageParams(type = type, message = message)
 )

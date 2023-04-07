@@ -109,7 +109,9 @@ fun TextDocumentNotification.didChange(handler: DidChangeTextDocumentParams.() -
  *
  * @since 1.0.0
  */
-fun TextDocumentJsonRpcServer.didChange(params: DidChangeTextDocumentParams) = server.sendNotification(
+fun TextDocumentJsonRpcServer.didChange(
+    params: DidChangeTextDocumentParams
+): Unit = server.sendNotification(
     method = TextDocumentNotification.DID_CHANGE,
     params = DidChangeTextDocumentParams.serializeToJson(params)
 )
@@ -129,6 +131,6 @@ fun TextDocumentJsonRpcServer.didChange(params: DidChangeTextDocumentParams) = s
 fun TextDocumentJsonRpcServer.didChange(
     uri: String,
     contentChanges: List<TextDocumentContentChangeEvent>
-) = didChange(
+): Unit = didChange(
     params = DidChangeTextDocumentParams(uri = uri, contentChanges = contentChanges)
 )

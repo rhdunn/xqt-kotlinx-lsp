@@ -55,7 +55,9 @@ fun WorkspaceNotification.didChangeConfiguration(handler: DidChangeConfiguration
  *
  * @since 1.0.0
  */
-fun WorkspaceJsonRpcServer.didChangeConfiguration(params: DidChangeConfigurationParams) = server.sendNotification(
+fun WorkspaceJsonRpcServer.didChangeConfiguration(
+    params: DidChangeConfigurationParams
+): Unit = server.sendNotification(
     method = WorkspaceNotification.DID_CHANGE_CONFIGURATION,
     params = DidChangeConfigurationParams.serializeToJson(params)
 )
@@ -67,6 +69,8 @@ fun WorkspaceJsonRpcServer.didChangeConfiguration(params: DidChangeConfiguration
  *
  * @since 1.0.0
  */
-fun WorkspaceJsonRpcServer.didChangeConfiguration(settings: JsonElement) = didChangeConfiguration(
+fun WorkspaceJsonRpcServer.didChangeConfiguration(
+    settings: JsonElement
+): Unit = didChangeConfiguration(
     params = DidChangeConfigurationParams(settings = settings)
 )

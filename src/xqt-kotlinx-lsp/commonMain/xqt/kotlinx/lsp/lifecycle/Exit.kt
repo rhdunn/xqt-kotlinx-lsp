@@ -21,4 +21,4 @@ fun NotificationMessage.exit(handler: () -> Unit) {
  *
  * @since 1.0.0
  */
-fun JsonRpcServer.exit() = sendNotification(LifecycleNotification.EXIT)
+fun JsonRpcServer.exit(): Unit = sendNotification(LifecycleNotification.EXIT)

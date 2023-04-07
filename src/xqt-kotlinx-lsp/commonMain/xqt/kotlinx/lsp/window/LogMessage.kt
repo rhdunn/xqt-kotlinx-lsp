@@ -62,7 +62,9 @@ fun WindowNotification.logMessage(handler: LogMessageParams.() -> Unit) {
  *
  * @since 1.0.0
  */
-fun WindowJsonRpcServer.logMessage(params: LogMessageParams) = server.sendNotification(
+fun WindowJsonRpcServer.logMessage(
+    params: LogMessageParams
+): Unit = server.sendNotification(
     method = WindowNotification.LOG_MESSAGE,
     params = LogMessageParams.serializeToJson(params)
 )
@@ -75,6 +77,9 @@ fun WindowJsonRpcServer.logMessage(params: LogMessageParams) = server.sendNotifi
  *
  * @since 1.0.0
  */
-fun WindowJsonRpcServer.logMessage(type: MessageType, message: String) = logMessage(
+fun WindowJsonRpcServer.logMessage(
+    type: MessageType,
+    message: String
+): Unit = logMessage(
     params = LogMessageParams(type = type, message = message)
 )

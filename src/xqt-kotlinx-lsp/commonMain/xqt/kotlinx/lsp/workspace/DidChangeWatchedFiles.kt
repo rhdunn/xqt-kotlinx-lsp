@@ -128,7 +128,9 @@ fun WorkspaceNotification.didChangeWatchedFiles(handler: DidChangeWatchedFilesPa
  *
  * @since 1.0.0
  */
-fun WorkspaceJsonRpcServer.didChangeWatchedFiles(params: DidChangeWatchedFilesParams) = server.sendNotification(
+fun WorkspaceJsonRpcServer.didChangeWatchedFiles(
+    params: DidChangeWatchedFilesParams
+): Unit = server.sendNotification(
     method = WorkspaceNotification.DID_CHANGE_WATCHED_FILES,
     params = DidChangeWatchedFilesParams.serializeToJson(params)
 )
@@ -140,6 +142,8 @@ fun WorkspaceJsonRpcServer.didChangeWatchedFiles(params: DidChangeWatchedFilesPa
  *
  * @since 1.0.0
  */
-fun WorkspaceJsonRpcServer.didChangeWatchedFiles(changes: List<FileEvent>) = didChangeWatchedFiles(
+fun WorkspaceJsonRpcServer.didChangeWatchedFiles(
+    changes: List<FileEvent>
+): Unit = didChangeWatchedFiles(
     params = DidChangeWatchedFilesParams(changes = changes)
 )

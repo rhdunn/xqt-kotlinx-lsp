@@ -21,7 +21,7 @@ object LifecycleRequest {
      *
      * There is a separate exit notification that asks the server to exit.
      */
-    const val SHUTDOWN = "shutdown"
+    const val SHUTDOWN: String = "shutdown"
 }
 
 /**
@@ -33,5 +33,5 @@ object LifecycleNotification {
     /**
      * A notification to ask the server to exit its process.
      */
-    const val EXIT = "exit"
+    const val EXIT: String = "exit"
 }

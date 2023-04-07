@@ -68,7 +68,9 @@ fun TextDocumentNotification.didOpen(handler: DidOpenTextDocumentParams.() -> Un
  *
  * @since 1.0.0
  */
-fun TextDocumentJsonRpcServer.didOpen(params: DidOpenTextDocumentParams) = server.sendNotification(
+fun TextDocumentJsonRpcServer.didOpen(
+    params: DidOpenTextDocumentParams
+): Unit = server.sendNotification(
     method = TextDocumentNotification.DID_OPEN,
     params = DidOpenTextDocumentParams.serializeToJson(params)
 )
@@ -85,6 +87,9 @@ fun TextDocumentJsonRpcServer.didOpen(params: DidOpenTextDocumentParams) = serve
  *
  * @since 1.0.0
  */
-fun TextDocumentJsonRpcServer.didOpen(uri: String, text: String) = didOpen(
+fun TextDocumentJsonRpcServer.didOpen(
+    uri: String,
+    text: String
+): Unit = didOpen(
     params = DidOpenTextDocumentParams(uri = uri, text = text)
 )

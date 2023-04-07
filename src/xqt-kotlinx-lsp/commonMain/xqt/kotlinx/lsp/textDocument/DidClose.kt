@@ -31,7 +31,9 @@ fun TextDocumentNotification.didClose(handler: TextDocumentIdentifier.() -> Unit
  *
  * @since 1.0.0
  */
-fun TextDocumentJsonRpcServer.didClose(params: TextDocumentIdentifier) = server.sendNotification(
+fun TextDocumentJsonRpcServer.didClose(
+    params: TextDocumentIdentifier
+): Unit = server.sendNotification(
     method = TextDocumentNotification.DID_CLOSE,
     params = TextDocumentIdentifier.serializeToJson(params)
 )
@@ -47,6 +49,8 @@ fun TextDocumentJsonRpcServer.didClose(params: TextDocumentIdentifier) = server.
  *
  * @since 1.0.0
  */
-fun TextDocumentJsonRpcServer.didClose(uri: String) = didClose(
+fun TextDocumentJsonRpcServer.didClose(
+    uri: String
+): Unit = didClose(
     params = TextDocumentIdentifier(uri = uri)
 )
