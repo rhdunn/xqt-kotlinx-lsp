@@ -8,9 +8,9 @@ import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.lsp.types.TextDocumentPosition
 import xqt.kotlinx.lsp.types.WorkspaceEdit
-import xqt.kotlinx.rpc.json.protocol.params
-import xqt.kotlinx.rpc.json.protocol.sendResult
+import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
 /**
@@ -56,6 +56,34 @@ data class RenameParams(
 }
 
 /**
+ * The response of a rename request.
+ *
+ * @param id the request id
+ * @param result the result of the request
+ * @param error the error object in case the request failed
+ * @param jsonrpc the version of the JSON-RPC protocol
+ *
+ * @since 1.0.0
+ */
+data class RenameResponse(
+    override val id: JsonIntOrString?,
+    override val result: WorkspaceEdit?,
+    override val error: TypedErrorObject<JsonElement>?,
+    override val jsonrpc: String
+) : TypedResponseObject<WorkspaceEdit?, JsonElement> {
+    companion object : TypedResponseObjectConverter<WorkspaceEdit?, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<WorkspaceEdit?, JsonElement> {
+            return RenameResponse(
+                id = response.id,
+                result = response.result?.let { WorkspaceEdit.deserialize(it) },
+                error = response.error,
+                jsonrpc = response.jsonrpc
+            )
+        }
+    }
+}
+
+/**
  * The rename request is sent from the client to the server to do a workspace wide rename
  * of a symbol.
  *
@@ -67,3 +95,49 @@ fun TextDocumentRequest.rename(handler: RenameParams.() -> WorkspaceEdit) {
         request.sendResult(result, WorkspaceEdit)
     }
 }
+
+/**
+ * The rename request is sent from the client to the server to do a workspace wide rename
+ * of a symbol.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.rename(
+    params: RenameParams,
+    responseHandler: (TypedResponseObject<WorkspaceEdit?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = TextDocumentRequest.RENAME,
+    params = RenameParams.serializeToJson(params),
+    responseHandler = responseHandler,
+    responseObjectConverter = RenameResponse
+)
+
+/**
+ * The rename request is sent from the client to the server to do a workspace wide rename
+ * of a symbol.
+ *
+ * @param textDocument the document containing the symbol to rename
+ * @param position the position inside the text document
+ * @param newName the new name of the symbol
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.rename(
+    textDocument: TextDocumentIdentifier,
+    position: Position,
+    newName: String,
+    responseHandler: (TypedResponseObject<WorkspaceEdit?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = rename(
+    params = RenameParams(
+        textDocument = textDocument,
+        position = position,
+        newName = newName
+    ),
+    responseHandler = responseHandler
+)
