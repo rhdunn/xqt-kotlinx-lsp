@@ -8,10 +8,10 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.lsp.types.TextEdit
-import xqt.kotlinx.rpc.json.protocol.params
-import xqt.kotlinx.rpc.json.protocol.sendResult
+import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonPrimitiveValue
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
@@ -99,6 +99,34 @@ data class FormattingOptions(
 private val TextEditArray = JsonTypedArray(TextEdit)
 
 /**
+ * The response of a code action request.
+ *
+ * @param id the request id
+ * @param result the result of the request
+ * @param error the error object in case the request failed
+ * @param jsonrpc the version of the JSON-RPC protocol
+ *
+ * @since 1.0.0
+ */
+data class FormattingResponse(
+    override val id: JsonIntOrString?,
+    override val result: List<TextEdit>,
+    override val error: TypedErrorObject<JsonElement>?,
+    override val jsonrpc: String
+) : TypedResponseObject<List<TextEdit>, JsonElement> {
+    companion object : TypedResponseObjectConverter<List<TextEdit>, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<List<TextEdit>, JsonElement> {
+            return FormattingResponse(
+                id = response.id,
+                result = response.result?.let { TextEditArray.deserialize(it) } ?: listOf(),
+                error = response.error,
+                jsonrpc = response.jsonrpc
+            )
+        }
+    }
+}
+
+/**
  * The document formatting request is sent from the server to the client to format a whole
  * document.
  *
@@ -110,3 +138,46 @@ fun TextDocumentRequest.formatting(handler: DocumentFormattingParams.() -> List<
         request.sendResult(result, TextEditArray)
     }
 }
+
+/**
+ * The document formatting request is sent from the server to the client to format a whole
+ * document.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.formatting(
+    params: DocumentFormattingParams,
+    responseHandler: (TypedResponseObject<List<TextEdit>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = TextDocumentRequest.FORMATTING,
+    params = DocumentFormattingParams.serializeToJson(params),
+    responseHandler = responseHandler,
+    responseObjectConverter = FormattingResponse
+)
+
+/**
+ * The document formatting request is sent from the server to the client to format a whole
+ * document.
+ *
+ * @param textDocument the document in which the command was invoked
+ * @param options the format options
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.formatting(
+    textDocument: TextDocumentIdentifier,
+    options: FormattingOptions,
+    responseHandler: (TypedResponseObject<List<TextEdit>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = formatting(
+    params = DocumentFormattingParams(
+        textDocument = textDocument,
+        options = options
+    ),
+    responseHandler = responseHandler
+)
