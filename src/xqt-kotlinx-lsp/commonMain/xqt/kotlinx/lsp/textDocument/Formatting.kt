@@ -70,6 +70,18 @@ data class FormattingOptions(
      */
     private val options: Map<String, JsonPrimitive>
 ) : Map<String, JsonPrimitive> by options {
+    constructor(
+        tabSize: UInt,
+        insertSpaces: Boolean
+    ) : this(
+        tabSize = tabSize,
+        insertSpaces = insertSpaces,
+        options = mapOf(
+            "tabSize" to UInteger.serializeToJson(tabSize),
+            "insertSpaces" to JsonBoolean.serializeToJson(insertSpaces)
+        )
+    )
+
     companion object : JsonSerialization<FormattingOptions> {
         override fun serializeToJson(value: FormattingOptions): JsonObject = JsonObject(value.options)
 
