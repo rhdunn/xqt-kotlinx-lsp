@@ -2670,4 +2670,60 @@ class TextDocumentDSL {
     }
 
     // endregion
+    // region textDocument/formatting request
+
+    @Test
+    @DisplayName("supports textDocument/formatting requests")
+    fun supports_formatting_requests() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/formatting"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
+                    "options" to jsonObjectOf(
+                        "tabSize" to JsonPrimitive(4),
+                        "insertSpaces" to JsonPrimitive(false)
+                    )
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.formatting {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/formatting", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+
+                    assertEquals(2, options.size)
+                    assertEquals(4u, options.tabSize)
+                    assertEquals(false, options.insertSpaces)
+
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.formatting DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonArrayOf()
+            ),
+            client.receive()
+        )
+    }
+
+    // endregion
 }

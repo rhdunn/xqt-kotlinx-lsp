@@ -63,6 +63,12 @@ value class TextDocumentRequest(val request: RequestMessage) {
         const val DOCUMENT_SYMBOL: String = "textDocument/documentSymbol"
 
         /**
+         * The document formatting request is sent from the server to the client to format a whole
+         * document.
+         */
+        const val FORMATTING: String = "textDocument/formatting"
+
+        /**
          * The hover request is sent from the client to the server to request hover information at
          * a given text document position.
          */

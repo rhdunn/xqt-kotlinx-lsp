@@ -7,9 +7,13 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.lsp.types.TextEdit
+import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonPrimitiveValue
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
 /**
  * The `textDocument/formatting` request parameters.
@@ -77,5 +81,20 @@ data class FormattingOptions(
                 options = json.mapValues { (_, value) -> JsonPrimitiveValue.deserialize(value) }
             )
         }
+    }
+}
+
+private val TextEditArray = JsonTypedArray(TextEdit)
+
+/**
+ * The document formatting request is sent from the server to the client to format a whole
+ * document.
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentRequest.formatting(handler: DocumentFormattingParams.() -> List<TextEdit>) {
+    if (request.method == TextDocumentRequest.FORMATTING) {
+        val result = request.params(DocumentFormattingParams).handler()
+        request.sendResult(result, TextEditArray)
     }
 }
