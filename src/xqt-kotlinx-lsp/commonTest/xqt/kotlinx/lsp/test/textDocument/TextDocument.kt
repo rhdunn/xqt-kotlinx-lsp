@@ -3004,5 +3004,259 @@ class TextDocumentDSL {
         )
     }
 
+    @Test
+    @DisplayName("supports sending textDocument/rangeFormatting requests using parameter objects")
+    fun supports_sending_range_formatting_requests_using_parameter_objects() = testJsonRpc {
+        val id = client.textDocument.rangeFormatting(
+            params = DocumentRangeFormattingParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
+                range = Range(
+                    start = Position(5u, 12u),
+                    end = Position(5u, 21u)
+                ),
+                options = FormattingOptions(
+                    tabSize = 4u,
+                    insertSpaces = false
+                )
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/rangeFormatting"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
+                    "range" to jsonObjectOf(
+                        "start" to jsonObjectOf(
+                            "line" to JsonPrimitive(5),
+                            "character" to JsonPrimitive(12)
+                        ),
+                        "end" to jsonObjectOf(
+                            "line" to JsonPrimitive(5),
+                            "character" to JsonPrimitive(21)
+                        )
+                    ),
+                    "options" to jsonObjectOf(
+                        "tabSize" to JsonPrimitive(4),
+                        "insertSpaces" to JsonPrimitive(false)
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/rangeFormatting request callback receiving a result using parameter objects")
+    fun supports_range_formatting_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.rangeFormatting(
+            params = DocumentRangeFormattingParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
+                range = Range(
+                    start = Position(5u, 12u),
+                    end = Position(5u, 21u)
+                ),
+                options = FormattingOptions(
+                    tabSize = 4u,
+                    insertSpaces = false
+                )
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.rangeFormatting {
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.rangeFormatting DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/rangeFormatting" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.rangeFormatting DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/rangeFormatting request callback receiving an error using parameter objects")
+    fun supports_range_formatting_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.rangeFormatting(
+            params = DocumentRangeFormattingParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
+                range = Range(
+                    start = Position(5u, 12u),
+                    end = Position(5u, 21u)
+                ),
+                options = FormattingOptions(
+                    tabSize = 4u,
+                    insertSpaces = false
+                )
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.rangeFormatting {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.rangeFormatting DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/rangeFormatting" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.rangeFormatting DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/rangeFormatting requests using function parameters")
+    fun supports_sending_range_formatting_requests_using_function_parameters() = testJsonRpc {
+        val id = client.textDocument.rangeFormatting(
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
+            range = Range(
+                start = Position(5u, 12u),
+                end = Position(5u, 21u)
+            ),
+            options = FormattingOptions(
+                tabSize = 4u,
+                insertSpaces = false
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/rangeFormatting"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
+                    "range" to jsonObjectOf(
+                        "start" to jsonObjectOf(
+                            "line" to JsonPrimitive(5),
+                            "character" to JsonPrimitive(12)
+                        ),
+                        "end" to jsonObjectOf(
+                            "line" to JsonPrimitive(5),
+                            "character" to JsonPrimitive(21)
+                        )
+                    ),
+                    "options" to jsonObjectOf(
+                        "tabSize" to JsonPrimitive(4),
+                        "insertSpaces" to JsonPrimitive(false)
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/rangeFormatting request callback receiving a result using function parameters")
+    fun supports_range_formatting_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.rangeFormatting(
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
+            range = Range(
+                start = Position(5u, 12u),
+                end = Position(5u, 21u)
+            ),
+            options = FormattingOptions(
+                tabSize = 4u,
+                insertSpaces = false
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.rangeFormatting {
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.rangeFormatting DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/rangeFormatting" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.rangeFormatting DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/rangeFormatting request callback receiving an error using function parameters")
+    fun supports_range_formatting_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.rangeFormatting(
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
+            range = Range(
+                start = Position(5u, 12u),
+                end = Position(5u, 21u)
+            ),
+            options = FormattingOptions(
+                tabSize = 4u,
+                insertSpaces = false
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.rangeFormatting {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.rangeFormatting DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/rangeFormatting" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.rangeFormatting DSL handler should have been called.")
+    }
+
     // endregion
 }

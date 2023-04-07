@@ -7,9 +7,12 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.lsp.types.TextEdit
+import xqt.kotlinx.rpc.json.protocol.TypedResponseObject
 import xqt.kotlinx.rpc.json.protocol.params
+import xqt.kotlinx.rpc.json.protocol.sendRequest
 import xqt.kotlinx.rpc.json.protocol.sendResult
 import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
 /**
@@ -65,3 +68,49 @@ fun TextDocumentRequest.rangeFormatting(handler: DocumentRangeFormattingParams.(
         request.sendResult(result, TextEditArray)
     }
 }
+
+/**
+ * The document range formatting request is sent from the client to the server to format a
+ * given range in a document.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.rangeFormatting(
+    params: DocumentRangeFormattingParams,
+    responseHandler: (TypedResponseObject<List<TextEdit>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = TextDocumentRequest.RANGE_FORMATTING,
+    params = DocumentRangeFormattingParams.serializeToJson(params),
+    responseHandler = responseHandler,
+    responseObjectConverter = FormattingResponse
+)
+
+/**
+ * The document range formatting request is sent from the client to the server to format a
+ * given range in a document.
+ *
+ * @param textDocument the document in which the command was invoked
+ * @param range rhe range to format
+ * @param options the format options
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 1.0.0
+ */
+fun TextDocumentJsonRpcServer.rangeFormatting(
+    textDocument: TextDocumentIdentifier,
+    range: Range,
+    options: FormattingOptions,
+    responseHandler: (TypedResponseObject<List<TextEdit>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = rangeFormatting(
+    params = DocumentRangeFormattingParams(
+        textDocument = textDocument,
+        range = range,
+        options = options
+    ),
+    responseHandler = responseHandler
+)
