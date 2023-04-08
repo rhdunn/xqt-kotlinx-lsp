@@ -1,9 +1,23 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.window
 
+import xqt.kotlinx.lsp.base.RequestMessage
 import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
 import xqt.kotlinx.rpc.json.protocol.Notification
 import kotlin.jvm.JvmInline
+
+/**
+ * A request in the `window/` namespace.
+ *
+ * Note that this does not check the namespace. Therefore, method DSLs need to
+ * check the fully qualified method name.
+ *
+ * @param request the underlying request message
+ *
+ * @since 2.0.0
+ */
+@JvmInline
+value class WindowRequest(val request: RequestMessage)
 
 /**
  * A notification in the `window/` namespace.
@@ -42,6 +56,17 @@ value class WindowNotification(val notification: Notification) {
  */
 @JvmInline
 value class WindowJsonRpcServer(val server: JsonRpcServer)
+
+/**
+ * A request in the `window/` namespace.
+ *
+ * Note that this does not check the namespace. Therefore, method DSLs need to
+ * check the fully qualified method name.
+ *
+ * @since 2.0.0
+ */
+val RequestMessage.window: WindowRequest
+    get() = WindowRequest(this)
 
 /**
  * A notification in the `window/` namespace.
