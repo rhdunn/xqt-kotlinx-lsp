@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+// Copyright (C) 2022-2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.test.lifecycle
 
 import kotlinx.serialization.json.JsonNull
@@ -28,6 +28,7 @@ class TheInitializeRequestParameters {
         val params = InitializeParams.deserialize(json)
         assertEquals(null, params.processId)
         assertEquals(null, params.rootPath)
+        assertEquals(null, params.initializationOptions)
         assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
@@ -47,6 +48,7 @@ class TheInitializeRequestParameters {
         val params = InitializeParams.deserialize(json)
         assertEquals(1234, params.processId)
         assertEquals(null, params.rootPath)
+        assertEquals(null, params.initializationOptions)
         assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
@@ -66,6 +68,28 @@ class TheInitializeRequestParameters {
         val params = InitializeParams.deserialize(json)
         assertEquals(null, params.processId)
         assertEquals("file:///home/lorem/ipsum.py", params.rootPath)
+        assertEquals(null, params.initializationOptions)
+        assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+
+        assertEquals(json, InitializeParams.serializeToJson(params))
+    }
+
+    @Test
+    @DisplayName("supports the initialization options property")
+    fun supports_the_initialization_options_property() {
+        val json = jsonObjectOf(
+            "processId" to JsonNull,
+            "rootPath" to JsonNull,
+            "initializationOptions" to JsonPrimitive("test"),
+            "capabilities" to jsonObjectOf(
+                "test" to JsonPrimitive("lorem ipsum")
+            )
+        )
+
+        val params = InitializeParams.deserialize(json)
+        assertEquals(null, params.processId)
+        assertEquals(null, params.rootPath)
+        assertEquals(JsonPrimitive("test"), params.initializationOptions)
         assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 
         assertEquals(json, InitializeParams.serializeToJson(params))

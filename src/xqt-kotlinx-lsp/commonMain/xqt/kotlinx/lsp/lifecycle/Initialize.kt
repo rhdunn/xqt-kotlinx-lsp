@@ -4,10 +4,7 @@ package xqt.kotlinx.lsp.lifecycle
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
-import xqt.kotlinx.lsp.base.ErrorCodes
-import xqt.kotlinx.lsp.base.Integer
-import xqt.kotlinx.lsp.base.LSPObject
-import xqt.kotlinx.lsp.base.RequestMessage
+import xqt.kotlinx.lsp.base.*
 import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
@@ -38,6 +35,13 @@ data class InitializeParams(
     val rootPath: String? = null,
 
     /**
+     * User provided initialization options.
+     *
+     * @since 2.0.0
+     */
+    val initializationOptions: JsonElement? = null,
+
+    /**
      * The capabilities provided by the client (editor).
      */
     val capabilities: JsonObject
@@ -46,6 +50,7 @@ data class InitializeParams(
         override fun serializeToJson(value: InitializeParams): JsonObject = buildJsonObject {
             putNullable("processId", value.processId, Integer)
             putNullable("rootPath", value.rootPath, JsonString)
+            putOptional("initializationOptions", value.initializationOptions, LSPAny)
             put("capabilities", value.capabilities, LSPObject)
         }
 
@@ -54,6 +59,7 @@ data class InitializeParams(
             else -> InitializeParams(
                 processId = json.getNullable("processId", Integer),
                 rootPath = json.getNullable("rootPath", JsonString),
+                initializationOptions = json.getOptional("initializationOptions", LSPAny),
                 capabilities = json.get("capabilities", LSPObject)
             )
         }

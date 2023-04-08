@@ -20,6 +20,9 @@ Types:
 - `TextDocumentItem`
 - `VersionedTextDocumentIdentifier`
 
+Parameters:
+- `InitializeParams` -- Add an `initializeOptions` parameter.
+
 ### Changed
 
 - Updated the API documentation.
@@ -34,7 +37,7 @@ Notifications and Requests:
 - `textDocument/signatureHelp` -- Replace the `uri` parameter with `textDocument`.
 
 Parameters:
-- `InitializeParams` -- make `processId` nullable
+- `InitializeParams` -- Make the `processId`parameter nullable.
 - `TextDocumentPositionParams` -- Replace the `uri` parameter with `textDocument`.
 
 Types:
