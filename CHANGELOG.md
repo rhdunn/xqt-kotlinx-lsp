@@ -18,6 +18,7 @@ Notifications and Requests:
 Types:
 - `TextEditArray`
 - `TextDocumentItem`
+- `VersionedTextDocumentIdentifier`
 
 ### Changed
 
