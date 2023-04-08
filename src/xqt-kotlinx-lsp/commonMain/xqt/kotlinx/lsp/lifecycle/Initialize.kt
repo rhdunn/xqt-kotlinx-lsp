@@ -292,6 +292,12 @@ data class InitializeResponse(
 /**
  * The initialize request is sent as the first request from the client to the server.
  *
+ * If the server receives request or notification before the `initialize` request it
+ * should act as follows:
+ * * for a request the response should be errored with `code: -32001`.
+ *   The message can be picked by the server.
+ * * notifications should be dropped.
+ *
  * @return an initialize result response
  *
  * @since 1.0.0
@@ -307,6 +313,12 @@ fun RequestMessage.initialize(
 
 /**
  * Send an initialize request to the server.
+ *
+ * If the server receives request or notification before the `initialize` request it
+ * should act as follows:
+ * * for a request the response should be errored with `code: -32001`.
+ *   The message can be picked by the server.
+ * * notifications should be dropped.
  *
  * @param params the request parameters
  * @param responseHandler the callback to process the response for the request
@@ -328,6 +340,12 @@ fun JsonRpcServer.initialize(
  * Send an initialize request to the server.
  *
  * The `rootPath` is null if no folder is open.
+ *
+ * If the server receives request or notification before the `initialize` request it
+ * should act as follows:
+ * * for a request the response should be errored with `code: -32001`.
+ *   The message can be picked by the server.
+ * * notifications should be dropped.
  *
  * @param processId the process ID of the parent process that started the server
  * @param rootPath the rootPath of the workspace

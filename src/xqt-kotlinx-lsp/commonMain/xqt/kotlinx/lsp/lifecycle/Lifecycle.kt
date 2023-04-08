@@ -9,6 +9,12 @@ package xqt.kotlinx.lsp.lifecycle
 object LifecycleRequest {
     /**
      * The initialize request is sent as the first request from the client to the server.
+     *
+     * If the server receives request or notification before the `initialize` request it
+     * should act as follows:
+     * * for a request the response should be errored with `code: -32001`.
+     *   The message can be picked by the server.
+     * * notifications should be dropped.
      */
     const val INITIALIZE: String = "initialize"
 
