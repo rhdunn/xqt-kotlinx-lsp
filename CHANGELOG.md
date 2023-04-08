@@ -38,6 +38,7 @@ Notifications and Requests:
 
 Parameters:
 - `InitializeParams` -- Make the `processId`parameter nullable.
+- `InitializeParams` -- Make `capabilities` an instance of `ClientCapabilities`.
 - `TextDocumentPositionParams` -- Replace the `uri` parameter with `textDocument`.
 
 Types:

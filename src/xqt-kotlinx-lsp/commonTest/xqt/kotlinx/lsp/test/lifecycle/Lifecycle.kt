@@ -51,7 +51,7 @@ class LifecycleDSL {
 
                     assertEquals(1234, processId)
                     assertEquals(null, rootPath)
-                    assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), capabilities)
+                    assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), capabilities)
 
                     InitializeResult(
                         capabilities = ServerCapabilities(
@@ -108,7 +108,7 @@ class LifecycleDSL {
 
                     assertEquals(1234, processId)
                     assertEquals(null, rootPath)
-                    assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), capabilities)
+                    assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), capabilities)
 
                     throw InitializeError(message = "Lorem ipsum", retry = true)
                 }
@@ -182,7 +182,7 @@ class LifecycleDSL {
         val id = client.initialize(
             params = InitializeParams(
                 processId = 1234,
-                capabilities = jsonObjectOf(
+                capabilities = ClientCapabilities(
                     "test" to JsonPrimitive("lorem ipsum")
                 )
             )
@@ -214,7 +214,7 @@ class LifecycleDSL {
         client.initialize(
             params = InitializeParams(
                 processId = 1234,
-                capabilities = jsonObjectOf(
+                capabilities = ClientCapabilities(
                     "test" to JsonPrimitive("lorem ipsum")
                 )
             )
@@ -256,7 +256,7 @@ class LifecycleDSL {
         client.initialize(
             params = InitializeParams(
                 processId = 1234,
-                capabilities = jsonObjectOf(
+                capabilities = ClientCapabilities(
                     "test" to JsonPrimitive("lorem ipsum")
                 )
             )
@@ -288,7 +288,7 @@ class LifecycleDSL {
     fun supports_sending_initialize_requests_using_function_parameters() = testJsonRpc {
         val id = client.initialize(
             processId = 1234,
-            capabilities = jsonObjectOf(
+            capabilities = ClientCapabilities(
                 "test" to JsonPrimitive("lorem ipsum")
             )
         )
@@ -318,7 +318,7 @@ class LifecycleDSL {
 
         client.initialize(
             processId = 1234,
-            capabilities = jsonObjectOf(
+            capabilities = ClientCapabilities(
                 "test" to JsonPrimitive("lorem ipsum")
             )
         ) {
@@ -358,7 +358,7 @@ class LifecycleDSL {
 
         client.initialize(
             processId = 1234,
-            capabilities = jsonObjectOf(
+            capabilities = ClientCapabilities(
                 "test" to JsonPrimitive("lorem ipsum")
             )
         ) {

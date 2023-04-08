@@ -44,14 +44,14 @@ data class InitializeParams(
     /**
      * The capabilities provided by the client (editor).
      */
-    val capabilities: JsonObject
+    val capabilities: ClientCapabilities
 ) {
     companion object : JsonSerialization<InitializeParams> {
         override fun serializeToJson(value: InitializeParams): JsonObject = buildJsonObject {
             putNullable("processId", value.processId, Integer)
             putNullable("rootPath", value.rootPath, JsonString)
             putOptional("initializationOptions", value.initializationOptions, LSPAny)
-            put("capabilities", value.capabilities, LSPObject)
+            put("capabilities", value.capabilities, ClientCapabilities)
         }
 
         override fun deserialize(json: JsonElement): InitializeParams = when (json) {
@@ -60,7 +60,7 @@ data class InitializeParams(
                 processId = json.getNullable("processId", Integer),
                 rootPath = json.getNullable("rootPath", JsonString),
                 initializationOptions = json.getOptional("initializationOptions", LSPAny),
-                capabilities = json.get("capabilities", LSPObject)
+                capabilities = json.get("capabilities", ClientCapabilities)
             )
         }
     }
@@ -113,6 +113,33 @@ data class InitializeError(
             !is JsonObject -> unsupportedKindType(json)
             else -> InitializeError(
                 retry = json.get("retry", JsonBoolean)
+            )
+        }
+    }
+}
+
+/**
+ * Value-object describing what options formatting should use.
+ *
+ * @since 1.0.0
+ */
+data class ClientCapabilities(
+    /**
+     * Signature for further options.
+     *
+     * In this implementation all options are included in the map.
+     */
+    private val options: Map<String, JsonElement> = mapOf()
+) : Map<String, JsonElement> by options {
+    constructor(vararg options: Pair<String, JsonElement>) : this(options = jsonObjectOf(*options))
+
+    companion object : JsonSerialization<ClientCapabilities> {
+        override fun serializeToJson(value: ClientCapabilities): JsonObject = JsonObject(value.options)
+
+        override fun deserialize(json: JsonElement): ClientCapabilities = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> ClientCapabilities(
+                options = json
             )
         }
     }
@@ -370,7 +397,7 @@ fun JsonRpcServer.initialize(
 fun JsonRpcServer.initialize(
     processId: Int? = null,
     rootPath: String? = null,
-    capabilities: JsonObject,
+    capabilities: ClientCapabilities,
     responseHandler: (TypedResponseObject<InitializeResult?, InitializeError>.() -> Unit)? = null
 ): JsonIntOrString = initialize(
     params = InitializeParams(

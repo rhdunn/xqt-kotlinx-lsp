@@ -3,6 +3,7 @@ package xqt.kotlinx.lsp.test.lifecycle
 
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.lifecycle.ClientCapabilities
 import xqt.kotlinx.lsp.lifecycle.InitializeParams
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -29,7 +30,7 @@ class TheInitializeRequestParameters {
         assertEquals(null, params.processId)
         assertEquals(null, params.rootPath)
         assertEquals(null, params.initializationOptions)
-        assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
     }
@@ -49,7 +50,7 @@ class TheInitializeRequestParameters {
         assertEquals(1234, params.processId)
         assertEquals(null, params.rootPath)
         assertEquals(null, params.initializationOptions)
-        assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
     }
@@ -69,7 +70,7 @@ class TheInitializeRequestParameters {
         assertEquals(null, params.processId)
         assertEquals("file:///home/lorem/ipsum.py", params.rootPath)
         assertEquals(null, params.initializationOptions)
-        assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
     }
@@ -90,7 +91,7 @@ class TheInitializeRequestParameters {
         assertEquals(null, params.processId)
         assertEquals(null, params.rootPath)
         assertEquals(JsonPrimitive("test"), params.initializationOptions)
-        assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
     }
