@@ -15,6 +15,10 @@ specification.
 Notifications and Requests:
 - `$/cancelRequest`
 
+### Changed
+
+- Updated the API documentation.
+
 ## [1.0.1] - 2023-05-16
 
 ### Fixed

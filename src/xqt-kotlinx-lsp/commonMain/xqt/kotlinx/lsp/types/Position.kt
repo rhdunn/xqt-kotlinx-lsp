@@ -14,6 +14,8 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  * Position in a text document expressed as zero-based line and zero-based
  * character offset.
  *
+ * A position is between two characters like an 'insert' cursor in a editor.
+ *
  * @since 1.0.0
  */
 data class Position(
