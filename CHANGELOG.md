@@ -17,6 +17,7 @@ Notifications and Requests:
 
 Types:
 - `TextEditArray`
+- `TextDocumentItem`
 
 ### Changed
 
