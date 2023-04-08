@@ -86,6 +86,31 @@ value class MessageType(val type: Int) {
 }
 
 /**
+ * A message action item.
+ *
+ * @since 2.0.0
+ */
+data class MessageActionItem(
+    /**
+     * A short title like 'Retry', 'Open Log' etc.
+     */
+    val title: String
+) {
+    companion object : JsonSerialization<MessageActionItem> {
+        override fun serializeToJson(value: MessageActionItem): JsonObject = buildJsonObject {
+            put("title", value.title, JsonString)
+        }
+
+        override fun deserialize(json: JsonElement): MessageActionItem = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> MessageActionItem(
+                title = json.get("title", JsonString)
+            )
+        }
+    }
+}
+
+/**
  * Ask the client to display a particular message in the user interface.
  *
  * @since 1.0.0
