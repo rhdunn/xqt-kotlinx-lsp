@@ -7,12 +7,10 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
-import xqt.kotlinx.rpc.json.serialization.JsonSerialization
-import xqt.kotlinx.rpc.json.serialization.get
-import xqt.kotlinx.rpc.json.serialization.put
+import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
-import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import kotlin.jvm.JvmInline
 
 /**
@@ -42,6 +40,45 @@ data class ShowMessageParams(
             else -> ShowMessageParams(
                 type = json.get("type", MessageType),
                 message = json.get("message", JsonString)
+            )
+        }
+    }
+}
+
+/**
+ * Parameters for the `window/showMessageRequest` request.
+ *
+ * @since 2.0.0
+ */
+data class ShowMessageRequestParams(
+    /**
+     * The message type.
+     */
+    val type: MessageType,
+
+    /**
+     * The actual message.
+     */
+    val message: String,
+
+    /**
+     * The message action items to present.
+     */
+    val actions: List<MessageActionItem>
+) {
+    companion object : JsonSerialization<ShowMessageRequestParams> {
+        override fun serializeToJson(value: ShowMessageRequestParams): JsonObject = buildJsonObject {
+            put("type", value.type, MessageType)
+            put("message", value.message, JsonString)
+            putOptional("actions", value.actions, MessageActionItemArray)
+        }
+
+        override fun deserialize(json: JsonElement): ShowMessageRequestParams = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> ShowMessageRequestParams(
+                type = json.get("type", MessageType),
+                message = json.get("message", JsonString),
+                actions = json.getOptional("actions", MessageActionItemArray)
             )
         }
     }
@@ -109,6 +146,8 @@ data class MessageActionItem(
         }
     }
 }
+
+private val MessageActionItemArray = JsonTypedArray(MessageActionItem)
 
 /**
  * Ask the client to display a particular message in the user interface.
