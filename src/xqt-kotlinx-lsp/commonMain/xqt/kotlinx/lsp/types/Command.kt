@@ -12,9 +12,10 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonString
 /**
  * Represents a reference to a command.
  *
- * Provides a title which will be used to represent a command in the UI and,
- * optionally, an array of arguments which will be passed to the command
- * handler function when invoked.
+ * Provides a title which will be used to represent a command in the UI. Commands
+ * are identified using a string identifier and the protocol currently doesn't
+ * specify a set of well known commands. So executing a command requires some tool
+ * extension code.
  *
  * @since 1.0.0
  */
