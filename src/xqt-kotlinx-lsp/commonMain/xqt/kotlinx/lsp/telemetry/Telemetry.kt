@@ -15,7 +15,15 @@ import kotlin.jvm.JvmInline
  * @since 2.0.0
  */
 @JvmInline
-value class TelemetryNotification(val notification: Notification)
+value class TelemetryNotification(val notification: Notification) {
+    companion object {
+        /**
+         * The telemetry notification is sent from the server to the client to ask the
+         * client to log a telemetry event.
+         */
+        const val EVENT: String = "telemetry/event"
+    }
+}
 
 /**
  * A notification in the `telemetry/` namespace.
