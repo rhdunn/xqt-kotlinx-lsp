@@ -33,10 +33,13 @@ Notifications and Requests:
 - `textDocument/references` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/signatureHelp` -- Replace the `uri` parameter with `textDocument`.
 
+Parameters:
+- `InitializeParams` -- make `processId` nullable
+- `TextDocumentPositionParams` -- Replace the `uri` parameter with `textDocument`.
+
 Types:
 - Renamed `TextDocumentPosition` to `TextDocumentPositionParams`.
 - Don't implement `TextDocumentIdentifier` on `FileEvent`.
-- `TextDocumentPositionParams` -- Replace the `uri` parameter with `textDocument`.
 
 ## [1.0.1] - 2023-05-16
 

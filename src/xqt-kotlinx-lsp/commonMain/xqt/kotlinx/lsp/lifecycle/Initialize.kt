@@ -23,8 +23,12 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonString
 data class InitializeParams(
     /**
      * The process ID of the parent process that started the server.
+     *
+     * In LSP 2.0.0 this is null if the process has not been started by another process.
+     *
+     * If the parent process is not alive then the server should exit (see exit notification) its process.
      */
-    val processId: Int,
+    val processId: Int? = null,
 
     /**
      * The rootPath of the workspace.
@@ -40,7 +44,7 @@ data class InitializeParams(
 ) {
     companion object : JsonSerialization<InitializeParams> {
         override fun serializeToJson(value: InitializeParams): JsonObject = buildJsonObject {
-            put("processId", value.processId, Integer)
+            putNullable("processId", value.processId, Integer)
             putNullable("rootPath", value.rootPath, JsonString)
             put("capabilities", value.capabilities, LSPObject)
         }
@@ -48,7 +52,7 @@ data class InitializeParams(
         override fun deserialize(json: JsonElement): InitializeParams = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> InitializeParams(
-                processId = json.get("processId", Integer),
+                processId = json.getNullable("processId", Integer),
                 rootPath = json.getNullable("rootPath", JsonString),
                 capabilities = json.get("capabilities", LSPObject)
             )
@@ -339,6 +343,8 @@ fun JsonRpcServer.initialize(
 /**
  * Send an initialize request to the server.
  *
+ * In LSP 2.0.0 `processId` is null if the process has not been started by another process.
+ *
  * The `rootPath` is null if no folder is open.
  *
  * If the server receives request or notification before the `initialize` request it
@@ -356,7 +362,7 @@ fun JsonRpcServer.initialize(
  * @since 1.0.0
  */
 fun JsonRpcServer.initialize(
-    processId: Int,
+    processId: Int? = null,
     rootPath: String? = null,
     capabilities: JsonObject,
     responseHandler: (TypedResponseObject<InitializeResult?, InitializeError>.() -> Unit)? = null

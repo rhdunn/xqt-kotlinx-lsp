@@ -18,6 +18,25 @@ class TheInitializeRequestParameters {
     @DisplayName("supports the non-optional properties")
     fun supports_the_non_optional_properties() {
         val json = jsonObjectOf(
+            "processId" to JsonNull,
+            "rootPath" to JsonNull,
+            "capabilities" to jsonObjectOf(
+                "test" to JsonPrimitive("lorem ipsum")
+            )
+        )
+
+        val params = InitializeParams.deserialize(json)
+        assertEquals(null, params.processId)
+        assertEquals(null, params.rootPath)
+        assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+
+        assertEquals(json, InitializeParams.serializeToJson(params))
+    }
+
+    @Test
+    @DisplayName("supports the process ID property")
+    fun supports_the_process_id_property() {
+        val json = jsonObjectOf(
             "processId" to JsonPrimitive(1234),
             "rootPath" to JsonNull,
             "capabilities" to jsonObjectOf(
@@ -37,7 +56,7 @@ class TheInitializeRequestParameters {
     @DisplayName("supports the root path property")
     fun supports_the_root_path_property() {
         val json = jsonObjectOf(
-            "processId" to JsonPrimitive(1234),
+            "processId" to JsonNull,
             "rootPath" to JsonPrimitive("file:///home/lorem/ipsum.py"),
             "capabilities" to jsonObjectOf(
                 "test" to JsonPrimitive("lorem ipsum")
@@ -45,7 +64,7 @@ class TheInitializeRequestParameters {
         )
 
         val params = InitializeParams.deserialize(json)
-        assertEquals(1234, params.processId)
+        assertEquals(null, params.processId)
         assertEquals("file:///home/lorem/ipsum.py", params.rootPath)
         assertEquals(jsonObjectOf("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 
