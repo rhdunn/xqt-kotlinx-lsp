@@ -35,7 +35,7 @@ value class TextDocumentSyncKind(val kind: Int) {
 
         /**
          * Documents are synced by sending the full content on open. After that only incremental
-         * updates to the document are send.
+         * updates to the document are sent.
          */
         val Incremental: TextDocumentSyncKind = TextDocumentSyncKind(2)
     }
