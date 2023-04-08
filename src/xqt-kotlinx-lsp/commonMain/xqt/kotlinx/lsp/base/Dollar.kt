@@ -1,11 +1,12 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.base
 
+import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
 import xqt.kotlinx.rpc.json.protocol.Notification
 import kotlin.jvm.JvmInline
 
 /**
- * A notification in the `dollar/` namespace.
+ * A notification in the `$/` namespace.
  *
  * Note that this does not check the namespace. Therefore, method DSLs need to
  * check the fully qualified method name.
@@ -30,7 +31,20 @@ value class DollarNotification(val notification: Notification) {
 }
 
 /**
- * A notification in the `dollar/` namespace.
+ * A method in the `$/` namespace.
+ *
+ * Note that this does not check the namespace. Therefore, method wrappers need
+ * to specify the fully qualified method name.
+ *
+ * @param server the underlying JSON-RPC server
+ *
+ * @since 2.0.0
+ */
+@JvmInline
+value class DollarJsonRpcServer(val server: JsonRpcServer)
+
+/**
+ * A notification in the `$/` namespace.
  *
  * Note that this does not check the namespace. Therefore, method DSLs need to
  * check the fully qualified method name.
@@ -39,3 +53,14 @@ value class DollarNotification(val notification: Notification) {
  */
 val Notification.dollar: DollarNotification
     get() = DollarNotification(this)
+
+/**
+ * A method in the `$/` namespace.
+ *
+ * Note that this does not check the namespace. Therefore, method wrappers need
+ * to specify the fully qualified method name.
+ *
+ * @since 2.0.0
+ */
+val JsonRpcServer.dollar: DollarJsonRpcServer
+    get() = DollarJsonRpcServer(this)
