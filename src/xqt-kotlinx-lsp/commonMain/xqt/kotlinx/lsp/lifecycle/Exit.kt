@@ -9,6 +9,9 @@ import xqt.kotlinx.rpc.json.protocol.sendNotification
 /**
  * A notification to ask the server to exit its process.
  *
+ * The server should exit with `success` code 0 if the shutdown request has been received
+ * before; otherwise with `error` code 1.
+ *
  * @since 1.0.0
  */
 fun NotificationMessage.exit(handler: () -> Unit): Unit = method(
@@ -17,7 +20,10 @@ fun NotificationMessage.exit(handler: () -> Unit): Unit = method(
 )
 
 /**
- * Send an exit notification to the server.
+ * A notification to ask the server to exit its process.
+ *
+ * The server should exit with `success` code 0 if the shutdown request has been received
+ * before; otherwise with `error` code 1.
  *
  * @since 1.0.0
  */
