@@ -12,6 +12,8 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 /**
  * A range in a text document expressed as (zero-based) start and end positions.
  *
+ * A range is comparable to a selection in an editor. Therefore, the end position is exclusive.
+ *
  * @since 1.0.0
  */
 data class Range(
