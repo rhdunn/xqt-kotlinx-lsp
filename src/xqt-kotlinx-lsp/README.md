@@ -17,6 +17,9 @@ Lifecycle request and notification messages, and types.
 # Package xqt.kotlinx.lsp.misc
 Communication channel construction.
 
+# Package xqt.kotlinx.lsp.telemetry
+Telemetry request and notification messages, and types.
+
 # Package xqt.kotlinx.lsp.textDocument
 Text document request and notification messages, and types.
 
