@@ -15,6 +15,7 @@ specification.
 Notifications and Requests:
 - `$/cancelRequest`
 - `window/showMessageRequest`
+- `telemetry/event`
 
 Types:
 - `TextEditArray`

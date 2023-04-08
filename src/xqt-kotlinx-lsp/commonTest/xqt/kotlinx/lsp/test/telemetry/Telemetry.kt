@@ -46,5 +46,26 @@ class TelemetryDSL {
         assertEquals(true, called, "The telemetry.event DSL should have been called.")
     }
 
+    @Test
+    @DisplayName("supports sending telemetry/event notifications using parameter objects")
+    fun supports_sending_event_notifications_using_parameter_objects() = testJsonRpc {
+        server.telemetry.event(
+            params = jsonObjectOf(
+                "value" to JsonPrimitive("test")
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("telemetry/event"),
+                "params" to jsonObjectOf(
+                    "value" to JsonPrimitive("test")
+                )
+            ),
+            client.receive()
+        )
+    }
+
     // endregion
 }
