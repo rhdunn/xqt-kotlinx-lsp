@@ -6,7 +6,10 @@ import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.window.*
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
 import xqt.kotlinx.rpc.json.protocol.notification
+import xqt.kotlinx.rpc.json.protocol.request
+import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -85,6 +88,68 @@ class WindowDSL {
                 "params" to jsonObjectOf(
                     "type" to JsonPrimitive(2),
                     "message" to JsonPrimitive("Lorem Ipsum")
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    // endregion
+    // region window/showMessageRequest request
+
+    @Test
+    @DisplayName("supports window/showMessageRequest requests")
+    fun supports_show_message_requests() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("window/showMessageRequest"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "type" to JsonPrimitive(2),
+                    "message" to JsonPrimitive("Lorem Ipsum"),
+                    "actions" to jsonArrayOf(
+                        jsonObjectOf(
+                            "title" to JsonPrimitive("Yes")
+                        ),
+                        jsonObjectOf(
+                            "title" to JsonPrimitive("No")
+                        )
+                    )
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                window.showMessage {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("window/showMessageRequest", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals(MessageType.Warning, type)
+                    assertEquals("Lorem Ipsum", message)
+
+                    assertEquals(2, actions.size)
+                    assertEquals("Yes", actions[0].title)
+                    assertEquals("No", actions[1].title)
+
+                    actions[0]
+                }
+            }
+        }
+
+        assertEquals(true, called, "The window.showMessage DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonObjectOf(
+                    "title" to JsonPrimitive("Yes")
                 )
             ),
             client.receive()

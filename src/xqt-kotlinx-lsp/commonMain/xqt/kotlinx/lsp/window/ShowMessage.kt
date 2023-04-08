@@ -165,6 +165,23 @@ fun WindowNotification.showMessage(
 /**
  * Ask the client to display a particular message in the user interface.
  *
+ * In addition to the show message notification the request allows to pass actions
+ * and to wait for an answer from the client.
+ *
+ * @since 2.0.0
+ */
+fun WindowRequest.showMessage(
+    handler: ShowMessageRequestParams.() -> MessageActionItem
+): Unit = request.method(
+    method = WindowRequest.SHOW_MESSAGE,
+    handler = handler,
+    paramsSerializer = ShowMessageRequestParams,
+    resultSerializer = MessageActionItem
+)
+
+/**
+ * Ask the client to display a particular message in the user interface.
+ *
  * @param params the notification parameters
  *
  * @since 1.0.0

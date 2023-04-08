@@ -17,7 +17,17 @@ import kotlin.jvm.JvmInline
  * @since 2.0.0
  */
 @JvmInline
-value class WindowRequest(val request: RequestMessage)
+value class WindowRequest(val request: RequestMessage) {
+    companion object {
+        /**
+         * Ask the client to display a particular message in the user interface.
+         *
+         * In addition to the show message notification the request allows to pass actions
+         * and to wait for an answer from the client.
+         */
+        const val SHOW_MESSAGE: String = "window/showMessageRequest"
+    }
+}
 
 /**
  * A notification in the `window/` namespace.
