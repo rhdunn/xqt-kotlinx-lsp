@@ -1,6 +1,6 @@
 # Module xqt-kotlinx-lsp
-Language Server Protocol (LSP) 1.0.0 implementation, as per
-[LSP 1.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-1-x.md).
+Language Server Protocol (LSP) 2.0.0 implementation, as per
+[LSP 2.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-2-x.md).
 
 # Package xqt.kotlinx.lsp.base
 Base types and messages used by the protocol.

@@ -2,6 +2,7 @@
 package xqt.kotlinx.lsp.test.base
 
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.base.CancelParams
 import xqt.kotlinx.lsp.base.cancelRequest
 import xqt.kotlinx.lsp.base.dollar
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
@@ -44,6 +45,46 @@ class TextDollarDSL {
         }
 
         assertEquals(true, called, "The dollar.cancelRequest DSL should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending $/cancelRequest notifications using parameter objects")
+    fun supports_sending_cancel_request_notifications_using_parameter_objects() = testJsonRpc {
+        server.dollar.cancelRequest(
+            params = CancelParams(
+                id = JsonIntOrString.IntegerValue(1234)
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("$/cancelRequest"),
+                "params" to jsonObjectOf(
+                    "id" to JsonPrimitive(1234)
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending $/cancelRequest notifications using function parameters")
+    fun supports_sending_cancel_request_notifications_using_function_parameters() = testJsonRpc {
+        server.dollar.cancelRequest(
+            id = JsonIntOrString.IntegerValue(1234)
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("$/cancelRequest"),
+                "params" to jsonObjectOf(
+                    "id" to JsonPrimitive(1234)
+                )
+            ),
+            client.receive()
+        )
     }
 
     // endregion

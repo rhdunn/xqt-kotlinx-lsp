@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Implementation of the
+[Language Server Protocol 2.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-2-x.md)
+specification.
+
+### Added
+
+Notifications and Requests:
+- `$/cancelRequest`
+
 ## [1.0.1] - 2023-05-16
 
 ### Fixed
@@ -25,9 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2023-04-16
 
-- Implementation of the
-  [VSCode Client/Server Language Protocol 1.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-1-x.md)
-  specification.
+Implementation of the
+[VSCode Client/Server Language Protocol 1.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-1-x.md)
+specification.
 
 ### Added
 
