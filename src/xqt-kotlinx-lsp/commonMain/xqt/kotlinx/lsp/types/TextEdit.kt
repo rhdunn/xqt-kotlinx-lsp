@@ -8,6 +8,7 @@ import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
 import xqt.kotlinx.rpc.json.serialization.put
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
@@ -74,3 +75,18 @@ data class TextEdit(
         }
     }
 }
+
+/**
+ * Complex text manipulations are described with an array of `TextEdit`'s, representing
+ * a single change to the document.
+ *
+ * All text edits ranges refer to positions in the original document. Text edits ranges
+ * must never overlap, that means no part of the original document must be manipulated
+ * by more than one edit. However, it is possible that multiple edits have the same
+ * start position: multiple inserts, or any number of inserts followed by a single
+ * remove or replace edit. If multiple inserts have the same position, the order in the
+ * array defines the order in which the inserted strings appear in the resulting text.
+ *
+ * @since 2.0.0
+ */
+val TextEditArray = JsonTypedArray(TextEdit)

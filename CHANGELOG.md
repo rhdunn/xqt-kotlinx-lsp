@@ -15,6 +15,9 @@ specification.
 Notifications and Requests:
 - `$/cancelRequest`
 
+Types:
+- `TextEditArray`
+
 ### Changed
 
 - Updated the API documentation.

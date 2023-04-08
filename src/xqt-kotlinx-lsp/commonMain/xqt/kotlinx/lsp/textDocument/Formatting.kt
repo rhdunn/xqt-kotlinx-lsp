@@ -8,6 +8,7 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.lsp.types.TextEdit
+import xqt.kotlinx.lsp.types.TextEditArray
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
@@ -15,7 +16,6 @@ import xqt.kotlinx.rpc.json.serialization.put
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonPrimitiveValue
-import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
@@ -98,8 +98,6 @@ data class FormattingOptions(
         }
     }
 }
-
-private val TextEditArray = JsonTypedArray(TextEdit)
 
 /**
  * The response of a code action request.

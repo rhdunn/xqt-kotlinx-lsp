@@ -8,7 +8,6 @@ import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
 import xqt.kotlinx.rpc.json.serialization.put
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
-import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedObject
 import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
@@ -26,7 +25,7 @@ data class WorkspaceEdit(
     companion object : JsonSerialization<WorkspaceEdit> {
         private val TextEditArrayMap = JsonTypedObject(
             keySerialization = JsonString,
-            valueSerialization = JsonTypedArray(TextEdit)
+            valueSerialization = TextEditArray
         )
 
         override fun serializeToJson(value: WorkspaceEdit): JsonObject = buildJsonObject {
