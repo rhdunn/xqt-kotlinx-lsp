@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.base
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
 import xqt.kotlinx.rpc.json.serialization.put
@@ -34,3 +35,21 @@ data class CancelParams(
         }
     }
 }
+
+/**
+ * Cancel an active request.
+ *
+ * A request that got canceled still needs to return from the server and send a response
+ * back. It can not be left open/hanging. This is in line with the JSON RPC protocol that
+ * requires that every request sends a response back. In addition, it allows for returning
+ * partial results on cancel.
+ *
+ * @since 2.0.0
+ */
+fun DollarNotification.cancelRequest(
+    handler: CancelParams.() -> Unit
+): Unit = notification.method(
+    method = DollarNotification.CANCEL_REQUEST,
+    handler = handler,
+    paramsSerializer = CancelParams
+)
