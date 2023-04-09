@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.serialization.*
 
 /**
@@ -31,3 +32,17 @@ data class DidSaveTextDocumentParams(
         }
     }
 }
+
+/**
+ * The document save notification is sent from the client to the server when the document
+ * was saved in the client.
+ *
+ * @since 2.0.0
+ */
+fun TextDocumentNotification.didSave(
+    handler: DidSaveTextDocumentParams.() -> Unit
+): Unit = notification.method(
+    method = TextDocumentNotification.DID_SAVE,
+    handler = handler,
+    paramsSerializer = DidSaveTextDocumentParams
+)

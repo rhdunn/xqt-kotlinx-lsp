@@ -144,6 +144,14 @@ value class TextDocumentNotification(val notification: Notification) {
         const val DID_OPEN: String = "textDocument/didOpen"
 
         /**
+         * The document save notification is sent from the client to the server when the document
+         * was saved in the client.
+         *
+         * @since 2.0.0
+         */
+        const val DID_SAVE: String = "textDocument/didSave"
+
+        /**
          * The diagnostics notification is sent from the server to the client to signal results of
          * validation runs.
          */
