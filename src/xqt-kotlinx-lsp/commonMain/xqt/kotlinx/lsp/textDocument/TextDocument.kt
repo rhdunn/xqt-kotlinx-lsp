@@ -152,7 +152,7 @@ value class TextDocumentNotification(val notification: Notification) {
         const val DID_SAVE: String = "textDocument/didSave"
 
         /**
-         * The diagnostics notification is sent from the server to the client to signal results of
+         * Diagnostics notifications are sent from the server to the client to signal results of
          * validation runs.
          */
         const val PUBLISH_DIAGNOSTICS: String = "textDocument/publishDiagnostics"

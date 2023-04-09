@@ -49,7 +49,7 @@ data class PublishDiagnosticsParams(
 }
 
 /**
- * The diagnostics notification is sent from the server to the client to signal results of
+ * Diagnostics notifications are sent from the server to the client to signal results of
  * validation runs.
  *
  * @since 1.0.0
@@ -63,7 +63,7 @@ fun TextDocumentNotification.publishDiagnostics(
 )
 
 /**
- * The diagnostics notification is sent from the server to the client to signal results of
+ * Diagnostics notifications are sent from the server to the client to signal results of
  * validation runs.
  *
  * @param params the notification parameters
@@ -78,7 +78,7 @@ fun TextDocumentJsonRpcServer.publishDiagnostics(
 )
 
 /**
- * The diagnostics notification is sent from the server to the client to signal results of
+ * Diagnostics notifications are sent from the server to the client to signal results of
  * validation runs.
  *
  * @param uri the URI for which diagnostic information is reported
