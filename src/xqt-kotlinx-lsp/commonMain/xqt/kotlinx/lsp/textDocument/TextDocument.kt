@@ -57,8 +57,15 @@ value class TextDocumentRequest(val request: RequestMessage) {
         const val DEFINITION: String = "textDocument/definition"
 
         /**
-         * The document highlight request is sent from the client to the server to resolve the document
+         * The document highlight request is sent from the client to the server to resolve document
          * highlights for a given text document position.
+         *
+         * For programming languages this usually highlights all references to the symbol scoped to
+         * this file. However, we kept `textDocument/documentHighlight` and `textDocument/references`
+         * separate requests since the first one is allowed to be more fuzzy. Symbol matches usually
+         * have a `DocumentHighlightKind` of `Read` or `Write` whereas fuzzy or textual matches use
+         * `Text` as the kind.
+         *
          */
         const val DOCUMENT_HIGHLIGHT: String = "textDocument/documentHighlight"
 
