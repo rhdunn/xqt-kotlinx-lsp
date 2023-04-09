@@ -83,7 +83,7 @@ value class FileChangeType(val type: Int) {
  */
 data class FileEvent(
     /**
-     * The file's uri.
+     * The file's URI.
      */
     val uri: String,
 
