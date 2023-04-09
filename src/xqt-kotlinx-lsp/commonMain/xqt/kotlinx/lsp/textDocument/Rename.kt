@@ -27,7 +27,7 @@ data class RenameParams(
     val textDocument: TextDocumentIdentifier,
 
     /**
-     * The position at which this request was send.
+     * The position at which this request was sent.
      */
     val position: Position,
 
