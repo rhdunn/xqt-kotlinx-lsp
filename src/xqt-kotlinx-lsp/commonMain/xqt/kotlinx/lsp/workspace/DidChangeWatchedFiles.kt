@@ -110,7 +110,7 @@ data class FileEvent(
 
 /**
  * The watched files notification is sent from the client to the server when
- * the client detects changes to file watched by the language client.
+ * the client detects changes to files watched by the language client.
  *
  * @since 1.0.0
  */
@@ -123,7 +123,8 @@ fun WorkspaceNotification.didChangeWatchedFiles(
 )
 
 /**
- * Sent from the client to the server to signal the change of configuration settings.
+ * The watched files notification is sent from the client to the server when
+ * the client detects changes to files watched by the language client.
  *
  * @param params the notification parameters
  *
@@ -137,7 +138,8 @@ fun WorkspaceJsonRpcServer.didChangeWatchedFiles(
 )
 
 /**
- * Sent from the client to the server to signal the change of configuration settings.
+ * The watched files notification is sent from the client to the server when
+ * the client detects changes to files watched by the language client.
  *
  * @param changes the actual file events
  *

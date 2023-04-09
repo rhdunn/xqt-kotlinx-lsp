@@ -47,7 +47,7 @@ value class WorkspaceNotification(val notification: Notification) {
 
         /**
          * The watched files notification is sent from the client to the server when
-         * the client detects changes to file watched by the language client.
+         * the client detects changes to files watched by the language client.
          */
         const val DID_CHANGE_WATCHED_FILES: String = "workspace/didChangeWatchedFiles"
     }
