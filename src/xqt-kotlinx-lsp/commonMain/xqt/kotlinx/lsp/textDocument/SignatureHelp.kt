@@ -137,14 +137,14 @@ data class SignatureInformation(
  */
 data class ParameterInformation(
     /**
-     * The label of this signature.
+     * The label of this parameter.
      *
      * Will be shown in the UI.
      */
     val label: String,
 
     /**
-     * The human-readable doc-comment of this signature.
+     * The human-readable doc-comment of this parameter.
      *
      * Will be shown in the UI but can be omitted.
      */
