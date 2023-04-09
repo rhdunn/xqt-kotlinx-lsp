@@ -5,7 +5,6 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
@@ -86,13 +85,13 @@ data class FileEvent(
     /**
      * The file's uri.
      */
-    override val uri: String,
+    val uri: String,
 
     /**
      * The change type.
      */
     val type: FileChangeType
-) : TextDocumentIdentifier {
+) {
     companion object : JsonSerialization<FileEvent> {
         override fun serializeToJson(value: FileEvent): JsonObject = buildJsonObject {
             put("uri", value.uri, JsonString)
