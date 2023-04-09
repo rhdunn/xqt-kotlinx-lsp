@@ -16,6 +16,7 @@ Notifications and Requests:
 - `$/cancelRequest`
 - `window/showMessageRequest`
 - `telemetry/event`
+- `textDocument/didSave`
 
 Types:
 - `TextEditArray`

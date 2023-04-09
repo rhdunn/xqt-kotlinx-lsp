@@ -4016,5 +4016,53 @@ class TextDocumentDSL {
         assertEquals(true, called, "The textDocument.didSave DSL should have been called.")
     }
 
+    @Test
+    @DisplayName("supports sending textDocument/didSave notifications using parameter objects")
+    fun supports_sending_did_save_notifications_using_parameter_objects() = testJsonRpc {
+        server.textDocument.didSave(
+            params = DidSaveTextDocumentParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/didSave"),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/didSave notifications using function parameters")
+    fun supports_sending_did_save_notifications_using_function_parameters() = testJsonRpc {
+        server.textDocument.didSave(
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
+        )
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/didSave"),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
+                )
+            ),
+            client.receive()
+        )
+    }
+
     // endregion
 }
