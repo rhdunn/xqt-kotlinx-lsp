@@ -23,7 +23,7 @@ value class TextDocumentRequest(val request: RequestMessage) {
          * The code action request is sent from the client to the server to compute commands for
          * a given text document and range.
          *
-         * The request is trigger when the user moves the cursor into an problem marker in the
+         * The request is triggered when the user moves the cursor into an problem marker in the
          * editor or presses the lightbulb associated with a marker.
          */
         const val CODE_ACTION: String = "textDocument/codeAction"
