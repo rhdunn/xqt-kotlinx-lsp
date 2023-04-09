@@ -46,7 +46,7 @@ data class CodeLensOptions(
  * For example, like the number of references, a way to run tests, etc.
  *
  * A code lens is _unresolved_ when no command is associated to it. For performance
- * reasons the creation of a code lens and resolving should be done to two stages.
+ * reasons the creation of a code lens and resolving should be done in two stages.
  *
  * @since 1.0.0
  */
