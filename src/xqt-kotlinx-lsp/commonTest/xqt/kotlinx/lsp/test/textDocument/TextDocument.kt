@@ -1499,7 +1499,7 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/references requests using parameter objects")
     fun supports_sending_references_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.references(
-            params = ReferencesParams(
+            params = ReferenceParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u),
                 context = ReferenceContext(
@@ -1535,7 +1535,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.references(
-            params = ReferencesParams(
+            params = ReferenceParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u),
                 context = ReferenceContext(
@@ -1569,7 +1569,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.references(
-            params = ReferencesParams(
+            params = ReferenceParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u),
                 context = ReferenceContext(

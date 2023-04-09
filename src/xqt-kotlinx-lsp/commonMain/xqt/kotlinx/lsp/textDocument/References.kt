@@ -22,7 +22,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  *
  * @since 1.0.0
  */
-data class ReferencesParams(
+data class ReferenceParams(
     override val uri: String,
     override val position: Position,
 
@@ -31,16 +31,16 @@ data class ReferencesParams(
      */
     val context: ReferenceContext
 ) : TextDocumentPosition {
-    companion object : JsonSerialization<ReferencesParams> {
-        override fun serializeToJson(value: ReferencesParams): JsonObject = buildJsonObject {
+    companion object : JsonSerialization<ReferenceParams> {
+        override fun serializeToJson(value: ReferenceParams): JsonObject = buildJsonObject {
             put("uri", value.uri, JsonString)
             put("position", value.position, Position)
             put("context", value.context, ReferenceContext)
         }
 
-        override fun deserialize(json: JsonElement): ReferencesParams = when (json) {
+        override fun deserialize(json: JsonElement): ReferenceParams = when (json) {
             !is JsonObject -> unsupportedKindType(json)
-            else -> ReferencesParams(
+            else -> ReferenceParams(
                 uri = json.get("uri", JsonString),
                 position = json.get("position", Position),
                 context = json.get("context", ReferenceContext)
@@ -111,11 +111,11 @@ data class ReferencesResponse(
  * @since 1.0.0
  */
 fun TextDocumentRequest.references(
-    handler: ReferencesParams.() -> List<Location>
+    handler: ReferenceParams.() -> List<Location>
 ): Unit = request.method(
     method = TextDocumentRequest.REFERENCES,
     handler = handler,
-    paramsSerializer = ReferencesParams,
+    paramsSerializer = ReferenceParams,
     resultSerializer = LocationArray
 )
 
@@ -130,11 +130,11 @@ fun TextDocumentRequest.references(
  * @since 1.0.0
  */
 fun TextDocumentJsonRpcServer.references(
-    params: ReferencesParams,
+    params: ReferenceParams,
     responseHandler: (TypedResponseObject<List<Location>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.REFERENCES,
-    params = ReferencesParams.serializeToJson(params),
+    params = ReferenceParams.serializeToJson(params),
     responseHandler = responseHandler,
     responseObjectConverter = ReferencesResponse
 )
@@ -157,7 +157,7 @@ fun TextDocumentJsonRpcServer.references(
     context: ReferenceContext,
     responseHandler: (TypedResponseObject<List<Location>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = references(
-    params = ReferencesParams(
+    params = ReferenceParams(
         uri = uri,
         position = position,
         context = context
