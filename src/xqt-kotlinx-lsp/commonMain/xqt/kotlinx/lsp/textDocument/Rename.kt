@@ -86,8 +86,8 @@ data class RenameResponse(
 }
 
 /**
- * The rename request is sent from the client to the server to do a workspace wide rename
- * of a symbol.
+ * The rename request is sent from the client to the server to perform a workspace-wide
+ * rename of a symbol.
  *
  * @since 1.0.0
  */
@@ -101,8 +101,8 @@ fun TextDocumentRequest.rename(
 )
 
 /**
- * The rename request is sent from the client to the server to do a workspace wide rename
- * of a symbol.
+ * The rename request is sent from the client to the server to perform a workspace-wide
+ * rename of a symbol.
  *
  * @param params the request parameters
  * @param responseHandler the callback to process the response for the request
@@ -121,8 +121,8 @@ fun TextDocumentJsonRpcServer.rename(
 )
 
 /**
- * The rename request is sent from the client to the server to do a workspace wide rename
- * of a symbol.
+ * The rename request is sent from the client to the server to perform a workspace-wide
+ * rename of a symbol.
  *
  * @param textDocument the document containing the symbol to rename
  * @param position the position inside the text document

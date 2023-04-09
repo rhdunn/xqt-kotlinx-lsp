@@ -106,8 +106,8 @@ value class TextDocumentRequest(val request: RequestMessage) {
         const val REFERENCES: String = "textDocument/references"
 
         /**
-         * The rename request is sent from the client to the server to do a workspace wide rename
-         * of a symbol.
+         * The rename request is sent from the client to the server to perform a workspace-wide
+         * rename of a symbol.
          */
         const val RENAME: String = "textDocument/rename"
 
