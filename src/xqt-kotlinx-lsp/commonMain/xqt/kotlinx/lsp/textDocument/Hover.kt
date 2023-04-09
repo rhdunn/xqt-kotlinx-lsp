@@ -53,6 +53,18 @@ data class Hover(
 /**
  * Render human-readable text or code-block.
  *
+ * The marked string is rendered:
+ * - as markdown if it is represented as a string `value`
+ * - as code block of the given language if it is represented as a pair of a `language` and a `value`
+ *
+ * The pair of a language and a value is an equivalent to markdown:
+ *
+ * ````markdown
+ * ```${language}
+ * ${value}
+ * ```
+ * ````
+ *
  * @since 1.0.0
  */
 data class MarkedString(
