@@ -18,7 +18,10 @@ class TheTextDocumentDidChangeNotificationParameters {
     @DisplayName("supports the non-optional properties")
     fun supports_the_non_optional_properties() {
         val json = jsonObjectOf(
-            "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+            "textDocument" to jsonObjectOf(
+                "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                "version" to JsonPrimitive(12)
+            ),
             "contentChanges" to jsonArrayOf(
                 jsonObjectOf(
                     "text" to JsonPrimitive("Lorem Ipsum")
@@ -27,7 +30,7 @@ class TheTextDocumentDidChangeNotificationParameters {
         )
 
         val params = DidChangeTextDocumentParams.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", params.uri)
+        assertEquals("file:///home/lorem/ipsum.py", params.textDocument.uri)
         assertEquals(1, params.contentChanges.size)
 
         assertEquals(null, params.contentChanges[0].range)

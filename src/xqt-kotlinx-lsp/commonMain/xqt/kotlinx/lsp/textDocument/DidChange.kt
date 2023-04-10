@@ -6,7 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
 import xqt.kotlinx.lsp.types.Range
-import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.lsp.types.VersionedTextDocumentIdentifier
 import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.*
@@ -16,28 +16,38 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 /**
  * Parameters for `textDocument/didChange` notification.
  *
+ * NOTE: LSP 2.x moved the `uri` property into a `textDocument` property.
+ *
  * @since 1.0.0
  */
 data class DidChangeTextDocumentParams(
-    override val uri: String,
+    /**
+     * The document that did change.
+     *
+     * The version number points to the version after all provided content changes have
+     * been applied.
+     *
+     * @since 2.0.0
+     */
+    val textDocument: VersionedTextDocumentIdentifier,
 
     /**
      * The actual content changes.
      */
     val contentChanges: List<TextDocumentContentChangeEvent>
-) : TextDocumentIdentifier {
+) {
     companion object : JsonSerialization<DidChangeTextDocumentParams> {
         private val TextDocumentContentChangeEventArray = JsonTypedArray(TextDocumentContentChangeEvent)
 
         override fun serializeToJson(value: DidChangeTextDocumentParams): JsonObject = buildJsonObject {
-            put("uri", value.uri, JsonString)
+            put("textDocument", value.textDocument, VersionedTextDocumentIdentifier)
             put("contentChanges", value.contentChanges, TextDocumentContentChangeEventArray)
         }
 
         override fun deserialize(json: JsonElement): DidChangeTextDocumentParams = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> DidChangeTextDocumentParams(
-                uri = json.get("uri", JsonString),
+                textDocument = json.get("textDocument", VersionedTextDocumentIdentifier),
                 contentChanges = json.get("contentChanges", TextDocumentContentChangeEventArray)
             )
         }
@@ -125,14 +135,17 @@ fun TextDocumentJsonRpcServer.didChange(
  * The document's content is now managed by the client and the server must not try to read
  * the document's content using the document's uri.
  *
- * @param uri the text document's URI
+ * @param textDocument the document that did change
  * @param contentChanges the actual content changes
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.didChange(
-    uri: String,
+    textDocument: VersionedTextDocumentIdentifier,
     contentChanges: List<TextDocumentContentChangeEvent>
 ): Unit = didChange(
-    params = DidChangeTextDocumentParams(uri = uri, contentChanges = contentChanges)
+    params = DidChangeTextDocumentParams(
+        textDocument = textDocument,
+        contentChanges = contentChanges
+    )
 )

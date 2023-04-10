@@ -130,7 +130,10 @@ class TextDocumentDSL {
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("textDocument/didChange"),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                        "version" to JsonPrimitive(12)
+                    ),
                     "contentChanges" to jsonArrayOf()
                 )
             )
@@ -145,7 +148,8 @@ class TextDocumentDSL {
                     assertEquals("2.0", jsonrpc)
                     assertEquals("textDocument/didChange", method)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(12, textDocument.version)
                     assertEquals(0, contentChanges.size)
                 }
             }
@@ -159,7 +163,10 @@ class TextDocumentDSL {
     fun supports_sending_did_change_notifications_using_parameter_objects() = testJsonRpc {
         server.textDocument.didChange(
             params = DidChangeTextDocumentParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = VersionedTextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py",
+                    version = 12
+                ),
                 contentChanges = listOf()
             )
         )
@@ -169,7 +176,10 @@ class TextDocumentDSL {
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("textDocument/didChange"),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                        "version" to JsonPrimitive(12)
+                    ),
                     "contentChanges" to jsonArrayOf()
                 )
             ),
@@ -181,7 +191,10 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/didChange notifications using function parameters")
     fun supports_sending_did_change_notifications_using_function_parameters() = testJsonRpc {
         server.textDocument.didChange(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = VersionedTextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py",
+                version = 12
+            ),
             contentChanges = listOf()
         )
 
@@ -190,7 +203,10 @@ class TextDocumentDSL {
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("textDocument/didChange"),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                        "version" to JsonPrimitive(12)
+                    ),
                     "contentChanges" to jsonArrayOf()
                 )
             ),

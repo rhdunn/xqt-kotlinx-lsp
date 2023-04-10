@@ -15,14 +15,14 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 /**
  * Parameters for `textDocument/didOpen` notification.
  *
- * NOTE: LSP 2.x combines the `uri` and `text` property into a `textDocument`
- * property.
- *
  * @since 1.0.0
  */
 data class DidOpenTextDocumentParams(
     /**
      * The document that was opened.
+     *
+     * This is a combination of the `uri` and `text` properties from LSP 1.x in
+     * addition to other new properties.
      *
      * @since 2.0.0
      */

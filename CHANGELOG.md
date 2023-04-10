@@ -26,16 +26,17 @@ Parameters:
 - `InitializeParams` -- Add an `initializeOptions` parameter.
 
 ### Changed
-> __NOTE:__ The notifications and requests where the `uri` parameter has
-> changed `textDocument` are no longer compatible with LSP 1.x clients/servers.
 
 - Updated the API documentation.
 
 Notifications and Requests:
 - `initialize` -- Make the `processId` parameter nullable.
 - `initialize` -- Make `capabilities` an instance of `ClientCapabilities`.
+> __NOTE:__ The following notifications and requests are no longer compatible
+> with LSP 1.x clients/servers.
 - `textDocument/completion` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/definition` -- Replace the `uri` parameter with `textDocument`.
+- `textDocument/didChange` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/didOpen` -- Replace the `uri` and `text` parameters with `textDocument`.
 - `textDocument/documentHighlight` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/hover` -- Replace the `uri` parameter with `textDocument`.
