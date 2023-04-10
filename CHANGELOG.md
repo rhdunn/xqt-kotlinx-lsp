@@ -37,6 +37,7 @@ Notifications and Requests:
 - `textDocument/completion` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/definition` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/didChange` -- Replace the `uri` parameter with `textDocument`.
+- `textDocument/didClose` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/didOpen` -- Replace the `uri` and `text` parameters with `textDocument`.
 - `textDocument/documentHighlight` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/hover` -- Replace the `uri` parameter with `textDocument`.

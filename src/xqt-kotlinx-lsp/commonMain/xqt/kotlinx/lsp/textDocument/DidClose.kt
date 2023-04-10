@@ -45,11 +45,11 @@ data class DidCloseTextDocumentParams(
  * @since 1.0.0
  */
 fun TextDocumentNotification.didClose(
-    handler: TextDocumentIdentifier.() -> Unit
+    handler: DidCloseTextDocumentParams.() -> Unit
 ): Unit = notification.method(
     method = TextDocumentNotification.DID_CLOSE,
     handler = handler,
-    paramsSerializer = TextDocumentIdentifier
+    paramsSerializer = DidCloseTextDocumentParams
 )
 
 /**
@@ -64,10 +64,10 @@ fun TextDocumentNotification.didClose(
  * @since 1.0.0
  */
 fun TextDocumentJsonRpcServer.didClose(
-    params: TextDocumentIdentifier
+    params: DidCloseTextDocumentParams
 ): Unit = server.sendNotification(
     method = TextDocumentNotification.DID_CLOSE,
-    params = TextDocumentIdentifier.serializeToJson(params)
+    params = DidCloseTextDocumentParams.serializeToJson(params)
 )
 
 /**
@@ -77,12 +77,12 @@ fun TextDocumentJsonRpcServer.didClose(
  * The document's master now exists where the document's URI points to (e.g. if the document's
  * URI is a file uri the master now exists on disk).
  *
- * @param uri the text document's URI
+ * @param textDocument the document that was closed
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.didClose(
-    uri: String
+    textDocument: TextDocumentIdentifier
 ): Unit = didClose(
-    params = TextDocumentIdentifier(uri = uri)
+    params = DidCloseTextDocumentParams(textDocument = textDocument)
 )

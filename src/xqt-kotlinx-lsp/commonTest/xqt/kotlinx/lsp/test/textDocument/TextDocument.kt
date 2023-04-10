@@ -225,7 +225,9 @@ class TextDocumentDSL {
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("textDocument/didClose"),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
                 )
             )
         )
@@ -239,7 +241,7 @@ class TextDocumentDSL {
                     assertEquals("2.0", jsonrpc)
                     assertEquals("textDocument/didClose", method)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                 }
             }
         }
@@ -251,8 +253,10 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/didClose notifications using parameter objects")
     fun supports_sending_did_close_notifications_using_parameter_objects() = testJsonRpc {
         server.textDocument.didClose(
-            params = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+            params = DidCloseTextDocumentParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
             )
         )
 
@@ -261,7 +265,9 @@ class TextDocumentDSL {
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("textDocument/didClose"),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
                 )
             ),
             client.receive()
@@ -272,7 +278,9 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/didClose notifications using function parameters")
     fun supports_sending_did_close_notifications_using_function_parameters() = testJsonRpc {
         server.textDocument.didClose(
-            uri = "file:///home/lorem/ipsum.py"
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
         )
 
         assertEquals(
@@ -280,7 +288,9 @@ class TextDocumentDSL {
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("textDocument/didClose"),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
                 )
             ),
             client.receive()
