@@ -29,8 +29,12 @@ class TextDocumentDSL {
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("textDocument/didOpen"),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
-                    "text" to JsonPrimitive("Lorem Ipsum")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                        "languageId" to JsonPrimitive("python"),
+                        "version" to JsonPrimitive(12),
+                        "text" to JsonPrimitive("Lorem ipsum dolor.")
+                    )
                 )
             )
         )
@@ -44,8 +48,10 @@ class TextDocumentDSL {
                     assertEquals("2.0", jsonrpc)
                     assertEquals("textDocument/didOpen", method)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
-                    assertEquals("Lorem Ipsum", text)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals("python", textDocument.languageId)
+                    assertEquals(12, textDocument.version)
+                    assertEquals("Lorem ipsum dolor.", textDocument.text)
                 }
             }
         }
@@ -58,8 +64,12 @@ class TextDocumentDSL {
     fun supports_sending_did_open_notifications_using_parameter_objects() = testJsonRpc {
         server.textDocument.didOpen(
             params = DidOpenTextDocumentParams(
-                uri = "file:///home/lorem/ipsum.py",
-                text = "Lorem Ipsum"
+                textDocument = TextDocumentItem(
+                    uri = "file:///home/lorem/ipsum.py",
+                    languageId = "python",
+                    version = 12,
+                    text = "Lorem ipsum dolor."
+                )
             )
         )
 
@@ -68,8 +78,12 @@ class TextDocumentDSL {
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("textDocument/didOpen"),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
-                    "text" to JsonPrimitive("Lorem Ipsum")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                        "languageId" to JsonPrimitive("python"),
+                        "version" to JsonPrimitive(12),
+                        "text" to JsonPrimitive("Lorem ipsum dolor.")
+                    )
                 )
             ),
             client.receive()
@@ -80,8 +94,12 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/didOpen notifications using function parameters")
     fun supports_sending_did_open_notifications_using_function_parameters() = testJsonRpc {
         server.textDocument.didOpen(
-            uri = "file:///home/lorem/ipsum.py",
-            text = "Lorem Ipsum"
+            textDocument = TextDocumentItem(
+                uri = "file:///home/lorem/ipsum.py",
+                languageId = "python",
+                version = 12,
+                text = "Lorem ipsum dolor."
+            )
         )
 
         assertEquals(
@@ -89,8 +107,12 @@ class TextDocumentDSL {
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "method" to JsonPrimitive("textDocument/didOpen"),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
-                    "text" to JsonPrimitive("Lorem Ipsum")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                        "languageId" to JsonPrimitive("python"),
+                        "version" to JsonPrimitive(12),
+                        "text" to JsonPrimitive("Lorem ipsum dolor.")
+                    )
                 )
             ),
             client.receive()

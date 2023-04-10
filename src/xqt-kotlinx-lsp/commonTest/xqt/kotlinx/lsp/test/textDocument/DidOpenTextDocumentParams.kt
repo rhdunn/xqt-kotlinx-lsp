@@ -18,13 +18,19 @@ class TheTextDocumentDidOpenNotificationParameters {
     @DisplayName("supports the non-optional properties")
     fun supports_the_non_optional_properties() {
         val json = jsonObjectOf(
-            "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
-            "text" to JsonPrimitive("Lorem Ipsum")
+            "textDocument" to jsonObjectOf(
+                "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                "languageId" to JsonPrimitive("python"),
+                "version" to JsonPrimitive(12),
+                "text" to JsonPrimitive("Lorem ipsum dolor.")
+            )
         )
 
         val params = DidOpenTextDocumentParams.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", params.uri)
-        assertEquals("Lorem Ipsum", params.text)
+        assertEquals("file:///home/lorem/ipsum.py", params.textDocument.uri)
+        assertEquals("python", params.textDocument.languageId)
+        assertEquals(12, params.textDocument.version)
+        assertEquals("Lorem ipsum dolor.", params.textDocument.text)
 
         assertEquals(json, DidOpenTextDocumentParams.serializeToJson(params))
     }

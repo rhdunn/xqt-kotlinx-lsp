@@ -4,39 +4,39 @@ package xqt.kotlinx.lsp.textDocument
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
-import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.lsp.types.TextDocumentItem
 import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
 import xqt.kotlinx.rpc.json.serialization.put
-import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
  * Parameters for `textDocument/didOpen` notification.
  *
+ * NOTE: LSP 2.x combines the `uri` and `text` property into a `textDocument`
+ * property.
+ *
  * @since 1.0.0
  */
 data class DidOpenTextDocumentParams(
-    override val uri: String,
-
     /**
-     * The content of the opened text document.
+     * The document that was opened.
+     *
+     * @since 2.0.0
      */
-    val text: String
-) : TextDocumentIdentifier {
+    val textDocument: TextDocumentItem
+) {
     companion object : JsonSerialization<DidOpenTextDocumentParams> {
         override fun serializeToJson(value: DidOpenTextDocumentParams): JsonObject = buildJsonObject {
-            put("uri", value.uri, JsonString)
-            put("text", value.text, JsonString)
+            put("textDocument", value.textDocument, TextDocumentItem)
         }
 
         override fun deserialize(json: JsonElement): DidOpenTextDocumentParams = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> DidOpenTextDocumentParams(
-                uri = json.get("uri", JsonString),
-                text = json.get("text", JsonString)
+                textDocument = json.get("textDocument", TextDocumentItem)
             )
         }
     }
@@ -84,14 +84,12 @@ fun TextDocumentJsonRpcServer.didOpen(
  * The document's content is now managed by the client and the server must not try to read
  * the document's content using the document's uri.
  *
- * @param uri the text document's URI
- * @param text the content of the opened text document
+ * @param textDocument the document that was opened
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.didOpen(
-    uri: String,
-    text: String
+    textDocument: TextDocumentItem
 ): Unit = didOpen(
-    params = DidOpenTextDocumentParams(uri = uri, text = text)
+    params = DidOpenTextDocumentParams(textDocument = textDocument)
 )
