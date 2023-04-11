@@ -31,7 +31,7 @@ jobs:
         run: gradle publishNativePublicationToMavenLocal
 
       - name: Tar XQT Kotlin JSON-RPC Artifacts
-        run: tar -cvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/xqt-kotlinx-lsp .
+        run: tar -cvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/io/github/rhdunn .
 
       - name: Upload XQT Kotlin JSON-RPC Artifacts
         uses: actions/upload-artifact@v3
@@ -61,8 +61,8 @@ jobs:
 
       - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
         run: |
-          mkdir -p $HOME/.m2/repository/xqt-kotlinx-lsp
-          tar -xvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/xqt-kotlinx-lsp
+          mkdir -p $HOME/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/io/github/rhdunn
 
       - name: Build for Kotlin/Native
         run: gradle nativeMainKlibrary
