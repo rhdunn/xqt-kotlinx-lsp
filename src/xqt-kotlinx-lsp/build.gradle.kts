@@ -4,7 +4,7 @@ plugins {
     id("maven-publish")
 }
 
-group = "xqt-kotlinx-lsp"
+group = "io.github.rhdunn"
 version = "0.1-SNAPSHOT"
 
 rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {
