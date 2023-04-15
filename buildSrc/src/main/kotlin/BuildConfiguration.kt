@@ -11,4 +11,10 @@ object BuildConfiguration {
      */
     val downloadNodeJs: Boolean
         get() = System.getProperty("nodejs.download") != "false"
+
+    /**
+     * The name of the Operating System the build is running on.
+     */
+    val hostOsName: String
+        get() = System.getProperty("os.name") ?: "Unknown"
 }
