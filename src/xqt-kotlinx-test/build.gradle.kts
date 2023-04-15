@@ -34,9 +34,7 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-            kotlin.srcDir("commonMain")
-        }
+        commonMain.kotlin.srcDir("commonMain")
 
         val jvmMain by getting {
             kotlin.srcDir("jvmMain")
