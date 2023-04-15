@@ -57,18 +57,16 @@ kotlin {
 
     sourceSets {
         commonMain.kotlin.srcDir("commonMain")
+        commonTest.kotlin.srcDir("commonTest")
 
         commonMain.dependencies {
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.Dependency.kotlinSerialization}")
             implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:${Version.Dependency.xqtJsonRpc}")
         }
 
-        val commonTest by getting {
-            kotlin.srcDir("commonTest")
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(project(":src:xqt-kotlinx-test"))
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(project(":src:xqt-kotlinx-test"))
         }
 
         val jvmMain by getting {
