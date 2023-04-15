@@ -63,7 +63,7 @@ kotlin {
             kotlin.srcDir("commonMain")
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.Dependency.kotlinSerialization}")
-                implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:0.1-SNAPSHOT")
+                implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:${Version.Dependency.xqtJsonRpc}")
             }
         }
         val commonTest by getting {
