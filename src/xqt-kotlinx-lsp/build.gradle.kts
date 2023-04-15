@@ -75,9 +75,7 @@ kotlin {
         jsMain.kotlin.srcDir("jsMain")
         jsTest.kotlin.srcDir("jsTest")
 
-        val nativeMain by getting {
-            kotlin.srcDir("nativeMain")
-        }
+        nativeMain.kotlin.srcDir("nativeMain")
         val nativeTest by getting {
             kotlin.srcDir("nativeTest")
         }

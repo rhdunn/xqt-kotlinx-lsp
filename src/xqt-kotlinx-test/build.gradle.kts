@@ -37,13 +37,10 @@ kotlin {
         commonMain.kotlin.srcDir("commonMain")
         jvmMain.kotlin.srcDir("jvmMain")
         jsMain.kotlin.srcDir("jsMain")
+        nativeMain.kotlin.srcDir("nativeMain")
 
         jvmMain.dependencies {
             implementation("org.junit.jupiter:junit-jupiter-api:${Version.Dependency.junit}")
-        }
-
-        val nativeMain by getting {
-            kotlin.srcDir("nativeMain")
         }
     }
 }
