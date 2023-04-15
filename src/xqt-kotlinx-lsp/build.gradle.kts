@@ -39,8 +39,8 @@ kotlin {
                         "Firefox Nightly" -> useFirefoxNightlyHeadless()
                         "Phantom JS" -> usePhantomJS()
                         "Safari" -> useSafari()
-                        else -> when (BuildConfiguration.hostOsName) {
-                            "Mac OS X" -> useSafari()
+                        else -> when (BuildConfiguration.hostOs) {
+                            HostOs.MacOsX -> useSafari()
                             else -> useFirefoxHeadless()
                         }
                     }
@@ -52,10 +52,10 @@ kotlin {
         }
     }
 
-    val nativeTarget = when {
-        BuildConfiguration.hostOsName == "Mac OS X" -> macosX64("native")
-        BuildConfiguration.hostOsName == "Linux" -> linuxX64("native")
-        BuildConfiguration.hostOsName.startsWith("Windows") -> mingwX64("native")
+    val nativeTarget = when (BuildConfiguration.hostOs) {
+        HostOs.Windows -> mingwX64("native")
+        HostOs.Linux -> linuxX64("native")
+        HostOs.MacOsX -> macosX64("native")
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
 
