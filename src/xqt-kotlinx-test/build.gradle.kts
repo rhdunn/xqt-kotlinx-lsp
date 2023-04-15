@@ -1,6 +1,6 @@
 plugins {
     kotlin("multiplatform") version Version.Plugin.kotlinMultiplatform
-    kotlin("plugin.serialization") version "1.7.20"
+    kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
 }
 
 rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {
