@@ -15,7 +15,7 @@ rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJ
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = System.getProperty("jvm.target") ?: "11"
+            kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget
         }
         withJava()
         testRuns["test"].executionTask.configure {
