@@ -8,7 +8,7 @@ plugins {
 }
 
 group = ProjectMetadata.GitHub.GroupId
-version = "${ProjectMetadata.Build.VersionTag}${ProjectMetadata.Build.Type.suffix}"
+version = ProjectMetadata.Build.Version
 
 rootProject.plugins.withType<NodeJsRootPlugin> {
     rootProject.the<NodeJsRootExtension>().download = BuildConfiguration.downloadNodeJs

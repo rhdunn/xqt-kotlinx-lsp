@@ -10,6 +10,11 @@ object ProjectMetadata {
          * The build type of this project.
          */
         val Type = BuildType.Release
+
+        /**
+         * The artifact version ID.
+         */
+        val Version = "$VersionTag${Type.suffix}"
     }
 
     object GitHub {
