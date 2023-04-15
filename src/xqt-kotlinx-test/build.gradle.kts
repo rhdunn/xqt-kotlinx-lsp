@@ -35,12 +35,10 @@ kotlin {
 
     sourceSets {
         commonMain.kotlin.srcDir("commonMain")
+        jvmMain.kotlin.srcDir("jvmMain")
 
-        val jvmMain by getting {
-            kotlin.srcDir("jvmMain")
-            dependencies {
-                implementation("org.junit.jupiter:junit-jupiter-api:${Version.Dependency.junit}")
-            }
+        jvmMain.dependencies {
+            implementation("org.junit.jupiter:junit-jupiter-api:${Version.Dependency.junit}")
         }
 
         val jsMain by getting {

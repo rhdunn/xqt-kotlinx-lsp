@@ -69,9 +69,8 @@ kotlin {
             implementation(project(":src:xqt-kotlinx-test"))
         }
 
-        val jvmMain by getting {
-            kotlin.srcDir("jvmMain")
-        }
+        jvmMain.kotlin.srcDir("jvmMain")
+
         val jvmTest by getting {
             kotlin.srcDir("jvmTest")
         }
