@@ -40,7 +40,7 @@ kotlin {
         val jvmMain by getting {
             kotlin.srcDir("jvmMain")
             dependencies {
-                implementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+                implementation("org.junit.jupiter:junit-jupiter-api:${Version.Dependency.junit}")
             }
         }
 

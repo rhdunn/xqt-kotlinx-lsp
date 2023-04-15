@@ -6,4 +6,8 @@ object Version {
         const val kotlinMultiplatform = kotlin
         const val kotlinSerialization = kotlin
     }
+
+    object Dependency {
+        const val junit = "5.6.0"
+    }
 }
