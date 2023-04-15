@@ -1,11 +1,13 @@
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
+
 plugins {
     kotlin("multiplatform") version Version.Plugin.kotlinMultiplatform
     kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
 }
 
-rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {
-    rootProject.the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension>().download =
-        System.getProperty("nodejs.download") != "false"
+rootProject.plugins.withType<NodeJsRootPlugin> {
+    rootProject.the<NodeJsRootExtension>().download = BuildConfiguration.downloadNodeJs
 }
 
 kotlin {
