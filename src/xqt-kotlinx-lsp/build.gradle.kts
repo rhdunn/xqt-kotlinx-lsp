@@ -29,20 +29,16 @@ kotlin {
         browser {
             testTask {
                 useKarma {
-                    when (System.getProperty("js.browser")) {
-                        "Chrome" -> useChromeHeadless()
-                        "Chrome Canary" -> useChromeCanaryHeadless()
-                        "Chromium" -> useChromiumHeadless()
-                        "Firefox" -> useFirefoxHeadless()
-                        "Firefox Aurora" -> useFirefoxAuroraHeadless()
-                        "Firefox Developer" -> useFirefoxDeveloperHeadless()
-                        "Firefox Nightly" -> useFirefoxNightlyHeadless()
-                        "Phantom JS" -> usePhantomJS()
-                        "Safari" -> useSafari()
-                        else -> when (BuildConfiguration.hostOs) {
-                            HostOs.MacOsX -> useSafari()
-                            else -> useFirefoxHeadless()
-                        }
+                    when (BuildConfiguration.jsBrowser) {
+                        JsBrowser.Chrome -> useChromeHeadless()
+                        JsBrowser.ChromeCanary -> useChromeCanaryHeadless()
+                        JsBrowser.Chromium -> useChromiumHeadless()
+                        JsBrowser.Firefox -> useFirefoxHeadless()
+                        JsBrowser.FirefoxAurora -> useFirefoxAuroraHeadless()
+                        JsBrowser.FirefoxDeveloper -> useFirefoxDeveloperHeadless()
+                        JsBrowser.FirefoxNightly -> useFirefoxNightlyHeadless()
+                        JsBrowser.PhantomJs -> usePhantomJS()
+                        JsBrowser.Safari -> useSafari()
                     }
                 }
             }

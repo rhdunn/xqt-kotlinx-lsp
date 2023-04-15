@@ -1,4 +1,4 @@
-@Suppress("KDocMissingDocumentation")
+@Suppress("KDocMissingDocumentation", "MemberVisibilityCanBePrivate")
 object BuildConfiguration {
     /**
      * The version of the JVM to target by the Kotlin compiler.
@@ -17,4 +17,10 @@ object BuildConfiguration {
      */
     val hostOs: HostOs
         get() = HostOs(System.getProperty("os.name") ?: "Unknown")
+
+    /**
+     * The headless web browser to run the JS tests on.
+     */
+    val jsBrowser: JsBrowser
+        get() = JsBrowser(System.getProperty("js.browser"), hostOs)
 }
