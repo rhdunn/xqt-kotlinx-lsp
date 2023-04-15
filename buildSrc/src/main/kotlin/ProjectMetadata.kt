@@ -5,6 +5,11 @@ object ProjectMetadata {
          * The semantic version of the current version.
          */
         const val VersionTag = "0.1"
+
+        /**
+         * The build type of this project.
+         */
+        val Type = BuildType.Release
     }
 
     object GitHub {
