@@ -3,6 +3,7 @@ object Version {
     const val kotlin = "1.7.20"
 
     object Plugin {
+        const val dokka = kotlin
         const val kotlinMultiplatform = kotlin
         const val kotlinSerialization = kotlin
     }

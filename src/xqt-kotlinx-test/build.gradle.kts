@@ -2,9 +2,16 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 
+buildscript {
+    dependencies {
+        classpath("org.jetbrains.dokka:dokka-base:${Version.Plugin.dokka}")
+    }
+}
+
 plugins {
     kotlin("multiplatform") version Version.Plugin.kotlinMultiplatform
     kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
+    id("org.jetbrains.dokka") version Version.Plugin.dokka
 }
 
 // region Kotlin Multiplatform (Common)

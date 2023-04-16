@@ -28,4 +28,16 @@ object ProjectMetadata {
          */
         const val GroupId = "io.github.$AccountId"
     }
+
+    object Copyright {
+        /**
+         * The copyright year range for the project.
+         */
+        const val Year = "2022-2023"
+
+        /**
+         * The person or organization owning the copyright for the project.
+         */
+        const val Owner = "Reece H. Dunn"
+    }
 }
