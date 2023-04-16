@@ -82,17 +82,18 @@ kotlin.sourceSets {
 }
 
 // endregion
+// region Kotlin Native
 
-kotlin {
-    val nativeTarget = when (BuildConfiguration.hostOs) {
-        HostOs.Windows -> mingwX64("native")
-        HostOs.Linux -> linuxX64("native")
-        HostOs.MacOsX -> macosX64("native")
-        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
-    }
-
-    sourceSets {
-        nativeMain.kotlin.srcDir("nativeMain")
-        nativeTest.kotlin.srcDir("nativeTest")
-    }
+when (BuildConfiguration.hostOs) {
+    HostOs.Windows -> kotlin.mingwX64("native")
+    HostOs.Linux -> kotlin.linuxX64("native")
+    HostOs.MacOsX -> kotlin.macosX64("native")
+    else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
 }
+
+kotlin.sourceSets {
+    nativeMain.kotlin.srcDir("nativeMain")
+    nativeTest.kotlin.srcDir("nativeTest")
+}
+
+// endregion
