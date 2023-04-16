@@ -23,4 +23,16 @@ object BuildConfiguration {
      */
     val jsBrowser: JsBrowser
         get() = JsBrowser(System.getProperty("js.browser"), hostOs)
+
+    /**
+     * The Open Source Software Repository Hosting (OSSRH) username.
+     */
+    val ossrhUsername: String?
+        get() = System.getProperty("ossrh.username") ?: System.getenv("OSSRH_USERNAME")
+
+    /**
+     * The Open Source Software Repository Hosting (OSSRH) password.
+     */
+    val ossrhPassword: String?
+        get() = System.getProperty("ossrh.password") ?: System.getenv("OSSRH_PASSWORD")
 }

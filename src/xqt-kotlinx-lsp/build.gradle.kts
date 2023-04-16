@@ -4,6 +4,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
+import java.net.URI
 
 buildscript {
     dependencies {
@@ -162,6 +163,26 @@ publishing.publications.withType<MavenPublication> {
 
         issueManagement {
             url.set(ProjectMetadata.GitHub.IssuesUrl)
+        }
+    }
+}
+
+// endregion
+// region Publish to Maven
+
+publishing.repositories {
+    maven {
+        name = "sonatype"
+
+        url = if (ProjectMetadata.Build.Type == BuildType.Release) {
+            URI("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+        } else {
+            URI("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+        }
+
+        credentials {
+            username = BuildConfiguration.ossrhUsername
+            password = BuildConfiguration.ossrhPassword
         }
     }
 }
