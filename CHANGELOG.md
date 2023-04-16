@@ -1,6 +1,6 @@
 # Change Log
 
-## 1.0.0 - 2023-04-07
+## 1.0.0 - 2023-04-16
 1. Implementation of the
    [VSCode Client/Server Language Protocol 1.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-1-x.md)
    specification.
