@@ -7,6 +7,13 @@ plugins {
     kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
 }
 
+// region Kotlin Multiplatform (Common)
+
+kotlin.sourceSets {
+    commonMain.kotlin.srcDir("commonMain")
+}
+
+// endregion
 // region Kotlin JVM
 
 kotlin.jvm {
@@ -53,7 +60,6 @@ kotlin {
     }
 
     sourceSets {
-        commonMain.kotlin.srcDir("commonMain")
         nativeMain.kotlin.srcDir("nativeMain")
     }
 }

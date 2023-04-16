@@ -11,6 +11,24 @@ plugins {
 group = ProjectMetadata.GitHub.GroupId
 version = ProjectMetadata.Build.Version
 
+// region Kotlin Multiplatform (Common)
+
+kotlin.sourceSets {
+    commonMain.kotlin.srcDir("commonMain")
+    commonTest.kotlin.srcDir("commonTest")
+
+    commonMain.dependencies {
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.Dependency.kotlinSerialization}")
+        implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:${Version.Dependency.xqtJsonRpc}")
+    }
+
+    commonTest.dependencies {
+        implementation(kotlin("test"))
+        implementation(project(":src:xqt-kotlinx-test"))
+    }
+}
+
+// endregion
 // region Kotlin JVM
 
 kotlin.jvm {
@@ -74,19 +92,6 @@ kotlin {
     }
 
     sourceSets {
-        commonMain.kotlin.srcDir("commonMain")
-        commonTest.kotlin.srcDir("commonTest")
-
-        commonMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.Dependency.kotlinSerialization}")
-            implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:${Version.Dependency.xqtJsonRpc}")
-        }
-
-        commonTest.dependencies {
-            implementation(kotlin("test"))
-            implementation(project(":src:xqt-kotlinx-test"))
-        }
-
         nativeMain.kotlin.srcDir("nativeMain")
         nativeTest.kotlin.srcDir("nativeTest")
     }
