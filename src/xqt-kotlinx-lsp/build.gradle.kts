@@ -125,3 +125,45 @@ publishing.publications.withType<MavenPublication> {
 }
 
 // endregion
+// region Maven POM Metadata
+
+publishing.publications.withType<MavenPublication> {
+    pom {
+        name.set("$groupId:$artifactId")
+        description.set(ProjectMetadata.Description)
+        url.set(ProjectMetadata.GitHub.ProjectUrl)
+
+        licenses {
+            license {
+                name.set(ProjectMetadata.License.Name)
+                url.set(ProjectMetadata.License.Url)
+                distribution.set("repo")
+            }
+        }
+
+        developers {
+            developer {
+                name.set(ProjectMetadata.GitHub.AccountName)
+                email.set(ProjectMetadata.GitHub.AccountEmail)
+                organization.set(ProjectMetadata.GitHub.AccountId)
+                organizationUrl.set(ProjectMetadata.GitHub.AccountUrl)
+            }
+        }
+
+        scm {
+            connection.set("scm:git:${ProjectMetadata.GitHub.CloneSshUrl}")
+            developerConnection.set("scm:git:${ProjectMetadata.GitHub.CloneSshUrl}")
+            url.set(ProjectMetadata.GitHub.ProjectUrl)
+
+            if (ProjectMetadata.Build.Type == BuildType.Release) {
+                tag.set(ProjectMetadata.Build.VersionTag)
+            }
+        }
+
+        issueManagement {
+            url.set(ProjectMetadata.GitHub.IssuesUrl)
+        }
+    }
+}
+
+// endregion
