@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 
@@ -10,9 +11,39 @@ plugins {
 group = ProjectMetadata.GitHub.GroupId
 version = ProjectMetadata.Build.Version
 
+// region Kotlin JS
+
 rootProject.plugins.withType<NodeJsRootPlugin> {
     rootProject.the<NodeJsRootExtension>().download = BuildConfiguration.downloadNodeJs
 }
+
+kotlin.js(KotlinJsCompilerType.BOTH).browser {
+    testTask {
+        useKarma {
+            when (BuildConfiguration.jsBrowser) {
+                JsBrowser.Chrome -> useChromeHeadless()
+                JsBrowser.ChromeCanary -> useChromeCanaryHeadless()
+                JsBrowser.Chromium -> useChromiumHeadless()
+                JsBrowser.Firefox -> useFirefoxHeadless()
+                JsBrowser.FirefoxAurora -> useFirefoxAuroraHeadless()
+                JsBrowser.FirefoxDeveloper -> useFirefoxDeveloperHeadless()
+                JsBrowser.FirefoxNightly -> useFirefoxNightlyHeadless()
+                JsBrowser.PhantomJs -> usePhantomJS()
+                JsBrowser.Safari -> useSafari()
+            }
+        }
+    }
+}
+
+kotlin.js(KotlinJsCompilerType.BOTH).nodejs {
+}
+
+kotlin.sourceSets {
+    jsMain.kotlin.srcDir("jsMain")
+    jsTest.kotlin.srcDir("jsTest")
+}
+
+// endregion
 
 kotlin {
     jvm {
@@ -22,29 +53,6 @@ kotlin {
         withJava()
         testRuns["test"].executionTask.configure {
             useJUnitPlatform() // JUnit 5
-        }
-    }
-
-    js(BOTH) {
-        browser {
-            testTask {
-                useKarma {
-                    when (BuildConfiguration.jsBrowser) {
-                        JsBrowser.Chrome -> useChromeHeadless()
-                        JsBrowser.ChromeCanary -> useChromeCanaryHeadless()
-                        JsBrowser.Chromium -> useChromiumHeadless()
-                        JsBrowser.Firefox -> useFirefoxHeadless()
-                        JsBrowser.FirefoxAurora -> useFirefoxAuroraHeadless()
-                        JsBrowser.FirefoxDeveloper -> useFirefoxDeveloperHeadless()
-                        JsBrowser.FirefoxNightly -> useFirefoxNightlyHeadless()
-                        JsBrowser.PhantomJs -> usePhantomJS()
-                        JsBrowser.Safari -> useSafari()
-                    }
-                }
-            }
-        }
-
-        nodejs {
         }
     }
 
@@ -71,9 +79,6 @@ kotlin {
 
         jvmMain.kotlin.srcDir("jvmMain")
         jvmTest.kotlin.srcDir("jvmTest")
-
-        jsMain.kotlin.srcDir("jsMain")
-        jsTest.kotlin.srcDir("jsTest")
 
         nativeMain.kotlin.srcDir("nativeMain")
         nativeTest.kotlin.srcDir("nativeTest")

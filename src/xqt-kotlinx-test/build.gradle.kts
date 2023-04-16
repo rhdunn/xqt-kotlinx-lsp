@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 
@@ -6,9 +7,23 @@ plugins {
     kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
 }
 
+// region Kotlin JS
+
 rootProject.plugins.withType<NodeJsRootPlugin> {
     rootProject.the<NodeJsRootExtension>().download = BuildConfiguration.downloadNodeJs
 }
+
+kotlin.js(KotlinJsCompilerType.BOTH).browser {
+}
+
+kotlin.js(KotlinJsCompilerType.BOTH).nodejs {
+}
+
+kotlin.sourceSets {
+    jsMain.kotlin.srcDir("jsMain")
+}
+
+// endregion
 
 kotlin {
     jvm {
@@ -16,14 +31,6 @@ kotlin {
             kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget
         }
         withJava()
-    }
-
-    js(BOTH) {
-        browser {
-        }
-
-        nodejs {
-        }
     }
 
     val nativeTarget = when (BuildConfiguration.hostOs) {
@@ -36,7 +43,6 @@ kotlin {
     sourceSets {
         commonMain.kotlin.srcDir("commonMain")
         jvmMain.kotlin.srcDir("jvmMain")
-        jsMain.kotlin.srcDir("jsMain")
         nativeMain.kotlin.srcDir("nativeMain")
 
         jvmMain.dependencies {
