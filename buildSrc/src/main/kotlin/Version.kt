@@ -11,6 +11,6 @@ object Version {
     object Dependency {
         const val junit = "5.6.0"
         const val kotlinSerialization = "1.4.1"
-        const val xqtJsonRpc = "0.1-SNAPSHOT"
+        const val xqtJsonRpc = "1.0.0"
     }
 }
