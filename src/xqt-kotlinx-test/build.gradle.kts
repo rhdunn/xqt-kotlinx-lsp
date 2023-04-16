@@ -7,6 +7,25 @@ plugins {
     kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
 }
 
+// region Kotlin JVM
+
+kotlin.jvm {
+    compilations.all {
+        kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget
+    }
+
+    withJava()
+}
+
+kotlin.sourceSets {
+    jvmMain.kotlin.srcDir("jvmMain")
+
+    jvmMain.dependencies {
+        implementation("org.junit.jupiter:junit-jupiter-api:${Version.Dependency.junit}")
+    }
+}
+
+// endregion
 // region Kotlin JS
 
 rootProject.plugins.withType<NodeJsRootPlugin> {
@@ -26,13 +45,6 @@ kotlin.sourceSets {
 // endregion
 
 kotlin {
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget
-        }
-        withJava()
-    }
-
     val nativeTarget = when (BuildConfiguration.hostOs) {
         HostOs.Windows -> mingwX64("native")
         HostOs.Linux -> linuxX64("native")
@@ -42,11 +54,6 @@ kotlin {
 
     sourceSets {
         commonMain.kotlin.srcDir("commonMain")
-        jvmMain.kotlin.srcDir("jvmMain")
         nativeMain.kotlin.srcDir("nativeMain")
-
-        jvmMain.dependencies {
-            implementation("org.junit.jupiter:junit-jupiter-api:${Version.Dependency.junit}")
-        }
     }
 }

@@ -11,6 +11,26 @@ plugins {
 group = ProjectMetadata.GitHub.GroupId
 version = ProjectMetadata.Build.Version
 
+// region Kotlin JVM
+
+kotlin.jvm {
+    compilations.all {
+        kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget
+    }
+
+    withJava()
+
+    testRuns["test"].executionTask.configure {
+        useJUnitPlatform() // JUnit 5
+    }
+}
+
+kotlin.sourceSets {
+    jvmMain.kotlin.srcDir("jvmMain")
+    jvmTest.kotlin.srcDir("jvmTest")
+}
+
+// endregion
 // region Kotlin JS
 
 rootProject.plugins.withType<NodeJsRootPlugin> {
@@ -46,16 +66,6 @@ kotlin.sourceSets {
 // endregion
 
 kotlin {
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget
-        }
-        withJava()
-        testRuns["test"].executionTask.configure {
-            useJUnitPlatform() // JUnit 5
-        }
-    }
-
     val nativeTarget = when (BuildConfiguration.hostOs) {
         HostOs.Windows -> mingwX64("native")
         HostOs.Linux -> linuxX64("native")
@@ -76,9 +86,6 @@ kotlin {
             implementation(kotlin("test"))
             implementation(project(":src:xqt-kotlinx-test"))
         }
-
-        jvmMain.kotlin.srcDir("jvmMain")
-        jvmTest.kotlin.srcDir("jvmTest")
 
         nativeMain.kotlin.srcDir("nativeMain")
         nativeTest.kotlin.srcDir("nativeTest")
