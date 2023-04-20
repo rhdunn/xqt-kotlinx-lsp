@@ -44,6 +44,16 @@ object BuildConfiguration {
         return getProperty(project, "ossrh.password", "OSSRH_PASSWORD")
     }
 
+    /**
+     * Sign the Maven artifacts.
+     */
+    fun signMavenArtifacts(project: Project): Boolean {
+        return when (project.gradle.taskGraph.hasTask("publish")) {
+            true -> true
+            else -> getProperty(project, "maven.sign") == "true"
+        }
+    }
+
     private fun getProperty(project: Project, name: String, envName: String? = null): String? {
         val projectValue = project.findProperty(name)?.toString()
         val systemValue = System.getProperty(name)

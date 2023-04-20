@@ -12,6 +12,7 @@ plugins {
     kotlin("multiplatform") version Version.Plugin.kotlinMultiplatform
     kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
     id("org.jetbrains.dokka") version Version.Plugin.dokka
+    id("signing")
 }
 
 // region Kotlin Multiplatform (Common)
