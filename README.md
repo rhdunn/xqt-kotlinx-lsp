@@ -38,11 +38,12 @@ should not need modifying.
 
 ### Kotlin JVM
 This template provides a GitHub Actions workflow (`build-jvm`) for building the
-project with Kotlin/JVM on Java 11.
+project with Kotlin/JVM.
 
 #### jvm.target
 The `jvm.target` build property configures the version of the Java VM to target
-by the Kotlin compiler.
+by the Kotlin compiler. This is used by the GitHub Actions to build against the
+LTS releases of JVM, 11 and 17.
 
 To configure this setting, add the following to the `build.gradle.kts` file:
 ```
