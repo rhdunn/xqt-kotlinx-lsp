@@ -31,6 +31,9 @@ jobs:
   test-node:
     needs: build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ 14, 16, 18 ]
     steps:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
@@ -40,10 +43,10 @@ jobs:
       - name: Extract Build Artifacts
         run: tar -xf build-js-ir-artifacts.tar
 
-      - name: Setup Node 16
+      - name: Setup Node ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: ${{ matrix.node }}
 
       - name: Test for Kotlin/JS IR on Node
         run: ./gradlew jsIrNodeTest
