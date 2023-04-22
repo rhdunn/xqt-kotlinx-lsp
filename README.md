@@ -45,6 +45,31 @@ This template provides GitHub Actions workflows for building the project with
 Kotlin/JS. It supports the new IR compiler (`build-js-ir`) and the legacy
 compiler (`build-js-legacy`).
 
+#### js.browser
+The `js.browser` build property configures the name of the browser to use in
+the Kotlin/JS tests when run on the browser.
+
+To configure this setting, add the following to the `build.gradle.kts` file:
+```
+kotlin.js(KotlinJsCompilerType.BOTH).browser {
+    testTask {
+        useKarma {
+            when (BuildConfiguration.jsBrowser(project)) {
+                JsBrowser.Chrome -> useChromeHeadless()
+                JsBrowser.ChromeCanary -> useChromeCanaryHeadless()
+                JsBrowser.Chromium -> useChromiumHeadless()
+                JsBrowser.Firefox -> useFirefoxHeadless()
+                JsBrowser.FirefoxAurora -> useFirefoxAuroraHeadless()
+                JsBrowser.FirefoxDeveloper -> useFirefoxDeveloperHeadless()
+                JsBrowser.FirefoxNightly -> useFirefoxNightlyHeadless()
+                JsBrowser.PhantomJs -> usePhantomJS()
+                JsBrowser.Safari -> useSafari()
+            }
+        }
+    }
+}
+```
+
 ### Kotlin Native
 This template provides a GitHub Actions workflow (`build-native`) for building
 the project with Kotlin/Native on Windows, Linux, and Mac OS X.
