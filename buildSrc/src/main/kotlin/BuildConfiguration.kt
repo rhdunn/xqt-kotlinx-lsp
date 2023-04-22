@@ -8,13 +8,6 @@ import org.gradle.api.Project
 @Suppress("MemberVisibilityCanBePrivate")
 object BuildConfiguration {
     /**
-     * The headless web browser to run the JS tests on.
-     */
-    fun jsBrowser(project: Project): KarmaBrowserTarget {
-        return KarmaBrowserTarget(getProperty(project, "js.browser"))
-    }
-
-    /**
      * The version of the Java Virtual Machine (JVM) to target by the Kotlin compiler.
      */
     fun jvmTarget(project: Project): String {

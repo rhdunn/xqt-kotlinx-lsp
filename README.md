@@ -59,17 +59,13 @@ This template provides GitHub Actions workflows for building the project with
 Kotlin/JS. It supports the new IR compiler (`build-js-ir`) and the legacy
 compiler (`build-js-legacy`).
 
-#### js.browser
-The `js.browser` build property configures the name of the browser to use in
-the Kotlin/JS tests when run on the browser. This is used by the GitHub Actions
-to run the tests on Firefox and Chrome.
-
+#### Karma Browser Tests
 To configure this setting, add the following to the `build.gradle.kts` file:
 ```
 kotlin.js(KotlinJsCompilerType.BOTH).browser {
     testTask {
         useKarma {
-            when (BuildConfiguration.jsBrowser(project)) {
+            when (BuildConfiguration.karmaBrowserTarget(project)) {
                 KarmaBrowserTarget.Chrome -> useChromeHeadless()
                 KarmaBrowserTarget.ChromeCanary -> useChromeCanaryHeadless()
                 KarmaBrowserTarget.Chromium -> useChromiumHeadless()

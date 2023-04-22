@@ -76,7 +76,7 @@ jobs:
           firefox-version: 'latest'
 
       - name: Test for Kotlin/JS IR on Firefox
-        run: gradle -D nodejs.download=false -D js.browser=Firefox jsIrBrowserTest
+        run: gradle -D nodejs.download=false -D karma.browser=firefox jsIrBrowserTest
 
   test-chrome:
     needs: build
@@ -101,4 +101,4 @@ jobs:
           chrome-version: 'latest'
 
       - name: Test for Kotlin/JS Legacy on Chrome
-        run: gradle -D nodejs.download=false -D js.browser=Chrome jsLegacyBrowserTest
+        run: gradle -D nodejs.download=false -D karma.browser=chrome jsLegacyBrowserTest

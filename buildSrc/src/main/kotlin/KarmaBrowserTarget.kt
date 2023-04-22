@@ -94,61 +94,60 @@ fun KarmaBrowserChannel(channel: String): KarmaBrowserChannel = when (channel) {
 }
 
 /**
- * The headless web browser used to test the Kotlin JS code.
+ * The web browser used to run the Karma tests on.
  *
  * @param browserName The name of the headless web browser.
  * @param browser The browser type.
  * @param channel The development/release channel.
  */
 sealed class KarmaBrowserTarget(
-    val browserName: String,
     val browser: KarmaBrowser,
     val channel: KarmaBrowserChannel = KarmaBrowserChannel.Release
 ) {
     /**
      * Use Chrome headless to run the tests.
      */
-    object Chrome : KarmaBrowserTarget("Chrome", KarmaBrowser.Chrome)
+    object Chrome : KarmaBrowserTarget(KarmaBrowser.Chrome)
 
     /**
      * Use Chrome (Canary) headless to run the tests.
      */
-    object ChromeCanary : KarmaBrowserTarget("Chrome Canary", KarmaBrowser.Chrome, KarmaBrowserChannel.Canary)
+    object ChromeCanary : KarmaBrowserTarget(KarmaBrowser.Chrome, KarmaBrowserChannel.Canary)
 
     /**
      * Use Chromium headless to run the tests.
      */
-    object Chromium : KarmaBrowserTarget("Chromium", KarmaBrowser.Chromium)
+    object Chromium : KarmaBrowserTarget(KarmaBrowser.Chromium)
 
     /**
      * Use Firefox headless to run the tests.
      */
-    object Firefox : KarmaBrowserTarget("Firefox", KarmaBrowser.Firefox)
+    object Firefox : KarmaBrowserTarget(KarmaBrowser.Firefox)
 
     /**
      * Use Firefox (Aurora) headless to run the tests.
      */
-    object FirefoxAurora : KarmaBrowserTarget("Firefox Aurora", KarmaBrowser.Firefox, KarmaBrowserChannel.Aurora)
+    object FirefoxAurora : KarmaBrowserTarget(KarmaBrowser.Firefox, KarmaBrowserChannel.Aurora)
 
     /**
      * Use Firefox (Developer) headless to run the tests.
      */
-    object FirefoxDeveloper : KarmaBrowserTarget("Firefox Developer", KarmaBrowser.Firefox, KarmaBrowserChannel.Developer)
+    object FirefoxDeveloper : KarmaBrowserTarget(KarmaBrowser.Firefox, KarmaBrowserChannel.Developer)
 
     /**
      * Use Firefox (Nightly) headless to run the tests.
      */
-    object FirefoxNightly : KarmaBrowserTarget("Firefox Nightly", KarmaBrowser.Firefox, KarmaBrowserChannel.Nightly)
+    object FirefoxNightly : KarmaBrowserTarget(KarmaBrowser.Firefox, KarmaBrowserChannel.Nightly)
 
     /**
      * Use Phantom JS to run the tests.
      */
-    object PhantomJs : KarmaBrowserTarget("Phantom JS", KarmaBrowser.PhantomJs)
+    object PhantomJs : KarmaBrowserTarget(KarmaBrowser.PhantomJs)
 
     /**
      * Use Safari to run the tests.
      */
-    object Safari : KarmaBrowserTarget("Safari", KarmaBrowser.Safari)
+    object Safari : KarmaBrowserTarget(KarmaBrowser.Safari)
 }
 
 /**
@@ -186,28 +185,5 @@ fun KarmaBrowserTarget(
     KarmaBrowser.Safari -> when (channel) {
         KarmaBrowserChannel.Release -> KarmaBrowserTarget.Safari
         else -> throw GradleException("Safari does not support the 'karma.browser.channel' property value.")
-    }
-}
-
-/**
- * The headless web browser used to test the Kotlin JS code.
- *
- * If `browserName` is `null` or unrecognised, a default browser is selected.
- *
- * @param browserName The name of the headless web browser.
- */
-fun KarmaBrowserTarget(browserName: String?): KarmaBrowserTarget = when (browserName) {
-    KarmaBrowserTarget.Chrome.browserName -> KarmaBrowserTarget.Chrome
-    KarmaBrowserTarget.ChromeCanary.browserName -> KarmaBrowserTarget.ChromeCanary
-    KarmaBrowserTarget.Chromium.browserName -> KarmaBrowserTarget.Chromium
-    KarmaBrowserTarget.Firefox.browserName -> KarmaBrowserTarget.Firefox
-    KarmaBrowserTarget.FirefoxAurora.browserName -> KarmaBrowserTarget.FirefoxAurora
-    KarmaBrowserTarget.FirefoxDeveloper.browserName -> KarmaBrowserTarget.FirefoxDeveloper
-    KarmaBrowserTarget.FirefoxNightly.browserName -> KarmaBrowserTarget.FirefoxNightly
-    KarmaBrowserTarget.PhantomJs.browserName -> KarmaBrowserTarget.PhantomJs
-    KarmaBrowserTarget.Safari.browserName -> KarmaBrowserTarget.Safari
-    else -> when {
-        HostManager.hostIsMac -> KarmaBrowserTarget.Safari
-        else -> KarmaBrowserTarget.Firefox
     }
 }
