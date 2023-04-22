@@ -40,6 +40,19 @@ should not need modifying.
 This template provides a GitHub Actions workflow (`build-jvm`) for building the
 project with Kotlin/JVM on Java 11.
 
+#### jvm.target
+The `jvm.target` build property configures the version of the Java VM to target
+by the Kotlin compiler.
+
+To configure this setting, add the following to the `build.gradle.kts` file:
+```
+kotlin.jvm {
+    compilations.all {
+        kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget(project)
+    }
+}
+```
+
 ### Kotlin JS
 This template provides GitHub Actions workflows for building the project with
 Kotlin/JS. It supports the new IR compiler (`build-js-ir`) and the legacy

@@ -12,6 +12,13 @@ object BuildConfiguration {
         return JsBrowser(getProperty(project, "js.browser"))
     }
 
+    /**
+     * The version of the Java Virtual Machine (JVM) to target by the Kotlin compiler.
+     */
+    fun jvmTarget(project: Project): String {
+        return getProperty(project, "jvm.target") ?: "11"
+    }
+
     private fun getProperty(project: Project, name: String, envName: String? = null): String? {
         val projectValue = project.findProperty(name)?.toString()
         val systemValue = System.getProperty(name)
