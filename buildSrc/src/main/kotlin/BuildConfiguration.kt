@@ -20,6 +20,13 @@ object BuildConfiguration {
     }
 
     /**
+     * The web browser used by the Karma test harness.
+     */
+    fun karmaBrowser(project: Project): KarmaBrowser {
+        return KarmaBrowser(getProperty(project, "karma.browser"))
+    }
+
+    /**
      * Should the build process download node if it is not present?
      */
     fun nodeJsDownload(project: Project): Boolean {

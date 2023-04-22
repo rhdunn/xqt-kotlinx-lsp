@@ -85,6 +85,10 @@ kotlin.js(KotlinJsCompilerType.BOTH).browser {
 }
 ```
 
+#### karma.browser
+The `karma.browser` build property configures the name of the browser to use in
+the Kotlin/JS tests when run on the browser.
+
 #### nodejs.download
 The `nodejs.download` build property configures whether the build should
 download node when building and running the Kotlin/JS targets. If this is false
