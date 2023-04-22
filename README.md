@@ -14,12 +14,6 @@ the project clean.
 > NOTE: If you want to share IntelliJ settings, simply remove the "IntelliJ IDE
 > Settings" section of the `.gitignore` file.
 
-## Gradle Wrapper
-This template adds `.gitignore` rules to ignore the gradle wrapper binaries to
-prevent the binaries from being included in the git repository.
-> NOTE: If you want to add those binaries to the repository, simply remove the
-> "Gradle Wrapper" section of the `.gitignore` file.
-
 ## Gradle
 This template adds `.gitignore` rules to ignore the gradle build output.
 
@@ -31,16 +25,29 @@ This template provides a base `settings.gradle.kts` file.
 > NOTE: This should be modified to set the project name and to include any
 > subprojects.
 
+### Gradle Wrapper
+This template adds `.gitignore` rules to ignore the gradle wrapper binaries to
+prevent the binaries from being included in the git repository.
+> NOTE: If you want to add those binaries to the repository, simply remove the
+> "Gradle Wrapper" section of the `.gitignore` file.
+
 ## Kotlin Multiplatform
 This template defines common gradle configuration options in the
 `gradle.properties` file for Kotlin multiplatform projects. These settings
 should not need modifying.
 
-## GitHub Actions
-This template defines several GitHub Actions workflows:
-1. `build-jvm.yml` -- Build and test the project using the Kotlin JVM target.
-2. `build-js-ir.yml` -- Build and test the project using the Kotlin JS IR target.
-3. `build-js-legacy.yml` -- Build and test the project using the Kotlin JS legacy target.
+### Kotlin JVM
+This template provides a GitHub Actions workflow (`build-jvm`) for building the
+project with Kotlin/JVM on Java 11.
+
+### Kotlin JS
+This template provides GitHub Actions workflows for building the project with
+Kotlin/JS. It supports the new IR compiler (`build-js-ir`) and the legacy
+compiler (`build-js-legacy`).
+
+### Kotlin Native
+This template provides a GitHub Actions workflow (`build-native`) for building
+the project with Kotlin/Native on Windows, Linux, and Mac OS X.
 
 ## License
 Copyright (C) 2023 Reece H. Dunn
