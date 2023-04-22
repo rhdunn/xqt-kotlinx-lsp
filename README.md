@@ -93,6 +93,10 @@ the Kotlin/JS tests when run on the browser.
 The `karma.browser.channel` build property configures the name of the
 development/release channel of the browser used to run the Kotlin/JS tests.
 
+#### karma.browser.headless
+The `karma.browser.headless` build property determines whether the web browser
+runs in headless mode, or with a visible graphical interface.
+
 #### nodejs.download
 The `nodejs.download` build property configures whether the build should
 download node when building and running the Kotlin/JS targets. If this is false

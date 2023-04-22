@@ -35,6 +35,17 @@ object BuildConfiguration {
     }
 
     /**
+     * Should the web browser used by the Karma test harness be run in headless mode?
+     */
+    fun karmaBrowserHeadless(project: Project): Boolean {
+        return when (getProperty(project, "karma.browser.headless")) {
+            "true", null -> true
+            "false" -> false
+            else -> throw GradleException("Invalid value for the 'karma.browser.headless' property.")
+        }
+    }
+
+    /**
      * Should the build process download node if it is not present?
      */
     fun nodeJsDownload(project: Project): Boolean {
