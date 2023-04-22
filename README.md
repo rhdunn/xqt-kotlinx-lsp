@@ -39,6 +39,7 @@ should not need modifying.
 ## GitHub Actions
 This template defines several GitHub Actions workflows:
 1. `build-jvm.yml` -- Build and test the project using the Kotlin JVM target.
+2. `build-js-ir.yml` -- Build and test the project using the Kotlin JS IR target.
 
 ## License
 Copyright (C) 2023 Reece H. Dunn
