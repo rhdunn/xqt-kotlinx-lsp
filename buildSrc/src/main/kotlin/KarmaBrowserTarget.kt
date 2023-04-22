@@ -52,12 +52,59 @@ fun KarmaBrowser(name: String?): KarmaBrowser = when (name) {
 }
 
 /**
+ * The web browser development/release channel.
+ */
+enum class KarmaBrowserChannel {
+    /**
+     * The official production releases for the browser.
+     */
+    Release,
+
+    /**
+     * The Google Chrome "Canary" builds.
+     */
+    Canary,
+
+    /**
+     * The Mozilla Firefox "Aurora" builds.
+     */
+    Aurora,
+
+    /**
+     * The Mozilla Firefox "Developer" builds.
+     */
+    Developer,
+
+    /**
+     * The Mozilla Firefox "Nightly" builds.
+     */
+    Nightly,
+}
+
+/**
+ * Returns the web browser development/release channel.
+ */
+fun KarmaBrowserChannel(channel: String): KarmaBrowserChannel = when (channel) {
+    "release" -> KarmaBrowserChannel.Release
+    "canary" -> KarmaBrowserChannel.Canary
+    "aurora" -> KarmaBrowserChannel.Aurora
+    "developer" -> KarmaBrowserChannel.Developer
+    "nightly" -> KarmaBrowserChannel.Nightly
+    else -> throw GradleException("Invalid value for the 'karma.browser.channel' property.")
+}
+
+/**
  * The headless web browser used to test the Kotlin JS code.
  *
  * @param browserName The name of the headless web browser.
  * @param browser The browser type.
+ * @param channel The development/release channel.
  */
-sealed class KarmaBrowserTarget(val browserName: String, val browser: KarmaBrowser) {
+sealed class KarmaBrowserTarget(
+    val browserName: String,
+    val browser: KarmaBrowser,
+    val channel: KarmaBrowserChannel = KarmaBrowserChannel.Release
+) {
     /**
      * Use Chrome headless to run the tests.
      */
@@ -66,7 +113,7 @@ sealed class KarmaBrowserTarget(val browserName: String, val browser: KarmaBrows
     /**
      * Use Chrome (Canary) headless to run the tests.
      */
-    object ChromeCanary : KarmaBrowserTarget("Chrome Canary", KarmaBrowser.Chrome)
+    object ChromeCanary : KarmaBrowserTarget("Chrome Canary", KarmaBrowser.Chrome, KarmaBrowserChannel.Canary)
 
     /**
      * Use Chromium headless to run the tests.
@@ -81,17 +128,17 @@ sealed class KarmaBrowserTarget(val browserName: String, val browser: KarmaBrows
     /**
      * Use Firefox (Aurora) headless to run the tests.
      */
-    object FirefoxAurora : KarmaBrowserTarget("Firefox Aurora", KarmaBrowser.Firefox)
+    object FirefoxAurora : KarmaBrowserTarget("Firefox Aurora", KarmaBrowser.Firefox, KarmaBrowserChannel.Aurora)
 
     /**
      * Use Firefox (Developer) headless to run the tests.
      */
-    object FirefoxDeveloper : KarmaBrowserTarget("Firefox Developer", KarmaBrowser.Firefox)
+    object FirefoxDeveloper : KarmaBrowserTarget("Firefox Developer", KarmaBrowser.Firefox, KarmaBrowserChannel.Developer)
 
     /**
      * Use Firefox (Nightly) headless to run the tests.
      */
-    object FirefoxNightly : KarmaBrowserTarget("Firefox Nightly", KarmaBrowser.Firefox)
+    object FirefoxNightly : KarmaBrowserTarget("Firefox Nightly", KarmaBrowser.Firefox, KarmaBrowserChannel.Nightly)
 
     /**
      * Use Phantom JS to run the tests.

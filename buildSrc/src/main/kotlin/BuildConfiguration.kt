@@ -27,6 +27,13 @@ object BuildConfiguration {
     }
 
     /**
+     * The web browser development/release channel used by the Karma test harness.
+     */
+    fun karmaBrowserChannel(project: Project): KarmaBrowserChannel {
+        return KarmaBrowserChannel(getProperty(project, "karma.browser.channel") ?: "release")
+    }
+
+    /**
      * Should the build process download node if it is not present?
      */
     fun nodeJsDownload(project: Project): Boolean {

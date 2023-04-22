@@ -89,6 +89,10 @@ kotlin.js(KotlinJsCompilerType.BOTH).browser {
 The `karma.browser` build property configures the name of the browser to use in
 the Kotlin/JS tests when run on the browser.
 
+#### karma.browser.channel
+The `karma.browser.channel` build property configures the name of the
+development/release channel of the browser used to run the Kotlin/JS tests.
+
 #### nodejs.download
 The `nodejs.download` build property configures whether the build should
 download node when building and running the Kotlin/JS targets. If this is false
