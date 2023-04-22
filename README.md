@@ -70,15 +70,15 @@ kotlin.js(KotlinJsCompilerType.BOTH).browser {
     testTask {
         useKarma {
             when (BuildConfiguration.jsBrowser(project)) {
-                JsBrowser.Chrome -> useChromeHeadless()
-                JsBrowser.ChromeCanary -> useChromeCanaryHeadless()
-                JsBrowser.Chromium -> useChromiumHeadless()
-                JsBrowser.Firefox -> useFirefoxHeadless()
-                JsBrowser.FirefoxAurora -> useFirefoxAuroraHeadless()
-                JsBrowser.FirefoxDeveloper -> useFirefoxDeveloperHeadless()
-                JsBrowser.FirefoxNightly -> useFirefoxNightlyHeadless()
-                JsBrowser.PhantomJs -> usePhantomJS()
-                JsBrowser.Safari -> useSafari()
+                KarmaBrowserTarget.Chrome -> useChromeHeadless()
+                KarmaBrowserTarget.ChromeCanary -> useChromeCanaryHeadless()
+                KarmaBrowserTarget.Chromium -> useChromiumHeadless()
+                KarmaBrowserTarget.Firefox -> useFirefoxHeadless()
+                KarmaBrowserTarget.FirefoxAurora -> useFirefoxAuroraHeadless()
+                KarmaBrowserTarget.FirefoxDeveloper -> useFirefoxDeveloperHeadless()
+                KarmaBrowserTarget.FirefoxNightly -> useFirefoxNightlyHeadless()
+                KarmaBrowserTarget.PhantomJs -> usePhantomJS()
+                KarmaBrowserTarget.Safari -> useSafari()
             }
         }
     }

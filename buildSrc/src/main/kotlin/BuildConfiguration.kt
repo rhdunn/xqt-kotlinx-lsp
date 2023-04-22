@@ -8,8 +8,8 @@ object BuildConfiguration {
     /**
      * The headless web browser to run the JS tests on.
      */
-    fun jsBrowser(project: Project): JsBrowser {
-        return JsBrowser(getProperty(project, "js.browser"))
+    fun jsBrowser(project: Project): KarmaBrowserTarget {
+        return KarmaBrowserTarget(getProperty(project, "js.browser"))
     }
 
     /**
