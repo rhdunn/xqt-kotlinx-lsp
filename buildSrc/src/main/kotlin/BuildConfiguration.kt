@@ -5,6 +5,7 @@ import org.gradle.api.Project
 /**
  * Accessors for the build configuration options.
  */
+@Suppress("MemberVisibilityCanBePrivate")
 object BuildConfiguration {
     /**
      * The headless web browser to run the JS tests on.
@@ -43,6 +44,16 @@ object BuildConfiguration {
             "false" -> false
             else -> throw GradleException("Invalid value for the 'karma.browser.headless' property.")
         }
+    }
+
+    /**
+     * The web browser used to run the Karma tests on.
+     */
+    fun karmaBrowserTarget(project: Project): KarmaBrowserTarget {
+        val browser = karmaBrowser(project)
+        val channel = karmaBrowserChannel(project)
+        val headless = karmaBrowserHeadless(project)
+        return KarmaBrowserTarget(browser, channel, headless)
     }
 
     /**
