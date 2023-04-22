@@ -36,6 +36,10 @@ This template defines common gradle configuration options in the
 `gradle.properties` file for Kotlin multiplatform projects. These settings
 should not need modifying.
 
+## GitHub Actions
+This template defines several GitHub Actions workflows:
+1. `build-jvm.yml` -- Build and test the project using the Kotlin JVM target.
+
 ## License
 Copyright (C) 2023 Reece H. Dunn
 
