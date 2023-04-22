@@ -17,16 +17,13 @@ jobs:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
 
-      - name: Create a Gradle Wrapper
-        # Use a null gradle file so that if the gradle version cannot parse this gradle
-        # file it will be able to run and generate the gradle wrapper.
-        run: touch null.gradle ; gradle -b null.gradle wrapper --gradle-version 7.5 ; rm null.gradle
-
-      - name: Gradle Version
-        run: ./gradlew --version
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
 
       - name: Build for Kotlin/JVM
-        run: ./gradlew -D jvm.target=${{ matrix.java }} jvmJar
+        run: gradle -D jvm.target=${{ matrix.java }} jvmJar
 
       - name: Test for Kotlin/JVM
-        run: ./gradlew -D jvm.target=${{ matrix.java }} jvmTest
+        run: gradle -D jvm.target=${{ matrix.java }} jvmTest

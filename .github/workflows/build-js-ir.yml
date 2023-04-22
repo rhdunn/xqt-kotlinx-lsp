@@ -8,16 +8,13 @@ jobs:
       - name: Source Code Checkout
         uses: actions/checkout@v3
 
-      - name: Create a Gradle Wrapper
-        # Use a null gradle file so that if the gradle version cannot parse this gradle
-        # file it will be able to run and generate the gradle wrapper.
-        run: touch null.gradle ; gradle -b null.gradle wrapper --gradle-version 7.5 ; rm null.gradle
-
-      - name: Gradle Version
-        run: ./gradlew --version
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
 
       - name: Build for Kotlin/JS IR
-        run: ./gradlew jsIrJar
+        run: gradle jsIrJar
 
       - name: Tar Build Artifacts
         run: tar -cvf build-js-ir-artifacts.tar .
@@ -35,6 +32,11 @@ jobs:
       matrix:
         node: [ 14, 16, 18 ]
     steps:
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
         with:
@@ -49,12 +51,17 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Test for Kotlin/JS IR on Node
-        run: ./gradlew jsIrNodeTest
+        run: gradle jsIrNodeTest
 
   test-firefox:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
         with:
@@ -69,12 +76,17 @@ jobs:
           firefox-version: 'latest'
 
       - name: Test for Kotlin/JS IR on Firefox
-        run: ./gradlew -D js.browser=Firefox jsIrBrowserTest
+        run: gradle -D js.browser=Firefox jsIrBrowserTest
 
   test-chrome:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
         with:
@@ -89,4 +101,4 @@ jobs:
           chrome-version: 'latest'
 
       - name: Test for Kotlin/JS Legacy on Chrome
-        run: ./gradlew -D js.browser=Chrome jsLegacyBrowserTest
+        run: gradle -D js.browser=Chrome jsLegacyBrowserTest
