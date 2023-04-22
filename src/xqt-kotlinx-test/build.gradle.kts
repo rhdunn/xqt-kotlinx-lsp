@@ -44,7 +44,7 @@ kotlin.sourceSets {
 // region Kotlin JS
 
 rootProject.plugins.withType<NodeJsRootPlugin> {
-    rootProject.the<NodeJsRootExtension>().download = BuildConfiguration.downloadNodeJs(project)
+    rootProject.the<NodeJsRootExtension>().download = BuildConfiguration.nodeJsDownload(project)
 }
 
 kotlin.js(KotlinJsCompilerType.BOTH).browser {

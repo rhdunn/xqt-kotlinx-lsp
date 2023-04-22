@@ -1,18 +1,28 @@
+// Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 import org.gradle.api.Project
 
-@Suppress("KDocMissingDocumentation", "MemberVisibilityCanBePrivate")
+/**
+ * Accessors for the build configuration options.
+ */
 object BuildConfiguration {
     /**
-     * The version of the JVM to target by the Kotlin compiler.
+     * The headless web browser to run the JS tests on.
+     */
+    fun jsBrowser(project: Project): JsBrowser {
+        return JsBrowser(getProperty(project, "js.browser"))
+    }
+
+    /**
+     * The version of the Java Virtual Machine (JVM) to target by the Kotlin compiler.
      */
     fun jvmTarget(project: Project): String {
         return getProperty(project, "jvm.target") ?: "11"
     }
 
     /**
-     * Should the build process download node-js if it is not present? (default: true)
+     * Should the build process download node if it is not present?
      */
-    fun downloadNodeJs(project: Project): Boolean {
+    fun nodeJsDownload(project: Project): Boolean {
         return getProperty(project, "nodejs.download") != "false"
     }
 
@@ -21,13 +31,6 @@ object BuildConfiguration {
      */
     fun hostOs(project: Project): HostOs {
         return HostOs(getProperty(project, "os.name") ?: "Unknown")
-    }
-
-    /**
-     * The headless web browser to run the JS tests on.
-     */
-    fun jsBrowser(project: Project): JsBrowser {
-        return JsBrowser(getProperty(project, "js.browser"), hostOs(project))
     }
 
     /**
