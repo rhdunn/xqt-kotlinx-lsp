@@ -6,43 +6,51 @@ import org.jetbrains.kotlin.konan.target.HostManager
  *
  * @param browserName The name of the headless web browser.
  */
-enum class JsBrowser(val browserName: String) {
+sealed class JsBrowser(val browserName: String) {
     /**
      * Use Chrome headless to run the tests.
      */
-    Chrome("Chrome"),
+    object Chrome : JsBrowser("Chrome")
+
     /**
      * Use Chrome (Canary) headless to run the tests.
      */
-    ChromeCanary("Chrome Canary"),
+    object ChromeCanary : JsBrowser("Chrome Canary")
+
     /**
      * Use Chromium headless to run the tests.
      */
-    Chromium("Chromium"),
+    object Chromium : JsBrowser("Chromium")
+
     /**
      * Use Firefox headless to run the tests.
      */
-    Firefox("Firefox"),
+    object Firefox : JsBrowser("Firefox")
+
     /**
      * Use Firefox (Aurora) headless to run the tests.
      */
-    FirefoxAurora("Firefox Aurora"),
+    object FirefoxAurora : JsBrowser("Firefox Aurora")
+
     /**
      * Use Firefox (Developer) headless to run the tests.
      */
-    FirefoxDeveloper("Firefox Developer"),
+    object FirefoxDeveloper : JsBrowser("Firefox Developer")
+
     /**
      * Use Firefox (Nightly) headless to run the tests.
      */
-    FirefoxNightly("Firefox Nightly"),
+    object FirefoxNightly : JsBrowser("Firefox Nightly")
+
     /**
      * Use Phantom JS to run the tests.
      */
-    PhantomJs("Phantom JS"),
+    object PhantomJs : JsBrowser("Phantom JS")
+
     /**
      * Use Safari to run the tests.
      */
-    Safari("Safari")
+    object Safari : JsBrowser("Safari")
 }
 
 /**
