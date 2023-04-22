@@ -1,1 +1,11 @@
+# IntelliJ IDE Settings
 .idea/
+
+# Gradle Wrapper
+gradle/
+gradlew
+gradlew.bat
+
+# Gradle Output
+.gradle/
+build/
