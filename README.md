@@ -48,7 +48,7 @@ compiler (`build-js-legacy`).
 #### js.browser
 The `js.browser` build property configures the name of the browser to use in
 the Kotlin/JS tests when run on the browser. This is used by the GitHub Actions
-to run the tests on Firefox.
+to run the tests on Firefox and Chrome.
 
 To configure this setting, add the following to the `build.gradle.kts` file:
 ```
