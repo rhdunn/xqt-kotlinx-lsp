@@ -1,4 +1,5 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 
 /**
@@ -37,7 +38,11 @@ object BuildConfiguration {
      * Should the build process download node if it is not present?
      */
     fun nodeJsDownload(project: Project): Boolean {
-        return getProperty(project, "nodejs.download") != "false"
+        return when (getProperty(project, "nodejs.download")) {
+            "true", null -> true
+            "false" -> false
+            else -> throw GradleException("Invalid value for the 'nodejs.download' property.")
+        }
     }
 
     private fun getProperty(project: Project, name: String, envName: String? = null): String? {
