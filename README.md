@@ -85,6 +85,19 @@ kotlin.js(KotlinJsCompilerType.BOTH).browser {
 }
 ```
 
+#### nodejs.download
+The `nodejs.download` build property configures whether the build should
+download node when building and running the Kotlin/JS targets. If this is false
+the build will use the system's node installation.
+
+To configure this setting, add the following to the `build.gradle.kts` file:
+```
+rootProject.plugins.withType<NodeJsRootPlugin> {
+    val download = BuildConfiguration.nodeJsDownload(project)
+    rootProject.the<NodeJsRootExtension>().download = download
+}
+```
+
 ### Kotlin Native
 This template provides a GitHub Actions workflow (`build-native`) for building
 the project with Kotlin/Native on Windows, Linux, and Mac OS X.

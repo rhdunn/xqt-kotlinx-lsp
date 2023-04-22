@@ -19,6 +19,13 @@ object BuildConfiguration {
         return getProperty(project, "jvm.target") ?: "11"
     }
 
+    /**
+     * Should the build process download node if it is not present?
+     */
+    fun nodeJsDownload(project: Project): Boolean {
+        return getProperty(project, "nodejs.download") != "false"
+    }
+
     private fun getProperty(project: Project, name: String, envName: String? = null): String? {
         val projectValue = project.findProperty(name)?.toString()
         val systemValue = System.getProperty(name)
