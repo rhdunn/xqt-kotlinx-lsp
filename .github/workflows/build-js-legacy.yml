@@ -18,3 +18,32 @@ jobs:
 
       - name: Build for Kotlin/JS Legacy
         run: ./gradlew jsLegacyJar
+
+      - name: Tar Build Artifacts
+        run: tar -cvf build-js-legacy-artifacts.tar .
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-js-legacy
+          path: build-js-legacy-artifacts.tar
+
+  test-node:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-js-legacy
+
+      - name: Extract Build Artifacts
+        run: tar -xf build-js-legacy-artifacts.tar
+
+      - name: Setup Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Test for Kotlin/JS Legacy on Node
+        run: ./gradlew jsLegacyNodeTest
