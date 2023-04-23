@@ -93,4 +93,19 @@ object ProjectMetadata {
          */
         const val Url = "https://www.apache.org/licenses/LICENSE-2.0.txt" // TODO: Modify this property.
     }
+
+    /**
+     * Information about the project copyright.
+     */
+    object Copyright {
+        /**
+         * The copyright year range for the project.
+         */
+        const val Year = "2023" // TODO: Modify this property.
+
+        /**
+         * The person or organization owning the copyright for the project.
+         */
+        const val Owner = "Reece H. Dunn" // TODO: Modify this property.
+    }
 }
