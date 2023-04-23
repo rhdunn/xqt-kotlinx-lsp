@@ -1,10 +1,17 @@
-@Suppress("KDocMissingDocumentation", "MemberVisibilityCanBePrivate")
+// Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+
+/**
+ * Information about the project.
+ */
 object ProjectMetadata {
     /**
      * A short description of the project.
      */
     const val Description = "Kotlin multiplatform Language Server Protocol (LSP) library"
 
+    /**
+     * Version information about the current build of the project.
+     */
     object Build {
         /**
          * The semantic version of the current version.
@@ -22,6 +29,9 @@ object ProjectMetadata {
         val Version = "$VersionTag${Type.suffix}"
     }
 
+    /**
+     * Information about the GitHub account that owns the project.
+     */
     object GitHub {
         /**
          * The ID of the GitHub account (organization or developer) to which this project belongs.
@@ -69,6 +79,9 @@ object ProjectMetadata {
         const val IssuesUrl = "https://github.com/$AccountId/$RepoId/issues"
     }
 
+    /**
+     * Information about the project license as it appears in the Maven POM file.
+     */
     object License {
         /**
          * The name of the license, for Maven POM metadata.
@@ -81,6 +94,9 @@ object ProjectMetadata {
         const val Url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
     }
 
+    /**
+     * Information about the project copyright.
+     */
     object Copyright {
         /**
          * The copyright year range for the project.
