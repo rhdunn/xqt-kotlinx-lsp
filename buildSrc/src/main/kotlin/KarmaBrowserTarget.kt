@@ -116,6 +116,16 @@ sealed class KarmaBrowserTarget(
     object FirefoxNightly   : KarmaBrowserTarget(Browser.Firefox,   Channel.Nightly)
     object PhantomJs        : KarmaBrowserTarget(Browser.PhantomJs, Channel.Release)
     object Safari           : KarmaBrowserTarget(Browser.Safari,    Channel.Release)
+
+    companion object {
+        val targets: List<KarmaBrowserTarget> = listOf(
+            Chrome, ChromeCanary,
+            Chromium,
+            Firefox, FirefoxAurora, FirefoxDeveloper, FirefoxNightly,
+            PhantomJs,
+            Safari
+        )
+    }
 }
 
 /**
@@ -125,33 +135,11 @@ fun KarmaBrowserTarget(
     browser: KarmaBrowser,
     channel: KarmaBrowserChannel,
     headless: Boolean
-): KarmaBrowserTarget = when (browser) {
-    KarmaBrowser.Chrome -> when (channel) {
-        KarmaBrowserChannel.Release -> KarmaBrowserTarget.Chrome
-        KarmaBrowserChannel.Canary -> KarmaBrowserTarget.ChromeCanary
-        else -> throw GradleException("Chrome does not support the 'karma.browser.channel' property value.")
+): KarmaBrowserTarget {
+    KarmaBrowserTarget.targets.forEach {
+        if (it.browser == browser && it.channel == channel) {
+            return it
+        }
     }
-
-    KarmaBrowser.Chromium -> when (channel) {
-        KarmaBrowserChannel.Release -> KarmaBrowserTarget.Chromium
-        else -> throw GradleException("Chromium does not support the 'karma.browser.channel' property value.")
-    }
-
-    KarmaBrowser.Firefox -> when (channel) {
-        KarmaBrowserChannel.Release -> KarmaBrowserTarget.Firefox
-        KarmaBrowserChannel.Aurora -> KarmaBrowserTarget.FirefoxAurora
-        KarmaBrowserChannel.Developer -> KarmaBrowserTarget.FirefoxDeveloper
-        KarmaBrowserChannel.Nightly -> KarmaBrowserTarget.FirefoxNightly
-        else -> throw GradleException("Firefox does not support the 'karma.browser.channel' property value.")
-    }
-
-    KarmaBrowser.PhantomJs -> when (channel) {
-        KarmaBrowserChannel.Release -> KarmaBrowserTarget.PhantomJs
-        else -> throw GradleException("Phantom JS does not support the 'karma.browser.channel' property value.")
-    }
-
-    KarmaBrowser.Safari -> when (channel) {
-        KarmaBrowserChannel.Release -> KarmaBrowserTarget.Safari
-        else -> throw GradleException("Safari does not support the 'karma.browser.channel' property value.")
-    }
+    throw GradleException("Unknown KarmaBrowserTarget for the specified karma.browser configuration.")
 }
