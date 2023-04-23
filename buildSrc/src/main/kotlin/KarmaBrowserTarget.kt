@@ -37,6 +37,11 @@ enum class KarmaBrowser(val displayName: String) {
      * Use Opera to run the tests.
      */
     Opera("Opera"),
+
+    /**
+     * Use Internet Explorer to run the tests.
+     */
+    Ie("Internet Explorer"),
 }
 
 /**
@@ -49,6 +54,7 @@ fun KarmaBrowser(name: String?): KarmaBrowser = when (name) {
     "phantom-js" -> KarmaBrowser.PhantomJs
     "safari" -> KarmaBrowser.Safari
     "opera" -> KarmaBrowser.Opera
+    "ie" -> KarmaBrowser.Ie
     null -> when {
         HostManager.hostIsMac -> KarmaBrowser.Safari
         else -> KarmaBrowser.Firefox
@@ -131,6 +137,7 @@ sealed class KarmaBrowserTarget(
     object PhantomJs                : KarmaBrowserTarget(Browser.PhantomJs, Channel.Release,   true)
     object Safari                   : KarmaBrowserTarget(Browser.Safari,    Channel.Release,   false)
     object Opera                    : KarmaBrowserTarget(Browser.Opera,     Channel.Release,   false)
+    object Ie                       : KarmaBrowserTarget(Browser.Ie,        Channel.Release,   false)
 
     companion object {
         private val targets: List<KarmaBrowserTarget> = listOf(
@@ -145,6 +152,7 @@ sealed class KarmaBrowserTarget(
             Firefox, FirefoxAurora, FirefoxDeveloper, FirefoxNightly,
             Safari,
             Opera,
+            Ie,
         )
 
         fun valueOf(

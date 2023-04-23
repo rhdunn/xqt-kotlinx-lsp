@@ -83,6 +83,7 @@ kotlin.js(KotlinJsCompilerType.BOTH).browser {
                 KarmaBrowserTarget.PhantomJs -> usePhantomJS()
                 KarmaBrowserTarget.Safari -> useSafari()
                 KarmaBrowserTarget.Opera -> useOpera()
+                KarmaBrowserTarget.Ie -> useIe()
             }
         }
     }
