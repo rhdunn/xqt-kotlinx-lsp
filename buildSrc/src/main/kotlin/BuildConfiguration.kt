@@ -61,13 +61,6 @@ object BuildConfiguration {
     }
 
     /**
-     * The Operating System the build is running on.
-     */
-    fun hostOs(project: Project): HostOs {
-        return HostOs(getProperty(project, "os.name") ?: "Unknown")
-    }
-
-    /**
      * The Open Source Software Repository Hosting (OSSRH) username.
      */
     fun ossrhUsername(project: Project): String? {
