@@ -8,4 +8,14 @@ object Version {
      * The version of the Kotlin compiler and runtime.
      */
     const val Kotlin = "1.7.20"
+
+    /**
+     * Versions of the various plugins used by the project.
+     */
+    object Plugin {
+        /**
+         * The version of the `kotlin("multiplatform")` plugin.
+         */
+        const val KotlinMultiplatform = Kotlin
+    }
 }
