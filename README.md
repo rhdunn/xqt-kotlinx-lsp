@@ -82,6 +82,7 @@ kotlin.js(KotlinJsCompilerType.BOTH).browser {
                 KarmaBrowserTarget.FirefoxNightlyHeadless -> useFirefoxNightlyHeadless()
                 KarmaBrowserTarget.PhantomJs -> usePhantomJS()
                 KarmaBrowserTarget.Safari -> useSafari()
+                KarmaBrowserTarget.Opera -> useOpera()
             }
         }
     }
