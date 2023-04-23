@@ -14,8 +14,23 @@ object Version {
      */
     object Plugin {
         /**
+         * The version of the `id("org.jetbrains.dokka")` plugin.
+         */
+        const val Dokka = Kotlin
+
+        /**
          * The version of the `kotlin("multiplatform")` plugin.
          */
         const val KotlinMultiplatform = Kotlin
+    }
+
+    /**
+     * Versions of the various libraries used by the project.
+     */
+    object Dependency {
+        /**
+         * The version of the `dokka-base` library.
+         */
+        const val DokkaBase = Plugin.Dokka
     }
 }
