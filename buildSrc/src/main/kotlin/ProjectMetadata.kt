@@ -28,4 +28,54 @@ object ProjectMetadata {
          */
         val Version = "$VersionTag${Type.suffix}"
     }
+
+    /**
+     * Information about the GitHub account that owns the project.
+     */
+    object GitHub {
+        /**
+         * The ID of the GitHub account (organization or developer) to which this project belongs.
+         */
+        const val AccountId = "rhdunn" // TODO: Modify this property.
+
+        /**
+         * The name of the GitHub account (organization or developer) to which this project belongs.
+         */
+        const val AccountName = "Reece H. Dunn" // TODO: Modify this property.
+
+        /**
+         * The email address of the GitHub account (organization or developer) to which this project belongs.
+         */
+        const val AccountEmail = "msclrhd@gmail.com" // TODO: Modify this property.
+
+        /**
+         * The ID of the GitHub repository.
+         */
+        const val RepoId = "kotlin-multiplatform-template" // TODO: Modify this property.
+
+        /**
+         * The Maven group ID.
+         */
+        const val GroupId = "io.github.$AccountId"
+
+        /**
+         * The URL of the GitHub account (organization or developer) to which this project belongs.
+         */
+        const val AccountUrl = "https://github.com/$AccountId"
+
+        /**
+         * The URL to the GitHub repository.
+         */
+        const val ProjectUrl = "https://github.com/$AccountId/$RepoId"
+
+        /**
+         * The URL to clone the repository via SSH.
+         */
+        const val CloneSshUrl = "git@github.com:$AccountId/$RepoId.git"
+
+        /**
+         * The URL to the GitHub repository issues.
+         */
+        const val IssuesUrl = "https://github.com/$AccountId/$RepoId/issues"
+    }
 }
