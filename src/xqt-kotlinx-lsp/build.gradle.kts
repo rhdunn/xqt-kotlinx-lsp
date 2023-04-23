@@ -71,15 +71,24 @@ kotlin.js(KotlinJsCompilerType.BOTH).browser {
     testTask {
         useKarma {
             when (BuildConfiguration.karmaBrowserTarget(project)) {
-                KarmaBrowserTarget.Chrome -> useChromeHeadless()
-                KarmaBrowserTarget.ChromeCanary -> useChromeCanaryHeadless()
-                KarmaBrowserTarget.Chromium -> useChromiumHeadless()
-                KarmaBrowserTarget.Firefox -> useFirefoxHeadless()
-                KarmaBrowserTarget.FirefoxAurora -> useFirefoxAuroraHeadless()
-                KarmaBrowserTarget.FirefoxDeveloper -> useFirefoxDeveloperHeadless()
-                KarmaBrowserTarget.FirefoxNightly -> useFirefoxNightlyHeadless()
+                KarmaBrowserTarget.Chrome -> useChrome()
+                KarmaBrowserTarget.ChromeHeadless -> useChromeHeadless()
+                KarmaBrowserTarget.ChromeCanary -> useChromeCanary()
+                KarmaBrowserTarget.ChromeCanaryHeadless -> useChromeCanaryHeadless()
+                KarmaBrowserTarget.Chromium -> useChromium()
+                KarmaBrowserTarget.ChromiumHeadless -> useChromiumHeadless()
+                KarmaBrowserTarget.Firefox -> useFirefox()
+                KarmaBrowserTarget.FirefoxHeadless -> useFirefoxHeadless()
+                KarmaBrowserTarget.FirefoxAurora -> useFirefoxAurora()
+                KarmaBrowserTarget.FirefoxAuroraHeadless -> useFirefoxAuroraHeadless()
+                KarmaBrowserTarget.FirefoxDeveloper -> useFirefoxDeveloper()
+                KarmaBrowserTarget.FirefoxDeveloperHeadless -> useFirefoxDeveloperHeadless()
+                KarmaBrowserTarget.FirefoxNightly -> useFirefoxNightly()
+                KarmaBrowserTarget.FirefoxNightlyHeadless -> useFirefoxNightlyHeadless()
                 KarmaBrowserTarget.PhantomJs -> usePhantomJS()
                 KarmaBrowserTarget.Safari -> useSafari()
+                KarmaBrowserTarget.Opera -> useOpera()
+                KarmaBrowserTarget.Ie -> useIe()
             }
         }
     }
