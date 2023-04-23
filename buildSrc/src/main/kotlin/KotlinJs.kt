@@ -6,3 +6,9 @@ import org.gradle.api.NamedDomainObjectContainer
  */
 val <T> NamedDomainObjectContainer<T>.jsMain: T
     get() = findByName("jsMain")!!
+
+/**
+ * Access the JS test configuration object.
+ */
+val <T> NamedDomainObjectContainer<T>.jsTest: T
+    get() = findByName("jsTest")!!
