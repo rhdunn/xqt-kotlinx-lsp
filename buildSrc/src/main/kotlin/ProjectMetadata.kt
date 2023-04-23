@@ -78,4 +78,19 @@ object ProjectMetadata {
          */
         const val IssuesUrl = "https://github.com/$AccountId/$RepoId/issues"
     }
+
+    /**
+     * Information about the project license as it appears in the Maven POM file.
+     */
+    object License {
+        /**
+         * The name of the license, for Maven POM metadata.
+         */
+        const val Name = "The Apache Software License, Version 2.0" // TODO: Modify this property.
+
+        /**
+         * The URL where the license text can be found.
+         */
+        const val Url = "https://www.apache.org/licenses/LICENSE-2.0.txt" // TODO: Modify this property.
+    }
 }
