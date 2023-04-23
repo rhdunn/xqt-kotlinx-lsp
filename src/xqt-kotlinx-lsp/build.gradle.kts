@@ -15,7 +15,7 @@ buildscript {
 }
 
 plugins {
-    kotlin("multiplatform") version Version.Plugin.kotlinMultiplatform
+    kotlin("multiplatform") version Version.Plugin.KotlinMultiplatform
     kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
     id("org.jetbrains.dokka") version Version.Plugin.dokka
     id("maven-publish")
