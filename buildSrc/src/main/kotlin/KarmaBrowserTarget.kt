@@ -118,28 +118,24 @@ sealed class KarmaBrowserTarget(
     object Safari           : KarmaBrowserTarget(Browser.Safari,    Channel.Release)
 
     companion object {
-        val targets: List<KarmaBrowserTarget> = listOf(
+        private val targets: List<KarmaBrowserTarget> = listOf(
             Chrome, ChromeCanary,
             Chromium,
             Firefox, FirefoxAurora, FirefoxDeveloper, FirefoxNightly,
             PhantomJs,
             Safari
         )
-    }
-}
 
-/**
- * Returns the web browser used to run the Karma tests on.
- */
-fun KarmaBrowserTarget(
-    browser: KarmaBrowser,
-    channel: KarmaBrowserChannel,
-    headless: Boolean
-): KarmaBrowserTarget {
-    KarmaBrowserTarget.targets.forEach {
-        if (it.browser == browser && it.channel == channel) {
-            return it
+        fun valueOf(
+            browser: KarmaBrowser,
+            channel: KarmaBrowserChannel
+        ): KarmaBrowserTarget {
+            targets.forEach {
+                if (it.browser == browser && it.channel == channel) {
+                    return it
+                }
+            }
+            throw GradleException("Unknown KarmaBrowserTarget for the specified karma.browser configuration.")
         }
     }
-    throw GradleException("Unknown KarmaBrowserTarget for the specified karma.browser configuration.")
 }
