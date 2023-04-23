@@ -6,3 +6,9 @@ import org.gradle.api.NamedDomainObjectContainer
  */
 val <T> NamedDomainObjectContainer<T>.commonMain: T
     get() = findByName("commonMain")!!
+
+/**
+ * Access the common test configuration object.
+ */
+val <T> NamedDomainObjectContainer<T>.commonTest: T
+    get() = findByName("commonTest")!!
