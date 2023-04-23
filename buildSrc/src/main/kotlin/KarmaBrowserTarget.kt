@@ -93,61 +93,29 @@ fun KarmaBrowserChannel(channel: String): KarmaBrowserChannel = when (channel) {
     else -> throw GradleException("Invalid value for the 'karma.browser.channel' property.")
 }
 
+private typealias Browser = KarmaBrowser
+private typealias Channel = KarmaBrowserChannel
+
 /**
  * The web browser used to run the Karma tests on.
  *
- * @param browserName The name of the headless web browser.
  * @param browser The browser type.
  * @param channel The development/release channel.
  */
+@Suppress("KDocMissingDocumentation", "IncorrectFormatting")
 sealed class KarmaBrowserTarget(
     val browser: KarmaBrowser,
     val channel: KarmaBrowserChannel = KarmaBrowserChannel.Release
 ) {
-    /**
-     * Use Chrome headless to run the tests.
-     */
-    object Chrome : KarmaBrowserTarget(KarmaBrowser.Chrome)
-
-    /**
-     * Use Chrome (Canary) headless to run the tests.
-     */
-    object ChromeCanary : KarmaBrowserTarget(KarmaBrowser.Chrome, KarmaBrowserChannel.Canary)
-
-    /**
-     * Use Chromium headless to run the tests.
-     */
-    object Chromium : KarmaBrowserTarget(KarmaBrowser.Chromium)
-
-    /**
-     * Use Firefox headless to run the tests.
-     */
-    object Firefox : KarmaBrowserTarget(KarmaBrowser.Firefox)
-
-    /**
-     * Use Firefox (Aurora) headless to run the tests.
-     */
-    object FirefoxAurora : KarmaBrowserTarget(KarmaBrowser.Firefox, KarmaBrowserChannel.Aurora)
-
-    /**
-     * Use Firefox (Developer) headless to run the tests.
-     */
-    object FirefoxDeveloper : KarmaBrowserTarget(KarmaBrowser.Firefox, KarmaBrowserChannel.Developer)
-
-    /**
-     * Use Firefox (Nightly) headless to run the tests.
-     */
-    object FirefoxNightly : KarmaBrowserTarget(KarmaBrowser.Firefox, KarmaBrowserChannel.Nightly)
-
-    /**
-     * Use Phantom JS to run the tests.
-     */
-    object PhantomJs : KarmaBrowserTarget(KarmaBrowser.PhantomJs)
-
-    /**
-     * Use Safari to run the tests.
-     */
-    object Safari : KarmaBrowserTarget(KarmaBrowser.Safari)
+    object Chrome           : KarmaBrowserTarget(Browser.Chrome,    Channel.Release)
+    object ChromeCanary     : KarmaBrowserTarget(Browser.Chrome,    Channel.Canary)
+    object Chromium         : KarmaBrowserTarget(Browser.Chromium,  Channel.Release)
+    object Firefox          : KarmaBrowserTarget(Browser.Firefox,   Channel.Release)
+    object FirefoxAurora    : KarmaBrowserTarget(Browser.Firefox,   Channel.Aurora)
+    object FirefoxDeveloper : KarmaBrowserTarget(Browser.Firefox,   Channel.Developer)
+    object FirefoxNightly   : KarmaBrowserTarget(Browser.Firefox,   Channel.Nightly)
+    object PhantomJs        : KarmaBrowserTarget(Browser.PhantomJs, Channel.Release)
+    object Safari           : KarmaBrowserTarget(Browser.Safari,    Channel.Release)
 }
 
 /**
