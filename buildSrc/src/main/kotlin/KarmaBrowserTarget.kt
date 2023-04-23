@@ -105,33 +105,47 @@ private typealias Channel = KarmaBrowserChannel
 @Suppress("KDocMissingDocumentation", "IncorrectFormatting")
 sealed class KarmaBrowserTarget(
     val browser: KarmaBrowser,
-    val channel: KarmaBrowserChannel = KarmaBrowserChannel.Release
+    val channel: KarmaBrowserChannel,
+    val headless: Boolean
 ) {
-    object Chrome           : KarmaBrowserTarget(Browser.Chrome,    Channel.Release)
-    object ChromeCanary     : KarmaBrowserTarget(Browser.Chrome,    Channel.Canary)
-    object Chromium         : KarmaBrowserTarget(Browser.Chromium,  Channel.Release)
-    object Firefox          : KarmaBrowserTarget(Browser.Firefox,   Channel.Release)
-    object FirefoxAurora    : KarmaBrowserTarget(Browser.Firefox,   Channel.Aurora)
-    object FirefoxDeveloper : KarmaBrowserTarget(Browser.Firefox,   Channel.Developer)
-    object FirefoxNightly   : KarmaBrowserTarget(Browser.Firefox,   Channel.Nightly)
-    object PhantomJs        : KarmaBrowserTarget(Browser.PhantomJs, Channel.Release)
-    object Safari           : KarmaBrowserTarget(Browser.Safari,    Channel.Release)
+    object Chrome                   : KarmaBrowserTarget(Browser.Chrome,    Channel.Release,   false)
+    object ChromeHeadless           : KarmaBrowserTarget(Browser.Chrome,    Channel.Release,   true)
+    object ChromeCanary             : KarmaBrowserTarget(Browser.Chrome,    Channel.Canary,    false)
+    object ChromeCanaryHeadless     : KarmaBrowserTarget(Browser.Chrome,    Channel.Canary,    true)
+    object Chromium                 : KarmaBrowserTarget(Browser.Chromium,  Channel.Release,   false)
+    object ChromiumHeadless         : KarmaBrowserTarget(Browser.Chromium,  Channel.Release,   true)
+    object Firefox                  : KarmaBrowserTarget(Browser.Firefox,   Channel.Release,   false)
+    object FirefoxHeadless          : KarmaBrowserTarget(Browser.Firefox,   Channel.Release,   true)
+    object FirefoxAurora            : KarmaBrowserTarget(Browser.Firefox,   Channel.Aurora,    false)
+    object FirefoxAuroraHeadless    : KarmaBrowserTarget(Browser.Firefox,   Channel.Aurora,    true)
+    object FirefoxDeveloper         : KarmaBrowserTarget(Browser.Firefox,   Channel.Developer, false)
+    object FirefoxDeveloperHeadless : KarmaBrowserTarget(Browser.Firefox,   Channel.Developer, true)
+    object FirefoxNightly           : KarmaBrowserTarget(Browser.Firefox,   Channel.Nightly,   false)
+    object FirefoxNightlyHeadless   : KarmaBrowserTarget(Browser.Firefox,   Channel.Nightly,   true)
+    object PhantomJs                : KarmaBrowserTarget(Browser.PhantomJs, Channel.Release,   true)
+    object Safari                   : KarmaBrowserTarget(Browser.Safari,    Channel.Release,   false)
 
     companion object {
         private val targets: List<KarmaBrowserTarget> = listOf(
+            // Headless
+            ChromeHeadless, ChromeCanaryHeadless,
+            ChromiumHeadless,
+            FirefoxHeadless, FirefoxAuroraHeadless, FirefoxDeveloperHeadless, FirefoxNightlyHeadless,
+            PhantomJs,
+            // GUI
             Chrome, ChromeCanary,
             Chromium,
             Firefox, FirefoxAurora, FirefoxDeveloper, FirefoxNightly,
-            PhantomJs,
             Safari
         )
 
         fun valueOf(
             browser: KarmaBrowser,
-            channel: KarmaBrowserChannel
+            channel: KarmaBrowserChannel = KarmaBrowserChannel.Release,
+            headless: Boolean = true
         ): KarmaBrowserTarget {
             targets.forEach {
-                if (it.browser == browser && it.channel == channel) {
+                if (it.browser == browser && it.channel == channel && it.headless == headless) {
                     return it
                 }
             }

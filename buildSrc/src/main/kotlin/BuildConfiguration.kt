@@ -46,7 +46,7 @@ object BuildConfiguration {
         val browser = karmaBrowser(project)
         val channel = karmaBrowserChannel(project)
         val headless = karmaBrowserHeadless(project)
-        return KarmaBrowserTarget.valueOf(browser, channel)
+        return KarmaBrowserTarget.valueOf(browser, channel, headless = headless)
     }
 
     /**
