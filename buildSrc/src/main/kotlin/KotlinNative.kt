@@ -6,3 +6,9 @@ import org.gradle.api.NamedDomainObjectContainer
  */
 val <T> NamedDomainObjectContainer<T>.nativeMain: T
     get() = findByName("nativeMain")!!
+
+/**
+ * Access the native test configuration object.
+ */
+val <T> NamedDomainObjectContainer<T>.nativeTest: T
+    get() = findByName("nativeTest")!!
