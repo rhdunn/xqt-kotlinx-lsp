@@ -60,6 +60,20 @@ object BuildConfiguration {
         }
     }
 
+    /**
+     * The Open Source Software Repository Hosting (OSSRH) username.
+     */
+    fun ossrhUsername(project: Project): String? {
+        return getProperty(project, "ossrh.username", "OSSRH_USERNAME")
+    }
+
+    /**
+     * The Open Source Software Repository Hosting (OSSRH) password.
+     */
+    fun ossrhPassword(project: Project): String? {
+        return getProperty(project, "ossrh.password", "OSSRH_PASSWORD")
+    }
+
     private fun getProperty(project: Project, name: String, envName: String? = null): String? {
         val projectValue = project.findProperty(name)?.toString()
         val systemValue = System.getProperty(name)

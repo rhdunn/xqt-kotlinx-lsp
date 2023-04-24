@@ -41,10 +41,6 @@ This template provides a GitHub Actions workflow (`build-jvm`) for building the
 project with Kotlin/JVM.
 
 #### jvm.target
-The `jvm.target` build property configures the version of the Java VM to target
-by the Kotlin compiler. This is used by the GitHub Actions to build against the
-LTS releases of JVM, 11 and 17.
-
 To configure this setting, add the following to the `build.gradle.kts` file:
 ```
 kotlin.jvm {
@@ -90,24 +86,7 @@ kotlin.js(KotlinJsCompilerType.BOTH).browser {
 }
 ```
 
-#### karma.browser
-The `karma.browser` build property configures the name of the browser to use in
-the Kotlin/JS tests when run on the browser.
-
-#### karma.browser.channel
-The `karma.browser.channel` build property configures the name of the
-development/release channel of the browser used to run the Kotlin/JS tests.
-
-#### karma.browser.headless
-The `karma.browser.headless` build property determines whether the web browser
-runs in headless mode, or with a visible graphical interface.
-
 #### nodejs.download
-The `nodejs.download` build property configures whether the build should
-download node when building and running the Kotlin/JS targets. If this is false
-the build will use the system's node installation. This is used by the GitHub
-Actions to prevent node being downloaded during the build.
-
 To configure this setting, add the following to the `build.gradle.kts` file:
 ```
 rootProject.plugins.withType<NodeJsRootPlugin> {
@@ -119,6 +98,55 @@ rootProject.plugins.withType<NodeJsRootPlugin> {
 ### Kotlin Native
 This template provides a GitHub Actions workflow (`build-native`) for building
 the project with Kotlin/Native on Windows, Linux, and Mac OS X.
+
+## Configuration Properties
+The following configuration properties are available to configure the build:
+
+### jvm.target
+The `jvm.target` build property configures the version of the Java VM to target
+by the Kotlin compiler. This is used by the GitHub Actions to build against the
+LTS releases of JVM, 11 and 17.
+
+### karma.browser
+The `karma.browser` build property configures the name of the browser to use in
+the Kotlin/JS tests when run on the browser.
+
+### karma.browser.channel
+The `karma.browser.channel` build property configures the name of the
+development/release channel of the browser used to run the Kotlin/JS tests.
+
+### karma.browser.headless
+The `karma.browser.headless` build property determines whether the web browser
+runs in headless mode, or with a visible graphical interface.
+
+### nodejs.download
+The `nodejs.download` build property configures whether the build should
+download node when building and running the Kotlin/JS targets. If this is false
+the build will use the system's node installation. This is used by the GitHub
+Actions to prevent node being downloaded during the build.
+
+### ossrh.username
+The Open Source Software Repository Hosting (OSSRH) username to use when
+publishing artifacts to Maven Central. This takes precedence over the
+`OSSRH_USERNAME` environment variable.
+
+### ossrh.password
+The Open Source Software Repository Hosting (OSSRH) password to use when
+publishing artifacts to Maven Central. This takes precedence over the
+`OSSRH_PASSWORD` environment variable.
+
+## Environment Variables
+The following environment variables are available to configure the build:
+
+### ossrh.username
+The Open Source Software Repository Hosting (OSSRH) username to use when
+publishing artifacts to Maven Central. This takes precedence over the
+`OSSRH_USERNAME` environment variable.
+
+### ossrh.password
+The Open Source Software Repository Hosting (OSSRH) password to use when
+publishing artifacts to Maven Central. This takes precedence over the
+`OSSRH_PASSWORD` environment variable.
 
 ## License
 Copyright (C) 2023 Reece H. Dunn
