@@ -6,14 +6,14 @@ import org.jetbrains.kotlin.konan.target.KonanTarget
 
 buildscript {
     dependencies {
-        classpath("org.jetbrains.dokka:dokka-base:${Version.Plugin.dokka}")
+        classpath(Dependency.DokkaBase)
     }
 }
 
 plugins {
     kotlin("multiplatform") version Version.Plugin.KotlinMultiplatform
     kotlin("plugin.serialization") version Version.Plugin.kotlinSerialization
-    id("org.jetbrains.dokka") version Version.Plugin.dokka
+    id("org.jetbrains.dokka") version Version.Plugin.Dokka
     id("signing")
 }
 

@@ -24,7 +24,6 @@ object Version {
          */
         const val KotlinMultiplatform = Kotlin
 
-        const val dokka = Kotlin
         const val kotlinSerialization = Kotlin
     }
 
