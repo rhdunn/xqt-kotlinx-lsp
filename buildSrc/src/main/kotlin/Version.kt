@@ -44,7 +44,11 @@ object Version {
          */
         const val JUnit = "5.6.0"
 
-        const val kotlinSerialization = "1.4.1"
+        /**
+         * The version of the `kotlinx-serialization-json` library.
+         */
+        const val KotlinxSerializationJson = "1.4.1"
+
         const val xqtJsonRpc = "1.0.0"
     }
 }

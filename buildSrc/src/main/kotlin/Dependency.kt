@@ -13,4 +13,10 @@ object Dependency {
      * The `junit-jupiter-api` library.
      */
     val JUnitJupiterApi = "org.junit.jupiter:junit-jupiter-api:${Version.Dependency.JUnit}"
+
+    /**
+     * The `kotlinx-serialization-json` library.
+     */
+    val KotlinxSerializationJson =
+        "org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.Dependency.KotlinxSerializationJson}"
 }

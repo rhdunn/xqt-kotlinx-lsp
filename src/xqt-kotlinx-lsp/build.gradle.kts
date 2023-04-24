@@ -32,7 +32,7 @@ kotlin.sourceSets {
     commonTest.kotlin.srcDir("commonTest")
 
     commonMain.dependencies {
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.Dependency.kotlinSerialization}")
+        implementation(Dependency.KotlinxSerializationJson)
         implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:${Version.Dependency.xqtJsonRpc}")
     }
 
