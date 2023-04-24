@@ -39,6 +39,11 @@ development/release channel of the browser used to run the Kotlin/JS tests.
 The `karma.browser.headless` build property determines whether the web browser
 runs in headless mode, or with a visible graphical interface.
 
+### maven.sign
+The `maven.sign` build property configures whether the `publish` actions should
+sign the artifacts using the configured signing key. This is required when
+publishing artifacts to Maven Central.
+
 ### nodejs.download
 The `nodejs.download` build property configures whether the build should
 download node when building and running the Kotlin/JS targets. If this is false

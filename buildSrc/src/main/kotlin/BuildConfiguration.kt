@@ -50,6 +50,17 @@ object BuildConfiguration {
     }
 
     /**
+     * Sign the Maven artifacts.
+     */
+    fun mavenSignArtifacts(project: Project): Boolean {
+        return when (getProperty(project, "maven.sign")) {
+            "true" -> true
+            "false", null -> false
+            else -> throw GradleException("Invalid value for the 'maven.sign' property.")
+        }
+    }
+
+    /**
      * Should the build process download node if it is not present?
      */
     fun nodeJsDownload(project: Project): Boolean {
