@@ -205,7 +205,7 @@ publishing.repositories {
 // region Signing Artifacts
 
 signing {
-    isRequired = BuildConfiguration.signMavenArtifacts(project)
+    isRequired = BuildConfiguration.mavenSignArtifacts(project)
 
     useGpgCmd()
 }
