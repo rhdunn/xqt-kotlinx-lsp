@@ -36,7 +36,11 @@ object Version {
          */
         const val DokkaBase = Plugin.Dokka
 
-        const val junit = "5.6.0"
+        /**
+         * The version of the `junit` library.
+         */
+        const val JUnit = "5.6.0"
+
         const val kotlinSerialization = "1.4.1"
         const val xqtJsonRpc = "1.0.0"
     }

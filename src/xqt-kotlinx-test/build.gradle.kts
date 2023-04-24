@@ -38,7 +38,7 @@ kotlin.sourceSets {
     jvmMain.kotlin.srcDir("jvmMain")
 
     jvmMain.dependencies {
-        implementation("org.junit.jupiter:junit-jupiter-api:${Version.Dependency.junit}")
+        implementation(Dependency.JUnitJupiterApi)
     }
 }
 

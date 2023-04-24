@@ -8,4 +8,9 @@ object Dependency {
      * The `dokka-base` library.
      */
     val DokkaBase = "org.jetbrains.dokka:dokka-base:${Version.Dependency.DokkaBase}"
+
+    /**
+     * The `junit-jupiter-api` library.
+     */
+    val JUnitJupiterApi = "org.junit.jupiter:junit-jupiter-api:${Version.Dependency.JUnit}"
 }
