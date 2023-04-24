@@ -15,6 +15,11 @@ object Version {
      */
     object Plugin {
         /**
+         * The version of the `id("org.jetbrains.dokka")` plugin.
+         */
+        const val Dokka = Kotlin
+
+        /**
          * The version of the `kotlin("multiplatform")` plugin.
          */
         const val KotlinMultiplatform = Kotlin
@@ -23,7 +28,15 @@ object Version {
         const val kotlinSerialization = Kotlin
     }
 
+    /**
+     * Versions of the various libraries used by the project.
+     */
     object Dependency {
+        /**
+         * The version of the `dokka-base` library.
+         */
+        const val DokkaBase = Plugin.Dokka
+
         const val junit = "5.6.0"
         const val kotlinSerialization = "1.4.1"
         const val xqtJsonRpc = "1.0.0"
