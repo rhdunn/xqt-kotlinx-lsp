@@ -33,7 +33,7 @@ kotlin.sourceSets {
 
     commonMain.dependencies {
         implementation(Dependency.KotlinxSerializationJson)
-        implementation("io.github.rhdunn:xqt-kotlinx-json-rpc:${Version.Dependency.xqtJsonRpc}")
+        implementation(Dependency.XqtKotlinxJsonRpc)
     }
 
     commonTest.dependencies {

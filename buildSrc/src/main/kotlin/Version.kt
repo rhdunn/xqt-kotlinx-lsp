@@ -49,6 +49,9 @@ object Version {
          */
         const val KotlinxSerializationJson = "1.4.1"
 
-        const val xqtJsonRpc = "1.0.0"
+        /**
+         * The version of the `xqt-kotlinx-json-rpc` library.
+         */
+        const val XqtKotlinxJsonRpc = "1.0.0"
     }
 }

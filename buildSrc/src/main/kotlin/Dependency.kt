@@ -19,4 +19,10 @@ object Dependency {
      */
     val KotlinxSerializationJson =
         "org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.Dependency.KotlinxSerializationJson}"
+
+    /**
+     * The `xqt-kotlinx-json-rpc` library.
+     */
+    val XqtKotlinxJsonRpc =
+        "io.github.rhdunn:xqt-kotlinx-json-rpc:${Version.Dependency.XqtKotlinxJsonRpc}"
 }
