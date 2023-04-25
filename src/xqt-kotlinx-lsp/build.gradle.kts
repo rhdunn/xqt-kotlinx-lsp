@@ -116,6 +116,10 @@ val nativeTarget = when (HostManager.host) {
     else -> throw GradleException("Kotlin/Native build target '${HostManager.host.name}' is not supported.")
 }
 
+publishing.publications.getByName("native", MavenPublication::class) {
+    artifactId = project.nativeArtifactId(nativeTarget.konanTarget)
+}
+
 kotlin.sourceSets {
     nativeMain.kotlin.srcDir("nativeMain")
     nativeTest.kotlin.srcDir("nativeTest")
