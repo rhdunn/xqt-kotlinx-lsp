@@ -43,8 +43,23 @@ jobs:
   build:
     needs: xqt-kotlinx-json-rpc
     strategy:
+      fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        konan-target: [
+          # Tier 1 -- https://kotlinlang.org/docs/native-target-support.html#tier-1
+          linuxX64,
+          macosX64,
+          # Tier 3 -- https://kotlinlang.org/docs/native-target-support.html#tier-3
+          mingwX64,
+        ]
+        include:
+          - konan-target: linuxX64
+            os: ubuntu-latest
+          - konan-target: macosX64
+            os: macos-latest
+          - konan-target: mingwX64
+            os: windows-latest
+
     runs-on: ${{ matrix.os }}
     steps:
       - name: Source Code Checkout
