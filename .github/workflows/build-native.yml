@@ -4,6 +4,7 @@ on: [ push ]
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         konan-target: [
           # Tier 1 -- https://kotlinlang.org/docs/native-target-support.html#tier-1
