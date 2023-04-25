@@ -32,7 +32,7 @@ jobs:
           gradle-version: 7.5
 
       - name: Build for Kotlin/Native
-        run: gradle nativeMainKlibrary
+        run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
 
       - name: Test for Kotlin/Native
-        run: gradle nativeTest
+        run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
