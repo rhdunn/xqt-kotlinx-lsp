@@ -1,0 +1,28 @@
+name: Build Kotlin/Native for MinGW
+on: [ push ]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
+        konan-target: [
+          mingw_x64, # Tier 3 ; native host
+        ]
+
+    runs-on: windows-latest
+    steps:
+      - name: Source Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
+      - name: Build for Kotlin/Native
+        run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
+
+      - name: Test for Kotlin/Native
+        run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
