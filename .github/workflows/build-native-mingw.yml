@@ -9,6 +9,7 @@ jobs:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
           mingw_x64, # Tier 3 ; native host
+          mingw_x86, # Deprecated, to be removed in 1.9.20
         ]
 
     runs-on: windows-latest

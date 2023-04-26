@@ -1,4 +1,4 @@
-name: Build Kotlin/Native for Linux
+name: Build Kotlin/Native for iOS
 on: [ push ]
 
 jobs:
@@ -8,14 +8,13 @@ jobs:
       matrix:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
-          linux_arm32_hfp, # Deprecated, to be removed in 1.9.20
-          linux_arm64, # Tier 2
-          linux_mips32, # Deprecated, to be removed in 1.9.20
-          linux_mipsel32, # Deprecated, to be removed in 1.9.20
-          linux_x64, # Tier 1 ; native host
+          ios_arm32, # Deprecated, to be removed in 1.9.20
+          ios_arm64, # Tier 2
+          ios_simulator_arm64, # Tier 1
+          ios_x64, # Tier 1
         ]
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Source Code Checkout
         uses: actions/checkout@v3

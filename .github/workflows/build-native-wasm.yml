@@ -1,4 +1,4 @@
-name: Build Kotlin/Native for Linux
+name: Build Kotlin/Native for WASM
 on: [ push ]
 
 jobs:
@@ -8,11 +8,7 @@ jobs:
       matrix:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
-          linux_arm32_hfp, # Deprecated, to be removed in 1.9.20
-          linux_arm64, # Tier 2
-          linux_mips32, # Deprecated, to be removed in 1.9.20
-          linux_mipsel32, # Deprecated, to be removed in 1.9.20
-          linux_x64, # Tier 1 ; native host
+          wasm32, # Deprecated, to be removed in 1.9.20
         ]
 
     runs-on: ubuntu-latest
