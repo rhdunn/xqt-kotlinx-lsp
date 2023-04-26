@@ -1,6 +1,8 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import org.jetbrains.kotlin.konan.target.HostManager
+import org.jetbrains.kotlin.konan.target.KonanTarget
 
 /**
  * Accessors for the build configuration options.
@@ -47,6 +49,14 @@ object BuildConfiguration {
         val channel = karmaBrowserChannel(project)
         val headless = karmaBrowserHeadless(project)
         return KarmaBrowserTarget.valueOf(browser, channel, headless = headless)
+    }
+
+    /**
+     * The Kotlin/Native platform to target.
+     */
+    fun konanTarget(project: Project): KonanTarget {
+        val target = getProperty(project, "konan.target")
+        return target?.let { KonanTarget.predefinedTargets[it] } ?: HostManager.host
     }
 
     /**
