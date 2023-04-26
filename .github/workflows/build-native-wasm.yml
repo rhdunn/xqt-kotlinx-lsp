@@ -10,6 +10,9 @@ jobs:
         konan-target: [
           wasm32, # Deprecated, to be removed in 1.9.20
         ]
+        include:
+          - konan-target: wasm32
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
 
     runs-on: ubuntu-latest
     steps:
@@ -25,4 +28,5 @@ jobs:
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
 
       - name: Test for Kotlin/Native
+        if: ${{ matrix.run-tests }}
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest

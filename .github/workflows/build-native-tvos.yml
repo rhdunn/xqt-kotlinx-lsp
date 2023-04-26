@@ -12,6 +12,13 @@ jobs:
           tvos_simulator_arm64, # Tier 2
           tvos_x64, # Tier 2
         ]
+        include:
+          - konan-target: tvos_arm64
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+          - konan-target: tvos_simulator_arm64
+            run-tests: true
+          - konan-target: tvos_x64
+            run-tests: true
 
     runs-on: macos-latest
     steps:
@@ -27,4 +34,5 @@ jobs:
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
 
       - name: Test for Kotlin/Native
+        if: ${{ matrix.run-tests }}
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest

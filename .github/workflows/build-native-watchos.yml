@@ -14,6 +14,17 @@ jobs:
           watchos_x64, # Tier 2
           watchos_x86, # Deprecated, to be removed in 1.9.20
         ]
+        include:
+          - konan-target: watchos_arm32
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+          - konan-target: watchos_arm64
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+          - konan-target: watchos_simulator_arm64
+            run-tests: true
+          - konan-target: watchos_x64
+            run-tests: false # Invalid device: Apple Watch Series 5. See https://youtrack.jetbrains.com/issue/KT-54814.
+          - konan-target: watchos_x86
+            run-tests: true
 
     runs-on: macos-latest
     steps:
@@ -29,4 +40,5 @@ jobs:
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
 
       - name: Test for Kotlin/Native
+        if: ${{ matrix.run-tests }}
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest

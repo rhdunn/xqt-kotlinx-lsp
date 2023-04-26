@@ -11,6 +11,11 @@ jobs:
           mingw_x64, # Tier 3 ; native host
           mingw_x86, # Deprecated, to be removed in 1.9.20
         ]
+        include:
+          - konan-target: mingw_x64
+            run-tests: true
+          - konan-target: mingw_x86
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
 
     runs-on: windows-latest
     steps:
@@ -26,4 +31,5 @@ jobs:
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
 
       - name: Test for Kotlin/Native
+        if: ${{ matrix.run-tests }}
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
