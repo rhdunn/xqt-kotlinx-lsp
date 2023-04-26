@@ -1,4 +1,4 @@
-name: Build Kotlin/Native for MacOS X
+name: Build Kotlin/Native for Mac OS X
 on: [ push ]
 
 jobs:
