@@ -6,19 +6,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
-          # Tier 1 -- https://kotlinlang.org/docs/native-target-support.html#tier-1
-          linuxX64,
-          macosX64,
-          # Tier 3 -- https://kotlinlang.org/docs/native-target-support.html#tier-3
-          mingwX64,
+          linux_x64, # Tier 1 ; native host
+          macos_arm64, # Tier 1 ; native host
+          macos_x64, # Tier 1 ; native host
+          mingw_x64, # Tier 3 ; native host
         ]
         include:
-          - konan-target: linuxX64
+          - konan-target: linux_x64 # Tier 1 ; native host
             os: ubuntu-latest
-          - konan-target: macosX64
+          - konan-target: macos_arm64 # Tier 1 ; native host
             os: macos-latest
-          - konan-target: mingwX64
+          - konan-target: macos_x64 # Tier 1 ; native host
+            os: macos-latest
+          - konan-target: mingw_x64 # Tier 3 ; native host
             os: windows-latest
 
     runs-on: ${{ matrix.os }}
