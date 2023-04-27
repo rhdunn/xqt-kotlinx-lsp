@@ -52,6 +52,6 @@ object Version {
         /**
          * The version of the `xqt-kotlinx-json-rpc` library.
          */
-        const val XqtKotlinxJsonRpc = "1.0.0"
+        const val XqtKotlinxJsonRpc = "1.0.1-SNAPSHOT"
     }
 }
