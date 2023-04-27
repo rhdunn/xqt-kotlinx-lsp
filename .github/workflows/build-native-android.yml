@@ -1,4 +1,4 @@
-name: Build Kotlin/Native for MinGW
+name: Build Kotlin/Native for Android
 on: [ push ]
 
 jobs:
@@ -8,16 +8,22 @@ jobs:
       matrix:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
-          mingw_x64, # Tier 3 ; native host
-          mingw_x86, # Deprecated, to be removed in 1.9.20
+          android_arm32, # Tier 3
+          android_arm64, # Tier 3
+          android_x64, # Tier 3
+          android_x86, # Tier 3
         ]
         include:
-          - konan-target: mingw_x64
-            run-tests: true
-          - konan-target: mingw_x86
+          - konan-target: android_arm32
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+          - konan-target: android_arm64
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+          - konan-target: android_x64
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+          - konan-target: android_x86
             run-tests: false # Task 'nativeTest' is ambiguous in root project ...
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Source Code Checkout
         uses: actions/checkout@v3

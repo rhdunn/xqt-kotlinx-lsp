@@ -1,4 +1,4 @@
-name: Build Kotlin/Native for MinGW
+name: Build Kotlin/Native for Mac iOS
 on: [ push ]
 
 jobs:
@@ -8,16 +8,22 @@ jobs:
       matrix:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
-          mingw_x64, # Tier 3 ; native host
-          mingw_x86, # Deprecated, to be removed in 1.9.20
+          ios_arm32, # Deprecated, to be removed in 1.9.20
+          ios_arm64, # Tier 2
+          ios_simulator_arm64, # Tier 1
+          ios_x64, # Tier 1
         ]
         include:
-          - konan-target: mingw_x64
-            run-tests: true
-          - konan-target: mingw_x86
+          - konan-target: ios_arm32
             run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+          - konan-target: ios_arm64
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+          - konan-target: ios_simulator_arm64
+            run-tests: true
+          - konan-target: ios_x64
+            run-tests: true
 
-    runs-on: windows-latest
+    runs-on: macos-latest
     steps:
       - name: Source Code Checkout
         uses: actions/checkout@v3
