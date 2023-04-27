@@ -50,13 +50,13 @@ jobs:
         run: gradle -D konan.target=${{ matrix.konan-target }} publishNativePublicationToMavenLocal
 
       - name: Tar XQT Kotlin JSON-RPC Artifacts
-        run: tar -cvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/io/github/rhdunn .
+        run: tar -cvf xqt-kotlinx-json-rpc-native-${{ matrix.konan-target }}.tar -C $HOME/.m2/repository/io/github/rhdunn .
 
       - name: Upload XQT Kotlin JSON-RPC Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-native-${{ matrix.os }}
-          path: xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar
+          name: xqt-kotlinx-json-rpc-native-${{ matrix.konan-target }}
+          path: xqt-kotlinx-json-rpc-native-${{ matrix.konan-target }}.tar
 
   build:
     needs: xqt-kotlinx-json-rpc
@@ -89,6 +89,16 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           gradle-version: 7.5
+
+      - name: Download XQT Kotlin JSON-RPC Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-native-${{ matrix.konan-target }}
+
+      - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
+        run: |
+          mkdir -p $HOME/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-native-${{ matrix.konan-target }}.tar -C $HOME/.m2/repository/io/github/rhdunn
 
       - name: Build for Kotlin/Native
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
