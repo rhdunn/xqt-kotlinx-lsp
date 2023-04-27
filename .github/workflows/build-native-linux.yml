@@ -34,17 +34,17 @@ jobs:
           gradle-version: 7.5
 
       - name: Build for Kotlin/Native
-        run: gradle nativeMainKlibrary
+        run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
 
       - name: Test for Kotlin/Native
         if: ${{ matrix.run-tests }}
-        run: gradle nativeTest
+        run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
 
       - name: Publish Kotlin/Multiplatform to Maven Local
-        run: gradle publishKotlinMultiplatformPublicationToMavenLocal
+        run: gradle -D konan.target=${{ matrix.konan-target }} publishKotlinMultiplatformPublicationToMavenLocal
 
       - name: Publish Kotlin/Native to Maven Local
-        run: gradle publishNativePublicationToMavenLocal
+        run: gradle -D konan.target=${{ matrix.konan-target }} publishNativePublicationToMavenLocal
 
       - name: Tar XQT Kotlin JSON-RPC Artifacts
         run: tar -cvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/io/github/rhdunn .
