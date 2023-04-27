@@ -2,7 +2,58 @@ name: Build Kotlin/Native for MinGW
 on: [ push ]
 
 jobs:
+  xqt-kotlinx-json-rpc:
+    strategy:
+      fail-fast: false
+      matrix:
+        # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
+        konan-target: [
+          mingw_x64, # Tier 3 ; native host
+          mingw_x86, # Deprecated, to be removed in 1.9.20
+        ]
+        include:
+          - konan-target: mingw_x64
+            run-tests: true
+          - konan-target: mingw_x86
+            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
+
+    runs-on: windows-latest
+    steps:
+      - name: Source Code Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: rhdunn/xqt-kotlinx-json-rpc
+          ref: 1.0.0
+
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
+      - name: Build for Kotlin/Native
+        run: gradle nativeMainKlibrary
+
+      - name: Test for Kotlin/Native
+        if: ${{ matrix.run-tests }}
+        run: gradle nativeTest
+
+      - name: Publish Kotlin/Multiplatform to Maven Local
+        run: gradle publishKotlinMultiplatformPublicationToMavenLocal
+
+      - name: Publish Kotlin/Native to Maven Local
+        run: gradle publishNativePublicationToMavenLocal
+
+      - name: Tar XQT Kotlin JSON-RPC Artifacts
+        run: tar -cvf xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar -C $HOME/.m2/repository/io/github/rhdunn .
+
+      - name: Upload XQT Kotlin JSON-RPC Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-native-${{ matrix.os }}
+          path: xqt-kotlinx-json-rpc-native-${{ matrix.os }}.tar
+
   build:
+    needs: xqt-kotlinx-json-rpc
     strategy:
       fail-fast: false
       matrix:
