@@ -1,8 +1,8 @@
 # IntelliJ IDE Settings
-.idea/
+/.idea/
 
 # Gradle Wrapper
-gradle/
+/gradle/
 gradlew
 gradlew.bat
 
