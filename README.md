@@ -25,6 +25,16 @@ This template provides a base `settings.gradle.kts` file.
 > NOTE: This should be modified to set the project name and to include any
 > subprojects.
 
+This template provides a template
+[build.gradle.kts](buildSrc/template/build.gradle.kts) file that can be copied
+into your subprojects to use as the starting point for the build script. This
+provides support for:
+1. Configuring the necessary plugins.
+2. Setting the group ID and version for the package from the project metadata.
+3. Configuration for Kotlin JS, JVM, and Native.
+4. Configuration for Dokka documentation.
+5. Configuration for Maven POM files, singing, and publishing.
+
 ### Gradle Wrapper
 This template adds `.gitignore` rules to ignore the gradle wrapper binaries to
 prevent the binaries from being included in the git repository.
