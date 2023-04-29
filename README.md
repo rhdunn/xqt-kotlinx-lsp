@@ -213,4 +213,4 @@ publishing artifacts to Maven Central. This takes precedence over the
 ## License
 Copyright (C) 2023 Reece H. Dunn
 
-SPDX-License-Identifier: [Apache-2.0](LICENSE)
+`SPDX-License-Identifier:` [Apache-2.0](LICENSE)
