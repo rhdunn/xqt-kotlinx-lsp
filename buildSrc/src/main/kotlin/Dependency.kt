@@ -24,12 +24,20 @@ object Dependency {
 
     /**
      * The `kotlinx-serialization-json` library.
+     *
+     * `SPDX-License-Identifier: Apache-2.0`
+     *
+     * @see <a href="https://github.com/Kotlin/kotlinx.serialization/tree/master/formats/json">https://github.com/Kotlin/kotlinx.serialization/tree/master/formats/json</a>
      */
     val KotlinxSerializationJson =
         "org.jetbrains.kotlinx:kotlinx-serialization-json:${Version.Dependency.KotlinxSerializationJson}"
 
     /**
      * The `xqt-kotlinx-json-rpc` library.
+     *
+     * `SPDX-License-Identifier: Apache-2.0`
+     *
+     * @see <a href="https://github.com/rhdunn/xqt-kotlinx-json-rpc">https://github.com/rhdunn/xqt-kotlinx-json-rpc</a>
      */
     val XqtKotlinxJsonRpc =
         "io.github.rhdunn:xqt-kotlinx-json-rpc:${Version.Dependency.XqtKotlinxJsonRpc}"
