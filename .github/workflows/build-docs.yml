@@ -15,7 +15,43 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  xqt-kotlinx-json-rpc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Source Code Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: rhdunn/xqt-kotlinx-json-rpc
+          ref: master
+
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
+      - name: Publish Kotlin/Multiplatform to Maven Local
+        run: gradle publishKotlinMultiplatformPublicationToMavenLocal
+
+      - name: Publish Kotlin/Native to Maven Local
+        run: gradle publishNativePublicationToMavenLocal
+
+      - name: Publish Kotlin/JVM to Maven Local
+        run: gradle publishJvmPublicationToMavenLocal
+
+      - name: Publish Kotlin/JS to Maven Local
+        run: gradle publishJsPublicationToMavenLocal
+
+      - name: Tar XQT Kotlin JSON-RPC Artifacts
+        run: tar -cvf xqt-kotlinx-json-rpc-docs.tar -C ~/.m2/repository/io/github/rhdunn .
+
+      - name: Upload XQT Kotlin JSON-RPC Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-docs
+          path: xqt-kotlinx-json-rpc-docs.tar
+
   docs:
+    needs: xqt-kotlinx-json-rpc
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -28,6 +64,16 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           gradle-version: 7.5
+
+      - name: Download XQT Kotlin JSON-RPC Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-docs
+
+      - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
+        run: |
+          mkdir -p ~/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-docs.tar -C ~/.m2/repository/io/github/rhdunn
 
       - name: Generate the HTML documentation
         run: gradle dokkaHtmlMultiModule
