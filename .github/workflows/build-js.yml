@@ -206,5 +206,15 @@ jobs:
       - name: Extract Build Artifacts
         run: tar -xf build-js-artifacts.tar
 
+      - name: Download XQT Kotlin JSON-RPC Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: xqt-kotlinx-json-rpc-js
+
+      - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
+        run: |
+          mkdir -p ~/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-js.tar -C ~/.m2/repository/io/github/rhdunn
+
       - name: Publish Kotlin/JS to Maven Local
         run: gradle -D nodejs.download=false publishJsPublicationToMavenLocal
