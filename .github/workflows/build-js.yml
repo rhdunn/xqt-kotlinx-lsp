@@ -1,5 +1,5 @@
 # Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
-name: Build Kotlin/JS Legacy
+name: Build Kotlin/JS
 on: [ push ]
 
 jobs:
@@ -14,17 +14,20 @@ jobs:
         with:
           gradle-version: 7.5
 
+      - name: Build for Kotlin/JS IR
+        run: gradle -D nodejs.download=false jsIrJar
+
       - name: Build for Kotlin/JS Legacy
         run: gradle -D nodejs.download=false jsLegacyJar
 
       - name: Tar Build Artifacts
-        run: tar -cvf build-js-legacy-artifacts.tar .
+        run: tar -cvf build-js-artifacts.tar .
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build-js-legacy
-          path: build-js-legacy-artifacts.tar
+          name: build-js
+          path: build-js-artifacts.tar
 
   test-node:
     needs: build
@@ -41,15 +44,18 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: build-js-legacy
+          name: build-js
 
       - name: Extract Build Artifacts
-        run: tar -xf build-js-legacy-artifacts.tar
+        run: tar -xf build-js-artifacts.tar
 
       - name: Setup Node ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
+
+      - name: Test for Kotlin/JS IR on Node
+        run: gradle -D nodejs.download=false jsIrNodeTest
 
       - name: Test for Kotlin/JS Legacy on Node
         run: gradle -D nodejs.download=false jsLegacyNodeTest
@@ -66,15 +72,18 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: build-js-legacy
+          name: build-js
 
       - name: Extract Build Artifacts
-        run: tar -xf build-js-legacy-artifacts.tar
+        run: tar -xf build-js-artifacts.tar
 
       - name: Setup Firefox Latest
         uses: browser-actions/setup-firefox@latest
         with:
           firefox-version: 'latest'
+
+      - name: Test for Kotlin/JS IR on Firefox
+        run: gradle -D nodejs.download=false -D karma.browser=firefox jsIrBrowserTest
 
       - name: Test for Kotlin/JS Legacy on Firefox
         run: gradle -D nodejs.download=false -D karma.browser=firefox jsLegacyBrowserTest
@@ -91,15 +100,18 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: build-js-legacy
+          name: build-js
 
       - name: Extract Build Artifacts
-        run: tar -xf build-js-legacy-artifacts.tar
+        run: tar -xf build-js-artifacts.tar
 
       - name: Setup Chrome Latest
         uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: 'latest'
+
+      - name: Test for Kotlin/JS IR on Chrome
+        run: gradle -D nodejs.download=false -D karma.browser=chrome jsIrBrowserTest
 
       - name: Test for Kotlin/JS Legacy on Chrome
         run: gradle -D nodejs.download=false -D karma.browser=chrome jsLegacyBrowserTest
