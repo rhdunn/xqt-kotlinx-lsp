@@ -1,0 +1,18 @@
+# Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+name: Build documentation
+on: [ push ]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Source Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
+      - name: Generate the HTML documentation
+        run: gradle dokkaHtmlMultiModule
