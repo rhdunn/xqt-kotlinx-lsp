@@ -1,3 +1,14 @@
+// Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+import org.jetbrains.dokka.base.DokkaBase
+import org.jetbrains.dokka.base.DokkaBaseConfiguration
+import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
+
+buildscript {
+    dependencies {
+        classpath(Dependency.DokkaBase)
+    }
+}
+
 allprojects {
     repositories {
         mavenLocal()
@@ -15,4 +26,10 @@ plugins {
 // "Nothing to document" in the dokkaHtml and dokkaHtmlPartial tasks.
 kotlin {
     jvm()
+}
+
+tasks.withType<DokkaMultiModuleTask>().configureEach {
+    pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+        footerMessage = "Copyright © ${ProjectMetadata.Copyright.Year} ${ProjectMetadata.Copyright.Owner}"
+    }
 }
