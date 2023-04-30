@@ -27,13 +27,13 @@ jobs:
         run: gradle -D nodejs.download=false publishJsPublicationToMavenLocal
 
       - name: Tar XQT Kotlin JSON-RPC Artifacts
-        run: tar -cvf xqt-kotlinx-json-rpc-js-legacy.tar -C ~/.m2/repository/io/github/rhdunn .
+        run: tar -cvf xqt-kotlinx-json-rpc-js.tar -C ~/.m2/repository/io/github/rhdunn .
 
       - name: Upload XQT Kotlin JSON-RPC Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-js-legacy
-          path: xqt-kotlinx-json-rpc-js-legacy.tar
+          name: xqt-kotlinx-json-rpc-js
+          path: xqt-kotlinx-json-rpc-js.tar
 
   build:
     needs: xqt-kotlinx-json-rpc
@@ -50,12 +50,12 @@ jobs:
       - name: Download XQT Kotlin JSON-RPC Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-js-legacy
+          name: xqt-kotlinx-json-rpc-js
 
       - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
         run: |
           mkdir -p ~/.m2/repository/io/github/rhdunn
-          tar -xvf xqt-kotlinx-json-rpc-js-legacy.tar -C ~/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-js.tar -C ~/.m2/repository/io/github/rhdunn
 
       - name: Build for Kotlin/JS IR
         run: gradle -D nodejs.download=false jsIrJar
@@ -95,12 +95,12 @@ jobs:
       - name: Download XQT Kotlin JSON-RPC Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-js-legacy
+          name: xqt-kotlinx-json-rpc-js
 
       - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
         run: |
           mkdir -p ~/.m2/repository/io/github/rhdunn
-          tar -xvf xqt-kotlinx-json-rpc-js-legacy.tar -C ~/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-js.tar -C ~/.m2/repository/io/github/rhdunn
 
       - name: Setup Node ${{ matrix.node }}
         uses: actions/setup-node@v3
@@ -133,12 +133,12 @@ jobs:
       - name: Download XQT Kotlin JSON-RPC Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-js-legacy
+          name: xqt-kotlinx-json-rpc-js
 
       - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
         run: |
           mkdir -p ~/.m2/repository/io/github/rhdunn
-          tar -xvf xqt-kotlinx-json-rpc-js-legacy.tar -C ~/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-js.tar -C ~/.m2/repository/io/github/rhdunn
 
       - name: Setup Firefox Latest
         uses: browser-actions/setup-firefox@latest
@@ -171,12 +171,12 @@ jobs:
       - name: Download XQT Kotlin JSON-RPC Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-js-legacy
+          name: xqt-kotlinx-json-rpc-js
 
       - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
         run: |
           mkdir -p ~/.m2/repository/io/github/rhdunn
-          tar -xvf xqt-kotlinx-json-rpc-js-legacy.tar -C ~/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-js.tar -C ~/.m2/repository/io/github/rhdunn
 
       - name: Setup Chrome Latest
         uses: browser-actions/setup-chrome@latest
