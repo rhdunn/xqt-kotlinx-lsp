@@ -153,12 +153,20 @@ kotlin.sourceSets {
 // region Documentation
 
 tasks.withType<DokkaTaskPartial>().configureEach {
+    dokkaSourceSets.configureEach {
+        includes.from(rootProject.file("docs/dokka/moduledoc.md"))
+    }
+
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
         footerMessage = "Copyright © ${ProjectMetadata.Copyright.Year} ${ProjectMetadata.Copyright.Owner}"
     }
 }
 
 tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets.configureEach {
+        includes.from(rootProject.file("docs/dokka/moduledoc.md"))
+    }
+
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
         footerMessage = "Copyright © ${ProjectMetadata.Copyright.Year} ${ProjectMetadata.Copyright.Owner}"
     }
