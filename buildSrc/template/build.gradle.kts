@@ -206,7 +206,7 @@ publishing.publications.withType<MavenPublication> {
 
 publishing.repositories {
     maven {
-        name = "sonatype"
+        name = "MavenCentral"
 
         url = if (ProjectMetadata.Build.Type == BuildType.Release) {
             URI("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")

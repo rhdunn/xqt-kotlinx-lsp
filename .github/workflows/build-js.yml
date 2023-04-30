@@ -1,5 +1,5 @@
 # Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
-name: Build Kotlin/JS IR
+name: Build Kotlin/JS
 on: [ push ]
 
 jobs:
@@ -17,23 +17,23 @@ jobs:
         with:
           gradle-version: 7.5
 
-      - name: Build for Kotlin/JS IR
-        run: gradle -D nodejs.download=false jsIrJar
+      - name: Build for Kotlin/JS Legacy
+        run: gradle -D nodejs.download=false jsLegacyJar
 
       - name: Publish Kotlin/Multiplatform to Maven Local
         run: gradle -D nodejs.download=false publishKotlinMultiplatformPublicationToMavenLocal
 
-      - name: Publish Kotlin/JS IR to Maven Local
+      - name: Publish Kotlin/JS Legacy to Maven Local
         run: gradle -D nodejs.download=false publishJsPublicationToMavenLocal
 
       - name: Tar XQT Kotlin JSON-RPC Artifacts
-        run: tar -cvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/io/github/rhdunn .
+        run: tar -cvf xqt-kotlinx-json-rpc-js-legacy.tar -C ~/.m2/repository/io/github/rhdunn .
 
       - name: Upload XQT Kotlin JSON-RPC Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-js-ir
-          path: xqt-kotlinx-json-rpc-js-ir.tar
+          name: xqt-kotlinx-json-rpc-js-legacy
+          path: xqt-kotlinx-json-rpc-js-legacy.tar
 
   build:
     needs: xqt-kotlinx-json-rpc
@@ -50,24 +50,27 @@ jobs:
       - name: Download XQT Kotlin JSON-RPC Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-js-ir
+          name: xqt-kotlinx-json-rpc-js-legacy
 
       - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
         run: |
           mkdir -p ~/.m2/repository/io/github/rhdunn
-          tar -xvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-js-legacy.tar -C ~/.m2/repository/io/github/rhdunn
 
       - name: Build for Kotlin/JS IR
         run: gradle -D nodejs.download=false jsIrJar
 
+      - name: Build for Kotlin/JS Legacy
+        run: gradle -D nodejs.download=false jsLegacyJar
+
       - name: Tar Build Artifacts
-        run: tar -cvf build-js-ir-artifacts.tar .
+        run: tar -cvf build-js-artifacts.tar .
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build-js-ir
-          path: build-js-ir-artifacts.tar
+          name: build-js
+          path: build-js-artifacts.tar
 
   test-node:
     needs: build
@@ -84,20 +87,20 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: build-js-ir
+          name: build-js
 
       - name: Extract Build Artifacts
-        run: tar -xf build-js-ir-artifacts.tar
+        run: tar -xf build-js-artifacts.tar
 
       - name: Download XQT Kotlin JSON-RPC Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-js-ir
+          name: xqt-kotlinx-json-rpc-js-legacy
 
       - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
         run: |
           mkdir -p ~/.m2/repository/io/github/rhdunn
-          tar -xvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-js-legacy.tar -C ~/.m2/repository/io/github/rhdunn
 
       - name: Setup Node ${{ matrix.node }}
         uses: actions/setup-node@v3
@@ -106,6 +109,9 @@ jobs:
 
       - name: Test for Kotlin/JS IR on Node
         run: gradle -D nodejs.download=false jsIrNodeTest
+
+      - name: Test for Kotlin/JS Legacy on Node
+        run: gradle -D nodejs.download=false jsLegacyNodeTest
 
   test-firefox:
     needs: build
@@ -119,20 +125,20 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: build-js-ir
+          name: build-js
 
       - name: Extract Build Artifacts
-        run: tar -xf build-js-ir-artifacts.tar
+        run: tar -xf build-js-artifacts.tar
 
       - name: Download XQT Kotlin JSON-RPC Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-js-ir
+          name: xqt-kotlinx-json-rpc-js-legacy
 
       - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
         run: |
           mkdir -p ~/.m2/repository/io/github/rhdunn
-          tar -xvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-js-legacy.tar -C ~/.m2/repository/io/github/rhdunn
 
       - name: Setup Firefox Latest
         uses: browser-actions/setup-firefox@latest
@@ -141,6 +147,9 @@ jobs:
 
       - name: Test for Kotlin/JS IR on Firefox
         run: gradle -D nodejs.download=false -D karma.browser=firefox jsIrBrowserTest
+
+      - name: Test for Kotlin/JS Legacy on Firefox
+        run: gradle -D nodejs.download=false -D karma.browser=firefox jsLegacyBrowserTest
 
   test-chrome:
     needs: build
@@ -154,25 +163,48 @@ jobs:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: build-js-ir
+          name: build-js
 
       - name: Extract Build Artifacts
-        run: tar -xf build-js-ir-artifacts.tar
+        run: tar -xf build-js-artifacts.tar
 
       - name: Download XQT Kotlin JSON-RPC Artifacts
         uses: actions/download-artifact@v3
         with:
-          name: xqt-kotlinx-json-rpc-js-ir
+          name: xqt-kotlinx-json-rpc-js-legacy
 
       - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
         run: |
           mkdir -p ~/.m2/repository/io/github/rhdunn
-          tar -xvf xqt-kotlinx-json-rpc-js-ir.tar -C ~/.m2/repository/io/github/rhdunn
+          tar -xvf xqt-kotlinx-json-rpc-js-legacy.tar -C ~/.m2/repository/io/github/rhdunn
 
       - name: Setup Chrome Latest
         uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: 'latest'
 
+      - name: Test for Kotlin/JS IR on Chrome
+        run: gradle -D nodejs.download=false -D karma.browser=chrome jsIrBrowserTest
+
       - name: Test for Kotlin/JS Legacy on Chrome
         run: gradle -D nodejs.download=false -D karma.browser=chrome jsLegacyBrowserTest
+
+  publish:
+    needs: [ test-node, test-chrome, test-firefox ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-js
+
+      - name: Extract Build Artifacts
+        run: tar -xf build-js-artifacts.tar
+
+      - name: Publish Kotlin/JS to Maven Local
+        run: gradle -D nodejs.download=false publishJsPublicationToMavenLocal

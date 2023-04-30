@@ -1,0 +1,24 @@
+# Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+name: Build Kotlin/Multiplatform
+on: [ push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Source Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
+      - name: Build for Kotlin/Multiplatform metadata JAR
+        run: gradle allMetadataJar
+
+      - name: Build for Kotlin/Multiplatform Kotlin tooling metadata
+        run: gradle buildKotlinToolingMetadata
+
+      - name: Publish Kotlin/Multiplatform to Maven Local
+        run: gradle publishKotlinMultiplatformPublicationToMavenLocal
