@@ -40,3 +40,6 @@ jobs:
       - name: Test for Kotlin/Native
         if: ${{ matrix.run-tests }}
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
+
+      - name: Publish Kotlin/Native to Maven Local
+        run: gradle -D konan.target=${{ matrix.konan-target }} publishNativePublicationToMavenLocal

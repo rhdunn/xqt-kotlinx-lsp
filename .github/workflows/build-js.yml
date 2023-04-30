@@ -115,3 +115,23 @@ jobs:
 
       - name: Test for Kotlin/JS Legacy on Chrome
         run: gradle -D nodejs.download=false -D karma.browser=chrome jsLegacyBrowserTest
+
+  publish:
+    needs: [ test-node, test-chrome, test-firefox ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-js
+
+      - name: Extract Build Artifacts
+        run: tar -xf build-js-artifacts.tar
+
+      - name: Publish Kotlin/JS to Maven Local
+        run: gradle -D nodejs.download=false publishJsPublicationToMavenLocal

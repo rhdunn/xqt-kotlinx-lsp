@@ -19,3 +19,6 @@ jobs:
 
       - name: Build for Kotlin/Multiplatform Kotlin tooling metadata
         run: gradle buildKotlinToolingMetadata
+
+      - name: Publish Kotlin/Multiplatform to Maven Local
+        run: gradle publishKotlinMultiplatformPublicationToMavenLocal
