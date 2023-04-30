@@ -2,6 +2,7 @@
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
@@ -144,7 +145,21 @@ kotlin.sourceSets {
 // endregion
 // region Dokka
 
+tasks.withType<DokkaTaskPartial>().configureEach {
+    dokkaSourceSets.configureEach {
+        includes.from(rootProject.file("docs/dokka/moduledoc.md"))
+    }
+
+    pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+        footerMessage = "Copyright © ${ProjectMetadata.Copyright.Year} ${ProjectMetadata.Copyright.Owner}"
+    }
+}
+
 tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets.configureEach {
+        includes.from(rootProject.file("docs/dokka/moduledoc.md"))
+    }
+
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
         footerMessage = "Copyright © ${ProjectMetadata.Copyright.Year} ${ProjectMetadata.Copyright.Owner}"
     }

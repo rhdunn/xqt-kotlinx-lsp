@@ -1,0 +1,45 @@
+# Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+name: Build documentation
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Source Code Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Gradle 7.5
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
+      - name: Generate the HTML documentation
+        run: gradle dokkaHtmlMultiModule
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload GitHub Pages Artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'build/dokka/htmlMultiModule'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
