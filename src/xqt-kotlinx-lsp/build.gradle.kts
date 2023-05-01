@@ -154,7 +154,7 @@ kotlin.sourceSets {
 
 tasks.withType<DokkaTaskPartial>().configureEach {
     dokkaSourceSets.configureEach {
-        includes.from(rootProject.file("docs/dokka/moduledoc.md"))
+        includes.from(file("README.md"))
     }
 
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
@@ -164,7 +164,7 @@ tasks.withType<DokkaTaskPartial>().configureEach {
 
 tasks.withType<DokkaTask>().configureEach {
     dokkaSourceSets.configureEach {
-        includes.from(rootProject.file("docs/dokka/moduledoc.md"))
+        includes.from(file("README.md"))
     }
 
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
