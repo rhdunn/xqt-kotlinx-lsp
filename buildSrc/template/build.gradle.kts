@@ -90,6 +90,10 @@ kotlin.jvm {
 
     withJava()
 
+    attributes {
+        attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, javaVersion.majorVersion.toInt())
+    }
+
     testRuns["test"].executionTask.configure {
         useJUnitPlatform() // JUnit 5
     }
