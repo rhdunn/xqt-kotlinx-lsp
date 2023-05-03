@@ -104,6 +104,10 @@ kotlin.sourceSets {
     jvmTest.kotlin.srcDir("jvmTest")
 }
 
+publishing.publications.getByName("jvm", MavenPublication::class) {
+    artifactId = project.jvmArtifactId
+}
+
 // endregion
 // region Kotlin Native
 
