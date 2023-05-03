@@ -5,6 +5,9 @@ on: [ push ]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
     steps:
       - name: Source Code Checkout
         uses: actions/checkout@v3
@@ -22,3 +25,7 @@ jobs:
 
       - name: Publish Kotlin/Multiplatform to Maven Local
         run: gradle publishKotlinMultiplatformPublicationToMavenLocal
+
+      - name: Publish Kotlin/Multiplatform to Maven Central
+        if: env.OSSRH_USERNAME
+        run: gradle publishKotlinMultiplatformPublicationToMavenCentral

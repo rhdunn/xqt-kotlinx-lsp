@@ -119,6 +119,9 @@ jobs:
   publish:
     needs: [ test-node, test-chrome, test-firefox ]
     runs-on: ubuntu-latest
+    env:
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
     steps:
       - name: Setup Gradle 7.5
         uses: gradle/gradle-build-action@v2
@@ -135,3 +138,7 @@ jobs:
 
       - name: Publish Kotlin/JS to Maven Local
         run: gradle -D nodejs.download=false publishJsPublicationToMavenLocal
+
+      - name: Publish Kotlin/JS to Maven Central
+        if: env.OSSRH_USERNAME
+        run: gradle -D nodejs.download=false publishJsPublicationToMavenCentral

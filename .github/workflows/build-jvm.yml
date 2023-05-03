@@ -8,6 +8,9 @@ jobs:
     strategy:
       matrix:
         java: [ 11, 17 ]
+    env:
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
     steps:
       - name: Source Code Checkout
         uses: actions/checkout@v3
@@ -31,3 +34,7 @@ jobs:
 
       - name: Publish Kotlin/JVM to Maven Local
         run: gradle -D jvm.target=${{ matrix.java }} publishJvmPublicationToMavenLocal
+
+      - name: Publish Kotlin/JVM to Maven Central
+        if: env.OSSRH_USERNAME
+        run: gradle -D jvm.target=${{ matrix.java }} publishJvmPublicationToMavenCentral
