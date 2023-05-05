@@ -252,7 +252,15 @@ publishing.repositories {
 signing {
     isRequired = BuildConfiguration.mavenSignArtifacts(project)
 
-    useGpgCmd()
+    val signingKeyId = BuildConfiguration.mavenSigningKeyId(project)
+    val signingKeyPrivate = BuildConfiguration.mavenSigningKeyPrivate(project)
+    val signingKeyPassword = BuildConfiguration.mavenSigningKeyPassword(project)
+
+    if (signingKeyPrivate.isNullOrBlank()) {
+        useGpgCmd()
+    } else {
+        useInMemoryPgpKeys(signingKeyId, signingKeyPrivate, signingKeyPassword)
+    }
 }
 
 publishing.publications.configureEach {

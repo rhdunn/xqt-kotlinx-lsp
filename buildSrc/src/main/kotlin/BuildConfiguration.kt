@@ -87,6 +87,28 @@ object BuildConfiguration {
     }
 
     /**
+     * The key id to use when using a subkey to sign the artifacts.
+     */
+    fun mavenSigningKeyId(project: Project): String? {
+        return getProperty(project, "maven.sign.key.id", "SIGNING_KEY_ID")
+    }
+
+    /**
+     * The ascii-armoured PGP private key to sign the artifacts with. Newlines are represented as `\n`.
+     */
+    fun mavenSigningKeyPrivate(project: Project): String? {
+        return getProperty(project, "maven.sign.key.private", "SIGNING_KEY_PRIVATE")
+            ?.replace("\\n", "\n")
+    }
+
+    /**
+     * The password or passphrase for the private key.
+     */
+    fun mavenSigningKeyPassword(project: Project): String? {
+        return getProperty(project, "maven.sign.key.password", "SIGNING_KEY_PASSWORD")
+    }
+
+    /**
      * Should the build process download node if it is not present?
      */
     fun nodeJsDownload(project: Project): Boolean {
