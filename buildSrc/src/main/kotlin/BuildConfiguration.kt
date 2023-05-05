@@ -78,10 +78,11 @@ object BuildConfiguration {
     /**
      * Sign the Maven artifacts.
      */
-    fun mavenSignArtifacts(project: Project): Boolean {
+    fun mavenSignArtifacts(project: Project): ArtifactSigningMethod {
         return when (getProperty(project, "maven.sign")) {
-            "true" -> true
-            "false", null -> false
+            "env" -> ArtifactSigningMethod.Environment
+            "gpg", "true" -> ArtifactSigningMethod.GpgCommand
+            "none", "false", null -> ArtifactSigningMethod.None
             else -> throw GradleException("Invalid value for the 'maven.sign' property.")
         }
     }

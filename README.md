@@ -194,6 +194,14 @@ The `maven.sign` build property configures whether the `publish` actions should
 sign the artifacts using the configured signing key. This is required when
 publishing artifacts to Maven Central.
 
+This can be one of the following values:
+1. `env` -- Use the `maven.sign.key.*` build properties or `SIGNING_KEY_*`
+   environment variables to sign the artifacts. If the private key is not
+   present then the artifacts will not be signed.
+2. `gpg`, `true` -- Use the GPG command to sign the artifacts. This will prompt
+   the user for the key password.
+3. `none`, `false` -- Don't sign the artifacts.
+
 ### maven.sign.key.id (SIGNING_KEY_ID)
 The `maven.sign.key.id` build property and `SIGNING_KEY_ID` environment
 variable specify the key id to use when using a subkey to sign the artifacts.
