@@ -67,8 +67,9 @@ JetBrains for the Kotlin/Native target.
 [5] The dependant `kotlinx-serialization-json` library does not support these
 Kotlin/Native targets.
 
-## Configuration Properties
-The following configuration properties are available to configure the build:
+## Build Configuration
+The following configuration properties and environment variables are available
+to configure the build:
 
 ### jvm.target
 The `jvm.target` build property configures the version of the Java VM to target
@@ -96,34 +97,54 @@ The `maven.sign` build property configures whether the `publish` actions should
 sign the artifacts using the configured signing key. This is required when
 publishing artifacts to Maven Central.
 
+This can be one of the following values:
+1. `env` -- Use the `maven.sign.key.*` build properties or `SIGNING_KEY_*`
+   environment variables to sign the artifacts. If the private key is not
+   present then the artifacts will not be signed.
+2. `gpg`, `true` -- Use the GPG command to sign the artifacts. This will prompt
+   the user for the key password.
+3. `none`, `false` -- Don't sign the artifacts.
+
+### maven.sign.key.id (SIGNING_KEY_ID)
+The `maven.sign.key.id` build property and `SIGNING_KEY_ID` environment
+variable specify the key id to use when using a subkey to sign the artifacts.
+If a subkey is not used, this should be blank, or not set. The build property
+takes precedence over the environment variable.
+
+### maven.sign.key.private (SIGNING_KEY_PRIVATE)
+The `maven.sign.key.private` build property and `SIGNING_KEY_PRIVATE`
+environment variable specify the ascii-armoured PGP private key to sign the
+artifacts with. The build property takes precedence over the environment
+variable.
+
+Newlines are represented as `\n`.
+
+If this is not set, the `gpg` command will be used to determine this and the
+password.
+
+### maven.sign.key.password (SIGNING_KEY_PASSWORD)
+The `maven.sign.key.password` build property and `SIGNING_KEY_PASSWORD`
+environment variable specify the password or passphrase associated with the
+private key. The build property takes precedence over the environment
+variable.
+
 ### nodejs.download
 The `nodejs.download` build property configures whether the build should
 download node when building and running the Kotlin/JS targets. If this is false
 the build will use the system's node installation. This is used by the GitHub
 Actions to prevent node being downloaded during the build.
 
-### ossrh.username
-The Open Source Software Repository Hosting (OSSRH) username to use when
-publishing artifacts to Maven Central. This takes precedence over the
-`OSSRH_USERNAME` environment variable.
+### ossrh.username (OSSRH_USERNAME)
+The `ossrh.username` build property and `OSSRH_USERNAME` environment variable
+specify the Open Source Software Repository Hosting (OSSRH) username to use
+when publishing artifacts to Maven Central. The build property takes precedence
+over the environment variable.
 
-### ossrh.password
-The Open Source Software Repository Hosting (OSSRH) password to use when
-publishing artifacts to Maven Central. This takes precedence over the
-`OSSRH_PASSWORD` environment variable.
-
-## Environment Variables
-The following environment variables are available to configure the build:
-
-### ossrh.username
-The Open Source Software Repository Hosting (OSSRH) username to use when
-publishing artifacts to Maven Central. This takes precedence over the
-`OSSRH_USERNAME` environment variable.
-
-### ossrh.password
-The Open Source Software Repository Hosting (OSSRH) password to use when
-publishing artifacts to Maven Central. This takes precedence over the
-`OSSRH_PASSWORD` environment variable.
+### ossrh.password (OSSRH_PASSWORD)
+The `ossrh.password` build property and `OSSRH_PASSWORD` environment variable
+specify the Open Source Software Repository Hosting (OSSRH) username to use
+when publishing artifacts to Maven Central.The build property takes precedence
+over the environment variable.
 
 ## License
 Copyright (C) 2022-2023 Reece H. Dunn

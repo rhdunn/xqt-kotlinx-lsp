@@ -78,12 +78,35 @@ object BuildConfiguration {
     /**
      * Sign the Maven artifacts.
      */
-    fun mavenSignArtifacts(project: Project): Boolean {
+    fun mavenSignArtifacts(project: Project): ArtifactSigningMethod {
         return when (getProperty(project, "maven.sign")) {
-            "true" -> true
-            "false", null -> false
+            "env" -> ArtifactSigningMethod.Environment
+            "gpg", "true" -> ArtifactSigningMethod.GpgCommand
+            "none", "false", null -> ArtifactSigningMethod.None
             else -> throw GradleException("Invalid value for the 'maven.sign' property.")
         }
+    }
+
+    /**
+     * The key id to use when using a subkey to sign the artifacts.
+     */
+    fun mavenSigningKeyId(project: Project): String? {
+        return getProperty(project, "maven.sign.key.id", "SIGNING_KEY_ID")
+    }
+
+    /**
+     * The ascii-armoured PGP private key to sign the artifacts with. Newlines are represented as `\n`.
+     */
+    fun mavenSigningKeyPrivate(project: Project): String? {
+        return getProperty(project, "maven.sign.key.private", "SIGNING_KEY_PRIVATE")
+            ?.replace("\\n", "\n")
+    }
+
+    /**
+     * The password or passphrase for the private key.
+     */
+    fun mavenSigningKeyPassword(project: Project): String? {
+        return getProperty(project, "maven.sign.key.password", "SIGNING_KEY_PASSWORD")
     }
 
     /**

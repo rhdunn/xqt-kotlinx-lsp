@@ -250,9 +250,25 @@ publishing.repositories {
 // region Signing Artifacts
 
 signing {
-    isRequired = BuildConfiguration.mavenSignArtifacts(project)
+    when (BuildConfiguration.mavenSignArtifacts(project)) {
+        ArtifactSigningMethod.GpgCommand -> {
+            isRequired = true
+            useGpgCmd()
+        }
 
-    useGpgCmd()
+        ArtifactSigningMethod.Environment -> {
+            val signingKeyId = BuildConfiguration.mavenSigningKeyId(project)
+            val signingKeyPrivate = BuildConfiguration.mavenSigningKeyPrivate(project)
+            val signingKeyPassword = BuildConfiguration.mavenSigningKeyPassword(project)
+
+            isRequired = !signingKeyPrivate.isNullOrBlank()
+            useInMemoryPgpKeys(signingKeyId, signingKeyPrivate, signingKeyPassword)
+        }
+
+        ArtifactSigningMethod.None -> {
+            isRequired = false
+        }
+    }
 }
 
 publishing.publications.configureEach {
