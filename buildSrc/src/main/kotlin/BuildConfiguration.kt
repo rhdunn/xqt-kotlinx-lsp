@@ -1,6 +1,8 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 import org.gradle.api.GradleException
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.konan.target.KonanTarget
 
@@ -14,6 +16,20 @@ object BuildConfiguration {
      */
     fun jvmTarget(project: Project): String {
         return getProperty(project, "jvm.target") ?: "11"
+    }
+
+    /**
+     * The JVM target as a JavaVersion instance.
+     */
+    fun javaVersion(project: Project): JavaVersion {
+        return JavaVersion.toVersion(jvmTarget(project))
+    }
+
+    /**
+     * The JVM target as a JavaLanguageVersion instance.
+     */
+    fun javaLanguageVersion(project: Project): JavaLanguageVersion {
+        return JavaLanguageVersion.of(javaVersion(project).majorVersion)
     }
 
     /**

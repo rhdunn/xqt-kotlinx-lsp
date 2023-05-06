@@ -82,11 +82,17 @@ kotlin.sourceSets {
 // region Kotlin JVM
 
 kotlin.jvm {
+    val javaVersion = BuildConfiguration.javaVersion(project)
+
     compilations.all {
-        kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget(project)
+        kotlinOptions.jvmTarget = javaVersion.toString()
     }
 
     withJava()
+
+    attributes {
+        attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, javaVersion.majorVersion.toInt())
+    }
 
     testRuns["test"].executionTask.configure {
         useJUnitPlatform() // JUnit 5
@@ -96,6 +102,10 @@ kotlin.jvm {
 kotlin.sourceSets {
     jvmMain.kotlin.srcDir("jvmMain")
     jvmTest.kotlin.srcDir("jvmTest")
+}
+
+publishing.publications.getByName("jvm", MavenPublication::class) {
+    artifactId = project.jvmArtifactId
 }
 
 // endregion
