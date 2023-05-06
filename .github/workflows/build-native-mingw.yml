@@ -22,6 +22,9 @@ jobs:
     env:
       OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
       OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+      SIGNING_KEY_PRIVATE: ${{ secrets.SIGNING_KEY_PRIVATE }}
+      SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
     steps:
       - name: Source Code Checkout
         uses: actions/checkout@v3
@@ -39,8 +42,8 @@ jobs:
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
 
       - name: Publish Kotlin/Native to Maven Local
-        run: gradle -D konan.target=${{ matrix.konan-target }} publishNativePublicationToMavenLocal
+        run: gradle -D konan.target=${{ matrix.konan-target }} -D maven.sign=env publishNativePublicationToMavenLocal
 
       - name: Publish Kotlin/Native to Maven Central
         if: env.OSSRH_USERNAME
-        run: gradle -D konan.target=${{ matrix.konan-target }} publishNativePublicationToMavenCentral
+        run: gradle -D konan.target=${{ matrix.konan-target }} -D maven.sign=env publishNativePublicationToMavenCentral

@@ -122,6 +122,9 @@ jobs:
     env:
       OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
       OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+      SIGNING_KEY_PRIVATE: ${{ secrets.SIGNING_KEY_PRIVATE }}
+      SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
     steps:
       - name: Setup Gradle 7.5
         uses: gradle/gradle-build-action@v2
@@ -137,8 +140,8 @@ jobs:
         run: tar -xf build-js-artifacts.tar
 
       - name: Publish Kotlin/JS to Maven Local
-        run: gradle -D nodejs.download=false publishJsPublicationToMavenLocal
+        run: gradle -D nodejs.download=false -D maven.sign=env publishJsPublicationToMavenLocal
 
       - name: Publish Kotlin/JS to Maven Central
         if: env.OSSRH_USERNAME
-        run: gradle -D nodejs.download=false publishJsPublicationToMavenCentral
+        run: gradle -D nodejs.download=false -D maven.sign=env publishJsPublicationToMavenCentral
