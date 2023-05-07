@@ -136,8 +136,11 @@ object BuildConfiguration {
 
     private fun getProperty(project: Project, name: String, envName: String? = null): String? {
         val projectValue = project.findProperty(name)?.toString()
+            ?.takeIf { value -> value.isNotBlank() }
         val systemValue = System.getProperty(name)
+            ?.takeIf { value -> value.isNotBlank() }
         val envValue = envName?.let { System.getenv(it) }
+            ?.takeIf { value -> value.isNotBlank() }
         return projectValue ?: systemValue ?: envValue
     }
 }
