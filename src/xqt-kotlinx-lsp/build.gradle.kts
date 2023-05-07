@@ -182,15 +182,6 @@ tasks.withType<DokkaTask>().configureEach {
     }
 }
 
-@Suppress("KDocMissingDocumentation")
-val javadocJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("javadoc")
-}
-
-publishing.publications.withType<MavenPublication> {
-    artifact(javadocJar)
-}
-
 // endregion
 // region Maven POM Metadata
 
@@ -254,6 +245,22 @@ publishing.repositories {
 }
 
 // endregion
+// region Javadoc JAR Files
+
+publishing.publications.withType<MavenPublication> {
+    val publication = this
+
+    val javadocJar = tasks.register("${publication.name}JavadocJar", Jar::class) {
+        archiveClassifier.set("javadoc")
+
+        // Each archive name should be distinct. Mirror the names for the sources Jar tasks.
+        archiveBaseName.set("${archiveBaseName.get()}-${publication.name}")
+    }
+
+    artifact(javadocJar)
+}
+
+// endregion
 // region Signing Artifacts
 
 signing {
@@ -282,14 +289,6 @@ publishing.publications.configureEach {
     if (signing.isRequired) {
         signing.sign(this)
     }
-}
-
-// See https://youtrack.jetbrains.com/issue/KT-46466
-// ... Note: This is due to the javadocJar task being shared across all the publications.
-@Suppress("KDocMissingDocumentation")
-val signingTasks = tasks.withType<Sign>()
-tasks.withType<AbstractPublishToMaven>().configureEach {
-    dependsOn(signingTasks)
 }
 
 // endregion
