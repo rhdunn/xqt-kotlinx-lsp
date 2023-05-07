@@ -35,7 +35,7 @@ object BuildConfiguration {
     /**
      * The web browser used by the Karma test harness.
      */
-    fun karmaBrowser(project: Project): KarmaBrowser {
+    fun karmaBrowser(project: Project): KarmaBrowser? {
         return KarmaBrowser(getProperty(project, "karma.browser"))
     }
 
@@ -64,7 +64,14 @@ object BuildConfiguration {
         val browser = karmaBrowser(project)
         val channel = karmaBrowserChannel(project)
         val headless = karmaBrowserHeadless(project)
-        return KarmaBrowserTarget.valueOf(browser, channel, headless = headless)
+        return when (browser) {
+            null -> when {
+                HostManager.hostIsMac -> KarmaBrowserTarget.Safari
+                else -> KarmaBrowserTarget.FirefoxHeadless
+            }
+
+            else -> KarmaBrowserTarget.valueOf(browser, channel, headless = headless)
+        }
     }
 
     /**

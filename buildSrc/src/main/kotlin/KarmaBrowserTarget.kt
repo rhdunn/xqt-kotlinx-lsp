@@ -1,6 +1,5 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 import org.gradle.api.GradleException
-import org.jetbrains.kotlin.konan.target.HostManager
 
 /**
  * The web browser used by the Karma test harness.
@@ -47,7 +46,7 @@ enum class KarmaBrowser(val displayName: String) {
 /**
  * Returns the web browser used by the Karma test harness.
  */
-fun KarmaBrowser(name: String?): KarmaBrowser = when (name) {
+fun KarmaBrowser(name: String?): KarmaBrowser? = when (name) {
     "chrome" -> KarmaBrowser.Chrome
     "chromium" -> KarmaBrowser.Chromium
     "firefox" -> KarmaBrowser.Firefox
@@ -55,11 +54,7 @@ fun KarmaBrowser(name: String?): KarmaBrowser = when (name) {
     "safari" -> KarmaBrowser.Safari
     "opera" -> KarmaBrowser.Opera
     "ie" -> KarmaBrowser.Ie
-    null -> when {
-        HostManager.hostIsMac -> KarmaBrowser.Safari
-        else -> KarmaBrowser.Firefox
-    }
-
+    null -> null
     else -> throw GradleException("Invalid value for the 'karma.browser' property.")
 }
 
