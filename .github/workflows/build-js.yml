@@ -140,8 +140,8 @@ jobs:
         run: tar -xf build-js-artifacts.tar
 
       - name: Publish Kotlin/JS to Maven Local
-        run: gradle -D nodejs.download=false -D maven.sign=env publishJsPublicationToMavenLocal
+        run: gradle --stacktrace -D nodejs.download=false -D maven.sign=env publishJsPublicationToMavenLocal
 
       - name: Publish Kotlin/JS to Maven Central
         if: env.OSSRH_USERNAME
-        run: gradle -D nodejs.download=false -D maven.sign=env publishJsPublicationToMavenCentral
+        run: gradle --stacktrace -D nodejs.download=false -D maven.sign=env publishJsPublicationToMavenCentral

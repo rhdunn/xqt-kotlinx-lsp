@@ -48,8 +48,8 @@ jobs:
         run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
 
       - name: Publish Kotlin/Native to Maven Local
-        run: gradle -D konan.target=${{ matrix.konan-target }} -D maven.sign=env publishNativePublicationToMavenLocal
+        run: gradle --stacktrace -D konan.target=${{ matrix.konan-target }} -D maven.sign=env publishNativePublicationToMavenLocal
 
       - name: Publish Kotlin/Native to Maven Central
         if: env.OSSRH_USERNAME
-        run: gradle -D konan.target=${{ matrix.konan-target }} -D maven.sign=env publishNativePublicationToMavenCentral
+        run: gradle --stacktrace -D konan.target=${{ matrix.konan-target }} -D maven.sign=env publishNativePublicationToMavenCentral

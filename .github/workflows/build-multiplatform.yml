@@ -27,8 +27,8 @@ jobs:
         run: gradle buildKotlinToolingMetadata
 
       - name: Publish Kotlin/Multiplatform to Maven Local
-        run: gradle -D maven.sign=env publishKotlinMultiplatformPublicationToMavenLocal
+        run: gradle --stacktrace -D maven.sign=env publishKotlinMultiplatformPublicationToMavenLocal
 
       - name: Publish Kotlin/Multiplatform to Maven Central
         if: env.OSSRH_USERNAME
-        run: gradle -D maven.sign=env publishKotlinMultiplatformPublicationToMavenCentral
+        run: gradle --stacktrace -D maven.sign=env publishKotlinMultiplatformPublicationToMavenCentral
