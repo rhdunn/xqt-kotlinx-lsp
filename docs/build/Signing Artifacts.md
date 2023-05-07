@@ -13,6 +13,10 @@ To see the list of GPG keys, run:
 
     gpg --list-keys
 
+To get the short key ID, run:
+
+    gpg --list-signatures --keyid-format 0xshort
+
 ## Distributing the Key
 When publishing to Maven Central, the key used to sign the artifacts needs to
 be available on at least one of the key servers it looks for. This can be done
@@ -31,11 +35,17 @@ uid will either be of the form "Name Email" or "Name (Comment) Email".
 
     gpg --export-secret-key -a "[KEY_UID]" | tr '\n' '|' | sed -e 's/|/\\n/g' > gh-actions.txt
 
-In your GitHub repository secrets, you can then create two secrets:
+In your GitHub repository secrets, you can then create the following secrets:
 1. `SIGNING_KEY_PRIVATE` -- Set this to the contents of the `gh-actions.txt`
    file.
 2. `SIGNING_KEY_PASSWORD` -- Set this to the password or passphrase associated
    with that private key.
+3. `SIGNING_KEY_ID` -- This is the short key ID format of the signing key. This
+   secret is optional.
+
+> __NOTE:__ If you get a "Could not read PGP secret key" error, check the stack
+> trace in the build output. The innermost exception will contain the specific
+> reason for the error.
 
 ## References
 1. [Generating a new GPG key](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key),

@@ -35,7 +35,7 @@ object BuildConfiguration {
     /**
      * The web browser used by the Karma test harness.
      */
-    fun karmaBrowser(project: Project): KarmaBrowser {
+    fun karmaBrowser(project: Project): KarmaBrowser? {
         return KarmaBrowser(getProperty(project, "karma.browser"))
     }
 
@@ -64,7 +64,14 @@ object BuildConfiguration {
         val browser = karmaBrowser(project)
         val channel = karmaBrowserChannel(project)
         val headless = karmaBrowserHeadless(project)
-        return KarmaBrowserTarget.valueOf(browser, channel, headless = headless)
+        return when (browser) {
+            null -> when {
+                HostManager.hostIsMac -> KarmaBrowserTarget.Safari
+                else -> KarmaBrowserTarget.FirefoxHeadless
+            }
+
+            else -> KarmaBrowserTarget.valueOf(browser, channel, headless = headless)
+        }
     }
 
     /**
@@ -136,8 +143,11 @@ object BuildConfiguration {
 
     private fun getProperty(project: Project, name: String, envName: String? = null): String? {
         val projectValue = project.findProperty(name)?.toString()
+            ?.takeIf { value -> value.isNotBlank() }
         val systemValue = System.getProperty(name)
+            ?.takeIf { value -> value.isNotBlank() }
         val envValue = envName?.let { System.getenv(it) }
+            ?.takeIf { value -> value.isNotBlank() }
         return projectValue ?: systemValue ?: envValue
     }
 }
