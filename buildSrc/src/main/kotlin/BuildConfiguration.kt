@@ -1,4 +1,8 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+import io.github.rhdunn.gradle.js.KarmaBrowser
+import io.github.rhdunn.gradle.js.KarmaBrowserChannel
+import io.github.rhdunn.gradle.js.KarmaBrowserTarget
+import io.github.rhdunn.gradle.maven.ArtifactSigningMethod
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

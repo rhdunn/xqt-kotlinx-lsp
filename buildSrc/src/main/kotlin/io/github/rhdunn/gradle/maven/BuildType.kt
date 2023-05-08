@@ -1,4 +1,5 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+package io.github.rhdunn.gradle.maven
 
 /**
  * The build type associated with the project version.
