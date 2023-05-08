@@ -1,6 +1,18 @@
 # Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 name: Build Kotlin/JVM
-on: [ push ]
+on:
+  workflow_dispatch:
+    inputs:
+      mavenCentralRepository:
+        description: The Maven Central (Sonatype) repository to publish artifacts to.
+        required: true
+        default: 'none'
+        type: choice
+        options:
+          - none
+          - snapshot
+          - release
+  push:
 
 jobs:
   build:
@@ -14,6 +26,7 @@ jobs:
       SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
       SIGNING_KEY_PRIVATE: ${{ secrets.SIGNING_KEY_PRIVATE }}
       SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+      MAVEN_CENTRAL_REPOSITORY: ${{ inputs.mavenCentralRepository || 'none' }}
     steps:
       - name: Source Code Checkout
         uses: actions/checkout@v3
@@ -39,5 +52,5 @@ jobs:
         run: gradle --stacktrace -D jvm.target=${{ matrix.java }} -D maven.sign=env publishJvmPublicationToMavenLocal
 
       - name: Publish Kotlin/JVM to Maven Central
-        if: env.OSSRH_USERNAME
-        run: gradle --stacktrace -D jvm.target=${{ matrix.java }} -D maven.sign=env publishJvmPublicationToMavenCentral
+        if: env.OSSRH_USERNAME && env.MAVEN_CENTRAL_REPOSITORY != 'none'
+        run: gradle --stacktrace -D jvm.target=${{ matrix.java }} -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} publishJvmPublicationToMavenCentral
