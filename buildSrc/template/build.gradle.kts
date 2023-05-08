@@ -3,6 +3,7 @@ import io.github.rhdunn.gradle.dsl.*
 import io.github.rhdunn.gradle.js.KarmaBrowserTarget
 import io.github.rhdunn.gradle.maven.ArtifactSigningMethod
 import io.github.rhdunn.gradle.maven.BuildType
+import io.github.rhdunn.gradle.maven.MavenSonatype
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaTask
@@ -225,18 +226,17 @@ publishing.publications.withType<MavenPublication> {
 // region Publish to Maven
 
 publishing.repositories {
-    maven {
-        name = "MavenCentral"
+    val sonatype = BuildConfiguration.mavenRepositorySonatype(project)
+    if (sonatype != MavenSonatype.None) {
+        maven {
+            name = "MavenCentral"
 
-        url = if (ProjectMetadata.Build.Type == BuildType.Release) {
-            URI("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-        } else {
-            URI("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-        }
+            url = URI(sonatype.url!!)
 
-        credentials {
-            username = BuildConfiguration.ossrhUsername(project)
-            password = BuildConfiguration.ossrhPassword(project)
+            credentials {
+                username = BuildConfiguration.ossrhUsername(project)
+                password = BuildConfiguration.ossrhPassword(project)
+            }
         }
     }
 }
