@@ -1,4 +1,6 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+package io.github.rhdunn.gradle.dsl
+
 import org.gradle.api.NamedDomainObjectContainer
 
 /**
