@@ -84,6 +84,6 @@ object Version {
          *
          * @see <a href="https://github.com/rhdunn/xqt-kotlinx-json-rpc">https://github.com/rhdunn/xqt-kotlinx-json-rpc</a>
          */
-        const val XqtKotlinxJsonRpc = "1.0.1-SNAPSHOT"
+        const val XqtKotlinxJsonRpc = "1.0.1"
     }
 }
