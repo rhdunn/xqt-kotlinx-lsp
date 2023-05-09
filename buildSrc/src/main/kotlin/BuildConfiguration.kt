@@ -3,6 +3,7 @@ import io.github.rhdunn.gradle.js.KarmaBrowser
 import io.github.rhdunn.gradle.js.KarmaBrowserChannel
 import io.github.rhdunn.gradle.js.KarmaBrowserTarget
 import io.github.rhdunn.gradle.maven.ArtifactSigningMethod
+import io.github.rhdunn.gradle.maven.MavenSonatype
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -84,6 +85,18 @@ object BuildConfiguration {
     fun konanTarget(project: Project): KonanTarget {
         val target = getProperty(project, "konan.target")
         return target?.let { KonanTarget.predefinedTargets[it] } ?: HostManager.host
+    }
+
+    /**
+     * The repository to publish Maven Central (Sonatype) artifacts to.
+     */
+    fun mavenRepositorySonatype(project: Project): MavenSonatype {
+        return when (getProperty(project, "maven.repository.sonatype")) {
+            "snapshot" -> MavenSonatype.Snapshot
+            "release" -> MavenSonatype.Release
+            "none", null -> MavenSonatype.None
+            else -> throw GradleException("Invalid value for the 'maven.repository.sonatype' property.")
+        }
     }
 
     /**

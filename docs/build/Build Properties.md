@@ -59,6 +59,19 @@ Newlines are represented as `\n`.
 The `maven.sign.key.password` build property specifies the password or
 passphrase associated with the private key.
 
+## Publishing Artifacts
+
+### maven.repository.sonatype
+The `maven.repository.sonatype` build property configures publishing artifacts
+to Maven Central.
+
+This can be one of the following values:
+1. `release` -- Configure the `publishToMavenCentral` targets to use the
+   sonatype release URLs.
+2. `snapshot` -- Configure the `publishToMavenCentral` targets to use the
+   sonatype snapshot URLs.
+3. `none` -- Don't publish the artifacts to Maven Central.
+
 ## Node JS
 
 ### nodejs.download
