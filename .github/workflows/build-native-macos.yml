@@ -21,6 +21,7 @@ env:
   SIGNING_KEY_PRIVATE: ${{ secrets.SIGNING_KEY_PRIVATE }}
   SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
   MAVEN_CENTRAL_REPOSITORY: ${{ inputs.mavenCentralRepository || 'none' }}
+  XQT_KOTLINX_JSON_RPC: '1.0.1'
 
 jobs:
   xqt-kotlinx-json-rpc:
@@ -44,7 +45,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: rhdunn/xqt-kotlinx-json-rpc
-          ref: 1.0.1
+          ref: ${{ env.XQT_KOTLINX_JSON_RPC }}
 
       - name: Setup Gradle 7.5
         uses: gradle/gradle-build-action@v2
