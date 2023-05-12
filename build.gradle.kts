@@ -11,8 +11,11 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()
         mavenCentral()
+        // Enable mavenLocal for locally deployed snapshot builds.
+        // NOTE: Using this before mavenCentral can cause build issues, e.g. being
+        //       unable to resolve kotlin-test dependency variants.
+        mavenLocal()
     }
 }
 
