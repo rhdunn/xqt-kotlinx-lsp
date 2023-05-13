@@ -30,8 +30,10 @@ kotlin.sourceSets {
 // region Kotlin JVM
 
 kotlin.jvm {
+    val javaVersion = BuildConfiguration.javaVersion(project)
+
     compilations.all {
-        kotlinOptions.jvmTarget = BuildConfiguration.jvmTarget(project)
+        kotlinOptions.jvmTarget = javaVersion.toString()
     }
 
     withJava()
