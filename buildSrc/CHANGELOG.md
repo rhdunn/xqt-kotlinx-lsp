@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2023-05-14
+
 ### Added
 
 - A `jvmName` DSL helper method.
@@ -15,7 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Resolving dependency variants locally for e.g. `kotlin-test`.
+- Resolve dependency variants locally for e.g. `kotlin-test`.
+- Include all the supported JVM target variants in the `kotlinMultiplatform` module metadata.
+- Include all the supported native target variants in the `kotlinMultiplatform` module metadata.
 
 ## [1.0.0] - 2023-05-10
 
