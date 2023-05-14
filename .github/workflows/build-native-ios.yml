@@ -36,12 +36,20 @@ jobs:
         ]
         include:
           - konan-target: ios_arm32
+            build-action: iosarm32
+            publish-action: publishIosarm32
             run-tests: false # Task 'nativeTest' is ambiguous in root project ...
           - konan-target: ios_arm64
+            build-action: iosarm64
+            publish-action: publishIosarm64
             run-tests: false # Task 'nativeTest' is ambiguous in root project ...
           - konan-target: ios_simulator_arm64
+            build-action: iossimulatorarm64
+            publish-action: publishIossimulatorarm64
             run-tests: true
           - konan-target: ios_x64
+            build-action: iosx64
+            publish-action: publishIosx64
             run-tests: true
 
     runs-on: macos-latest
@@ -55,15 +63,15 @@ jobs:
           gradle-version: 7.5
 
       - name: Build for Kotlin/Native
-        run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
+        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.build-action }}MainKlibrary
 
       - name: Test for Kotlin/Native
         if: ${{ matrix.run-tests }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
+        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.build-action }}Test
 
       - name: Publish Kotlin/Native to Maven Local
-        run: gradle --stacktrace -D konan.target=${{ matrix.konan-target }} -D maven.sign=env publishNativePublicationToMavenLocal
+        run: gradle --stacktrace -D konan.target=${{ matrix.konan-target }} -D maven.sign=env ${{ matrix.publish-action }}PublicationToMavenLocal
 
       - name: Publish Kotlin/Native to Maven Central
         if: env.OSSRH_USERNAME && env.MAVEN_CENTRAL_REPOSITORY != 'none'
-        run: gradle --stacktrace -D konan.target=${{ matrix.konan-target }} -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} publishNativePublicationToMavenCentral
+        run: gradle --stacktrace -D konan.target=${{ matrix.konan-target }} -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} ${{ matrix.publish-action }}PublicationToMavenCentral
