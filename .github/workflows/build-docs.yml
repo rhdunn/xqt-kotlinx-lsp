@@ -43,7 +43,7 @@ jobs:
 
       - name: Publish Kotlin/JVM to Maven Local
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        run: gradle publishJvmPublicationToMavenLocal
+        run: gradle publishJvm11PublicationToMavenLocal
 
       - name: Publish Kotlin/JS to Maven Local
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
