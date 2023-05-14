@@ -55,26 +55,34 @@ kotlin.sourceSets {
 // region Kotlin JVM
 
 val javaVersion = BuildConfiguration.javaVersion(project)
+if (javaVersion !in ProjectMetadata.BuildTargets.JvmTargets)
+    throw GradleException("The specified jvm.target is not in the configured project metadata.")
 
-kotlin.jvm(jvmName(javaVersion)) {
-    compilations.all {
-        kotlinOptions.jvmTarget = javaVersion.toString()
-    }
+ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
+    kotlin.jvm(jvmName(jvmTarget)) {
+        compilations.all {
+            kotlinOptions.jvmTarget = jvmTarget.toString()
+        }
 
-    withJava()
+        if (jvmTarget == javaVersion) {
+            withJava()
+        }
 
-    attributes {
-        attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, javaVersion.majorVersion.toInt())
-    }
+        attributes {
+            attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, jvmTarget.majorVersion.toInt())
+        }
 
-    testRuns["test"].executionTask.configure {
-        useJUnitPlatform() // JUnit 5
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform() // JUnit 5
+        }
     }
 }
 
-kotlin.sourceSets {
-    jvmMain(javaVersion).kotlin.srcDir("jvmMain")
-    jvmTest(javaVersion).kotlin.srcDir("jvmTest")
+if (ProjectMetadata.BuildTargets.JvmTargets.isNotEmpty()) {
+    kotlin.sourceSets {
+        jvmMain(javaVersion).kotlin.srcDir("jvmMain")
+        jvmTest(javaVersion).kotlin.srcDir("jvmTest")
+    }
 }
 
 // endregion
