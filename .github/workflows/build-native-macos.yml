@@ -35,8 +35,12 @@ jobs:
         ]
         include:
           - konan-target: macos_arm64
+            build-action: macosarm64
+            publish-action: publishMacosarm64
             run-tests: true
           - konan-target: macos_x64
+            build-action: macosx64
+            publish-action: publishMacosx64
             run-tests: true
 
     runs-on: macos-latest
@@ -56,11 +60,11 @@ jobs:
 
       - name: Build for Kotlin/Native
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
+        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.build-action }}MainKlibrary
 
       - name: Test for Kotlin/Native
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' && matrix.run-tests }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
+        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.build-action }}Test
 
       - name: Publish Kotlin/Multiplatform to Maven Local
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
@@ -68,7 +72,7 @@ jobs:
 
       - name: Publish Kotlin/Native to Maven Local
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} publishNativePublicationToMavenLocal
+        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.publish-action }}PublicationToMavenLocal
 
       - name: Tar XQT Kotlin JSON-RPC Artifacts
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}

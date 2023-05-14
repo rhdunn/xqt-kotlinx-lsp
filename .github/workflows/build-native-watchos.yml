@@ -38,14 +38,24 @@ jobs:
         ]
         include:
           - konan-target: watchos_arm32
+            build-action: watchosarm32
+            publish-action: publishWatchosarm32
             run-tests: false # Task 'nativeTest' is ambiguous in root project ...
           - konan-target: watchos_arm64
+            build-action: watchosarm64
+            publish-action: publishWatchosarm64
             run-tests: false # Task 'nativeTest' is ambiguous in root project ...
           - konan-target: watchos_simulator_arm64
+            build-action: watchossimulatorarm64
+            publish-action: publishWatchossimulatorarm64
             run-tests: true
           - konan-target: watchos_x64
+            build-action: watchosx64
+            publish-action: publishWatchosx64
             run-tests: false # Invalid device: Apple Watch Series 5. See https://youtrack.jetbrains.com/issue/KT-54814.
           - konan-target: watchos_x86
+            build-action: watchos86
+            publish-action: publishWatchosx86
             run-tests: true
 
     runs-on: macos-latest
@@ -65,11 +75,11 @@ jobs:
 
       - name: Build for Kotlin/Native
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} nativeMainKlibrary
+        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.build-action }}MainKlibrary
 
       - name: Test for Kotlin/Native
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' && matrix.run-tests }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} nativeTest
+        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.build-action }}Test
 
       - name: Publish Kotlin/Multiplatform to Maven Local
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
@@ -77,7 +87,7 @@ jobs:
 
       - name: Publish Kotlin/Native to Maven Local
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} publishNativePublicationToMavenLocal
+        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.publish-action }}PublicationToMavenLocal
 
       - name: Tar XQT Kotlin JSON-RPC Artifacts
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
