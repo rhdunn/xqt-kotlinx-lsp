@@ -2,8 +2,14 @@
 package io.github.rhdunn.gradle.dsl
 
 import BuildConfiguration
+import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+
+/**
+ * Compute the publication name for the specified Java version.
+ */
+fun jvmName(javaVersion: JavaVersion): String = "jvm${javaVersion.majorVersion}"
 
 /**
  * Access the JVM main configuration object.

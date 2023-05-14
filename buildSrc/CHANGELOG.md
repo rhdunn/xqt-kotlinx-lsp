@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- A `jvmName` DSL helper method.
+
 ### Fixed
 
 - Resolving dependency variants locally for e.g. `kotlin-test`.
