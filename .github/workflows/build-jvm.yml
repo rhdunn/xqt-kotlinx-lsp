@@ -44,14 +44,14 @@ jobs:
           gradle-version: 7.5
 
       - name: Build for Kotlin/JVM
-        run: gradle -D jvm.target=${{ matrix.java }} jvmJar
+        run: gradle -D jvm.target=${{ matrix.java }} jvm${{ matrix.java }}Jar
 
       - name: Test for Kotlin/JVM
-        run: gradle -D jvm.target=${{ matrix.java }} jvmTest
+        run: gradle -D jvm.target=${{ matrix.java }} jvm${{ matrix.java }}Test
 
       - name: Publish Kotlin/JVM to Maven Local
-        run: gradle --stacktrace -D jvm.target=${{ matrix.java }} -D maven.sign=env publishJvmPublicationToMavenLocal
+        run: gradle --stacktrace -D jvm.target=${{ matrix.java }} -D maven.sign=env publishJvm${{ matrix.java }}PublicationToMavenLocal
 
       - name: Publish Kotlin/JVM to Maven Central
         if: env.OSSRH_USERNAME && env.MAVEN_CENTRAL_REPOSITORY != 'none'
-        run: gradle --stacktrace -D jvm.target=${{ matrix.java }} -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} publishJvmPublicationToMavenCentral
+        run: gradle --stacktrace -D jvm.target=${{ matrix.java }} -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} publishJvm${{ matrix.java }}PublicationToMavenCentral
