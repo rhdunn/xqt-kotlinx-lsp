@@ -106,7 +106,7 @@ kotlin.jvm(jvmName(javaVersion)) {
 
 kotlin.sourceSets {
     jvmMain(javaVersion).kotlin.srcDir("jvmMain")
-    jvmTest.kotlin.srcDir("jvmTest")
+    jvmTest(javaVersion).kotlin.srcDir("jvmTest")
 }
 
 // endregion

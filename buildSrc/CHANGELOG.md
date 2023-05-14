@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - A `jvmName` DSL helper method.
-- A `jvmMain` DSL helper method taking a `JavaVersion`.
+- A `jvmMain` and `jvmTest` DSL helper methods taking a `JavaVersion`.
 
 ### Fixed
 

@@ -32,6 +32,13 @@ val <T> NamedDomainObjectContainer<T>.jvmTest: T
     get() = findByName("jvmTest")!!
 
 /**
+ * Access the JVM test configuration object.
+ */
+fun <T> NamedDomainObjectContainer<T>.jvmTest(javaVersion: JavaVersion): T {
+    return findByName(jvmName(javaVersion, "Test"))!!
+}
+
+/**
  * Returns the Maven artifact ID for the JVM target.
  */
 val Project.jvmArtifactId: String
