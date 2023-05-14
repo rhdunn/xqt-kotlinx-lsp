@@ -105,7 +105,7 @@ kotlin.jvm(jvmName(javaVersion)) {
 }
 
 kotlin.sourceSets {
-    jvmMain.kotlin.srcDir("jvmMain")
+    jvmMain(javaVersion).kotlin.srcDir("jvmMain")
     jvmTest.kotlin.srcDir("jvmTest")
 }
 
