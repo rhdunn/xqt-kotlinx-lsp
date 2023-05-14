@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - A `jvmName` DSL helper method.
 - A `jvmMain`, `jvmTest`, and `jvmArtifactId` DSL helper methods taking a `JavaVersion`.
+- A `KonanTarget.publicationName` DSL helper property.
 
 ### Fixed
 

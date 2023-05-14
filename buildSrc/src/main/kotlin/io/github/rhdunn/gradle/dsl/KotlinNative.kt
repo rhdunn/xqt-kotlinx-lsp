@@ -18,10 +18,16 @@ val <T> NamedDomainObjectContainer<T>.nativeTest: T
     get() = findByName("nativeTest")!!
 
 /**
+ * Returns the default publication name for the target.
+ */
+val KonanTarget.publicationName: String
+    get() = name.toLowerCase().replace("_", "")
+
+/**
  * Returns the Maven artifact ID suffix name for the target.
  */
 val KonanTarget.artifactIdSuffix: String
-    get() = name.toLowerCase().replace("_", "")
+    get() = publicationName
 
 /**
  * Returns the Maven artifact ID for the native target.
