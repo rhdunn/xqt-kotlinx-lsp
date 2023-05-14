@@ -26,6 +26,13 @@ val <T> NamedDomainObjectContainer<T>.nativeTest: T
     get() = findByName("nativeTest")!!
 
 /**
+ * Access the native test configuration object.
+ */
+fun <T> NamedDomainObjectContainer<T>.nativeTest(target: Named): T {
+    return findByName("${target.name}Test")!!
+}
+
+/**
  * Returns the default publication name for the target.
  */
 val KonanTarget.publicationName: String
