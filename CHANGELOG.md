@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improve the build infrastructure to support automated deployment.
 - Include all the supported JVM target variants in the `kotlinMultiplatform` module metadata.
+- Include all the supported native target variants in the `kotlinMultiplatform` module metadata.
 
 ### Changed
 
