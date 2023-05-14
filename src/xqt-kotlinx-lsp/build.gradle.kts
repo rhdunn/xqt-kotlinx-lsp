@@ -1,4 +1,6 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+@file:Suppress("KDocMissingDocumentation")
+
 import io.github.rhdunn.gradle.dsl.*
 import io.github.rhdunn.gradle.js.KarmaBrowserTarget
 import io.github.rhdunn.gradle.maven.ArtifactSigningMethod
@@ -51,9 +53,9 @@ kotlin.sourceSets {
 // endregion
 // region Kotlin JVM
 
-kotlin.jvm {
-    val javaVersion = BuildConfiguration.javaVersion(project)
+val javaVersion = BuildConfiguration.javaVersion(project)
 
+kotlin.jvm(jvmName(javaVersion)) {
     compilations.all {
         kotlinOptions.jvmTarget = javaVersion.toString()
     }
@@ -70,12 +72,8 @@ kotlin.jvm {
 }
 
 kotlin.sourceSets {
-    jvmMain.kotlin.srcDir("jvmMain")
-    jvmTest.kotlin.srcDir("jvmTest")
-}
-
-publishing.publications.getByName("jvm", MavenPublication::class) {
-    artifactId = project.jvmArtifactId
+    jvmMain(javaVersion).kotlin.srcDir("jvmMain")
+    jvmTest(javaVersion).kotlin.srcDir("jvmTest")
 }
 
 // endregion
@@ -124,7 +122,6 @@ kotlin.sourceSets {
 // region Kotlin Native
 
 // https://kotlinlang.org/docs/native-target-support.html
-@Suppress("KDocMissingDocumentation")
 val nativeTarget = when (BuildConfiguration.konanTarget(project)) {
     KonanTarget.ANDROID_ARM32 -> kotlin.androidNativeArm32("native") // Tier 3
     KonanTarget.ANDROID_ARM64 -> kotlin.androidNativeArm64("native") // Tier 3

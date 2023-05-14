@@ -1,4 +1,6 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+@file:Suppress("KDocMissingDocumentation")
+
 import io.github.rhdunn.gradle.dsl.*
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
@@ -29,9 +31,9 @@ kotlin.sourceSets {
 // endregion
 // region Kotlin JVM
 
-kotlin.jvm {
-    val javaVersion = BuildConfiguration.javaVersion(project)
+val javaVersion = BuildConfiguration.javaVersion(project)
 
+kotlin.jvm(jvmName(javaVersion)) {
     compilations.all {
         kotlinOptions.jvmTarget = javaVersion.toString()
     }
@@ -40,9 +42,9 @@ kotlin.jvm {
 }
 
 kotlin.sourceSets {
-    jvmMain.kotlin.srcDir("jvmMain")
+    jvmMain(javaVersion).kotlin.srcDir("jvmMain")
 
-    jvmMain.dependencies {
+    jvmMain(javaVersion).dependencies {
         implementation(Dependency.JUnitJupiterApi)
     }
 }
@@ -68,7 +70,6 @@ kotlin.sourceSets {
 // region Kotlin Native
 
 // https://kotlinlang.org/docs/native-target-support.html
-@Suppress("KDocMissingDocumentation")
 val nativeTarget = when (BuildConfiguration.konanTarget(project)) {
     KonanTarget.ANDROID_ARM32 -> kotlin.androidNativeArm32("native") // Tier 3
     KonanTarget.ANDROID_ARM64 -> kotlin.androidNativeArm64("native") // Tier 3
