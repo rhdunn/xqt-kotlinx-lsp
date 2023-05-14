@@ -42,4 +42,11 @@ fun <T> NamedDomainObjectContainer<T>.jvmTest(javaVersion: JavaVersion): T {
  * Returns the Maven artifact ID for the JVM target.
  */
 val Project.jvmArtifactId: String
-    get() = "$name-jvm${BuildConfiguration.javaVersion(project).majorVersion}"
+    get() = jvmArtifactId(BuildConfiguration.javaVersion(project))
+
+/**
+ * Returns the Maven artifact ID for the JVM target.
+ */
+fun Project.jvmArtifactId(javaVersion: JavaVersion): String {
+    return "$name-jvm${javaVersion.majorVersion}"
+}
