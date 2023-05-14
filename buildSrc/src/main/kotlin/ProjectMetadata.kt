@@ -1,5 +1,6 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 import io.github.rhdunn.gradle.maven.BuildType
+import org.gradle.api.JavaVersion
 
 /**
  * Information about the project.
@@ -28,6 +29,19 @@ object ProjectMetadata {
          * The artifact version ID.
          */
         val Version = "$VersionTag${Type.suffix}"
+    }
+
+    /**
+     * Information about which platform targets to build for.
+     */
+    object BuildTargets {
+        /**
+         * Specifies which Java versions to target in Kotlin/JVM.
+         */
+        val JvmTargets: List<JavaVersion> = listOf(
+            JavaVersion.VERSION_11, // LTS
+            JavaVersion.VERSION_17, // LTS
+        )
     }
 
     /**
