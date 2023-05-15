@@ -2,6 +2,7 @@
 package io.github.rhdunn.gradle.dsl
 
 import BuildConfiguration
+import io.github.rhdunn.gradle.maven.SupportedVariants
 import org.gradle.api.JavaVersion
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
@@ -11,6 +12,18 @@ import org.gradle.api.Project
  */
 fun jvmName(javaVersion: JavaVersion, suffix: String = ""): String =
     "jvm${javaVersion.majorVersion}$suffix"
+
+/**
+ * Compute the publication name for the specified Java version.
+ */
+fun SupportedVariants.jvmName(jvmTarget: JavaVersion, javaVersion: JavaVersion): String? = when (this) {
+    SupportedVariants.All -> jvmName(jvmTarget, suffix = "")
+    SupportedVariants.None -> null
+    SupportedVariants.TargetOnly -> when (jvmTarget) {
+        javaVersion -> "jvm"
+        else -> null
+    }
+}
 
 /**
  * Access the JVM main configuration object.

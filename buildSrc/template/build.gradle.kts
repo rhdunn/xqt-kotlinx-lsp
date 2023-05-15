@@ -88,12 +88,15 @@ kotlin.sourceSets {
 // endregion
 // region Kotlin JVM
 
+val supportedJvmVariants = BuildConfiguration.jvmVariants(project)
+
 val javaVersion = BuildConfiguration.javaVersion(project)
 if (javaVersion !in ProjectMetadata.BuildTargets.JvmTargets)
     throw GradleException("The specified jvm.target is not in the configured project metadata.")
 
 ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
-    kotlin.jvm(jvmName(jvmTarget)) {
+    val jvmName = supportedJvmVariants.jvmName(jvmTarget, javaVersion) ?: return@forEach
+    kotlin.jvm(jvmName) {
         compilations.all {
             kotlinOptions.jvmTarget = jvmTarget.toString()
         }
@@ -112,7 +115,7 @@ ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
     }
 }
 
-if (ProjectMetadata.BuildTargets.JvmTargets.isNotEmpty()) {
+if (supportedJvmVariants !== SupportedVariants.None) {
     kotlin.sourceSets {
         jvmMain(javaVersion).kotlin.srcDir("jvmMain")
         jvmTest(javaVersion).kotlin.srcDir("jvmTest")
