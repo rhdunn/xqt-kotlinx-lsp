@@ -4,6 +4,7 @@ import io.github.rhdunn.gradle.js.KarmaBrowserChannel
 import io.github.rhdunn.gradle.js.KarmaBrowserTarget
 import io.github.rhdunn.gradle.maven.ArtifactSigningMethod
 import io.github.rhdunn.gradle.maven.MavenSonatype
+import io.github.rhdunn.gradle.maven.SupportedVariants
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -20,7 +21,23 @@ object BuildConfiguration {
      * The version of the Java Virtual Machine (JVM) to target by the Kotlin compiler.
      */
     fun jvmTarget(project: Project): String {
-        return getProperty(project, "jvm.target") ?: "11"
+        return getProperty(project, "jvm.target") ?: ProjectMetadata.BuildTargets.DefaultJvmTarget
+    }
+
+    /**
+     * The variants of the Java Virtual Machine (JVM) to support.
+     */
+    fun jvmVariants(project: Project): SupportedVariants {
+        return when (ProjectMetadata.BuildTargets.JvmTargets.size) {
+            0 -> SupportedVariants.None // No JVM targets configured.
+            else -> when (getProperty(project, "jvm.variants")) {
+                "all" -> SupportedVariants.All
+                "target-only" -> SupportedVariants.TargetOnly
+                "none" -> SupportedVariants.None
+                null -> ProjectMetadata.BuildTargets.DefaultJvmVariants
+                else -> throw GradleException("Invalid value for the 'jvm.variants' property.")
+            }
+        }
     }
 
     /**

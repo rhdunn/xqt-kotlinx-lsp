@@ -2,7 +2,9 @@
 package io.github.rhdunn.gradle.dsl
 
 import BuildConfiguration
+import io.github.rhdunn.gradle.maven.SupportedVariants
 import org.gradle.api.JavaVersion
+import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
@@ -11,6 +13,18 @@ import org.gradle.api.Project
  */
 fun jvmName(javaVersion: JavaVersion, suffix: String = ""): String =
     "jvm${javaVersion.majorVersion}$suffix"
+
+/**
+ * Compute the publication name for the specified Java version.
+ */
+fun SupportedVariants.jvmName(jvmTarget: JavaVersion, javaVersion: JavaVersion): String? = when (this) {
+    SupportedVariants.All -> jvmName(jvmTarget, suffix = "")
+    SupportedVariants.None -> null
+    SupportedVariants.TargetOnly -> when (jvmTarget) {
+        javaVersion -> "jvm"
+        else -> null
+    }
+}
 
 /**
  * Access the JVM main configuration object.
@@ -26,6 +40,13 @@ fun <T> NamedDomainObjectContainer<T>.jvmMain(javaVersion: JavaVersion): T {
 }
 
 /**
+ * Access the JVM main configuration object.
+ */
+fun <T> NamedDomainObjectContainer<T>.jvmMain(target: Named): T {
+    return findByName("${target.name}Main")!!
+}
+
+/**
  * Access the JVM test configuration object.
  */
 val <T> NamedDomainObjectContainer<T>.jvmTest: T
@@ -36,6 +57,13 @@ val <T> NamedDomainObjectContainer<T>.jvmTest: T
  */
 fun <T> NamedDomainObjectContainer<T>.jvmTest(javaVersion: JavaVersion): T {
     return findByName(jvmName(javaVersion, "Test"))!!
+}
+
+/**
+ * Access the JVM test configuration object.
+ */
+fun <T> NamedDomainObjectContainer<T>.jvmTest(target: Named): T {
+    return findByName("${target.name}Test")!!
 }
 
 /**

@@ -6,6 +6,7 @@ import io.github.rhdunn.gradle.js.KarmaBrowserTarget
 import io.github.rhdunn.gradle.maven.ArtifactSigningMethod
 import io.github.rhdunn.gradle.maven.BuildType
 import io.github.rhdunn.gradle.maven.MavenSonatype
+import io.github.rhdunn.gradle.maven.SupportedVariants
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaTask
@@ -88,12 +89,16 @@ kotlin.sourceSets {
 // endregion
 // region Kotlin JVM
 
+val supportedJvmVariants = BuildConfiguration.jvmVariants(project)
+
 val javaVersion = BuildConfiguration.javaVersion(project)
 if (javaVersion !in ProjectMetadata.BuildTargets.JvmTargets)
     throw GradleException("The specified jvm.target is not in the configured project metadata.")
 
+lateinit var javaTarget: KotlinJvmTarget
 ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
-    kotlin.jvm(jvmName(jvmTarget)) {
+    val jvmName = supportedJvmVariants.jvmName(jvmTarget, javaVersion) ?: return@forEach
+    val target: KotlinJvmTarget = kotlin.jvm(jvmName) {
         compilations.all {
             kotlinOptions.jvmTarget = jvmTarget.toString()
         }
@@ -110,12 +115,15 @@ ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
             useJUnitPlatform() // JUnit 5
         }
     }
+
+    if (jvmTarget == javaVersion)
+        javaTarget = target
 }
 
-if (ProjectMetadata.BuildTargets.JvmTargets.isNotEmpty()) {
+if (supportedJvmVariants !== SupportedVariants.None) {
     kotlin.sourceSets {
-        jvmMain(javaVersion).kotlin.srcDir("jvmMain")
-        jvmTest(javaVersion).kotlin.srcDir("jvmTest")
+        jvmMain(javaTarget).kotlin.srcDir("jvmMain")
+        jvmTest(javaTarget).kotlin.srcDir("jvmTest")
     }
 }
 
