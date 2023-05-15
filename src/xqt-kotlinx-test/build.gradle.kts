@@ -2,12 +2,14 @@
 @file:Suppress("KDocMissingDocumentation")
 
 import io.github.rhdunn.gradle.dsl.*
+import io.github.rhdunn.gradle.maven.SupportedVariants
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsCompilerType
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
+import org.jetbrains.kotlin.gradle.targets.jvm.KotlinJvmTarget
 import org.jetbrains.kotlin.konan.target.KonanTarget
 
 buildscript {
@@ -32,12 +34,16 @@ kotlin.sourceSets {
 // endregion
 // region Kotlin JVM
 
+val supportedJvmVariants = BuildConfiguration.jvmVariants(project)
+
 val javaVersion = BuildConfiguration.javaVersion(project)
 if (javaVersion !in ProjectMetadata.BuildTargets.JvmTargets)
     throw GradleException("The specified jvm.target is not in the configured project metadata.")
 
+lateinit var javaTarget: KotlinJvmTarget
 ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
-    kotlin.jvm(jvmName(jvmTarget)) {
+    val jvmName = supportedJvmVariants.jvmName(jvmTarget, javaVersion) ?: return@forEach
+    val target: KotlinJvmTarget = kotlin.jvm(jvmName) {
         compilations.all {
             kotlinOptions.jvmTarget = jvmTarget.toString()
         }
@@ -50,13 +56,16 @@ ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
             attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, jvmTarget.majorVersion.toInt())
         }
     }
+
+    if (jvmTarget == javaVersion)
+        javaTarget = target
 }
 
-if (ProjectMetadata.BuildTargets.JvmTargets.isNotEmpty()) {
+if (supportedJvmVariants !== SupportedVariants.None) {
     kotlin.sourceSets {
-        jvmMain(javaVersion).kotlin.srcDir("jvmMain")
+        jvmMain(javaTarget).kotlin.srcDir("jvmMain")
 
-        jvmMain(javaVersion).dependencies {
+        jvmMain(javaTarget).dependencies {
             implementation(Dependency.JUnitJupiterApi)
         }
     }
