@@ -105,6 +105,19 @@ object BuildConfiguration {
     }
 
     /**
+     * The Kotlin/Native targets to support as native variants.
+     */
+    fun konanVariants(project: Project): SupportedVariants {
+        return when (getProperty(project, "konan.variants")) {
+            "all" -> SupportedVariants.All
+            "target-only" -> SupportedVariants.TargetOnly
+            "none" -> SupportedVariants.None
+            null -> ProjectMetadata.BuildTargets.DefaultKonanVariants
+            else -> throw GradleException("Invalid value for the 'konan.variants' property.")
+        }
+    }
+
+    /**
      * The repository to publish Maven Central (Sonatype) artifacts to.
      */
     fun mavenRepositorySonatype(project: Project): MavenSonatype {

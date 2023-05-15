@@ -26,6 +26,17 @@ This can be one of the following values:
 The `konan.target` build property configures the Kotlin/Native build target.
 This is used by the GitHub Actions in the native build's matrix configuration.
 
+### konan.variants
+The `konan.variants` build property configures the list of Kotlin/Native
+variants supported in the main multiplatform publication.
+
+This can be one of the following values:
+1. `all` -- Include all native targets configured in the project metadata as
+   native variants. The publications are named afer the Konan targets.
+2. `target-only` -- Only include the `konan.target` native variant. The
+   publication is named `native`.
+3. `none` -- Don't include any JVM variants.
+
 ## Kotlin/JS Test Browser
 
 ### karma.browser

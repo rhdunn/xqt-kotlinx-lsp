@@ -53,6 +53,11 @@ object ProjectMetadata {
             JavaVersion.VERSION_11, // LTS
             JavaVersion.VERSION_17, // LTS
         )
+
+        /**
+         * The default value for the `konan.variants` property.
+         */
+        val DefaultKonanVariants = SupportedVariants.All
     }
 
     /**
