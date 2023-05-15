@@ -21,7 +21,10 @@ object BuildConfiguration {
      * The version of the Java Virtual Machine (JVM) to target by the Kotlin compiler.
      */
     fun jvmTarget(project: Project): String {
-        return getProperty(project, "jvm.target") ?: ProjectMetadata.BuildTargets.DefaultJvmTarget
+        val target = getProperty(project, "jvm.target") ?: ProjectMetadata.BuildTargets.DefaultJvmTarget
+        if (JavaVersion.toVersion(target) !in ProjectMetadata.BuildTargets.JvmTargets)
+            throw GradleException("The specified jvm.target is not in the configured project metadata.")
+        return target
     }
 
     /**

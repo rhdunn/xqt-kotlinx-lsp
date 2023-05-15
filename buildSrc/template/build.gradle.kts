@@ -90,10 +90,7 @@ kotlin.sourceSets {
 // region Kotlin JVM
 
 val supportedJvmVariants = BuildConfiguration.jvmVariants(project)
-
 val javaVersion = BuildConfiguration.javaVersion(project)
-if (javaVersion !in ProjectMetadata.BuildTargets.JvmTargets)
-    throw GradleException("The specified jvm.target is not in the configured project metadata.")
 
 lateinit var javaTarget: KotlinJvmTarget
 ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
