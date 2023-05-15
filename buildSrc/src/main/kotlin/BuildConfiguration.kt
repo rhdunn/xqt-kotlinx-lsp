@@ -20,7 +20,7 @@ object BuildConfiguration {
      * The version of the Java Virtual Machine (JVM) to target by the Kotlin compiler.
      */
     fun jvmTarget(project: Project): String {
-        return getProperty(project, "jvm.target") ?: "11"
+        return getProperty(project, "jvm.target") ?: ProjectMetadata.BuildTargets.DefaultJvmTarget
     }
 
     /**

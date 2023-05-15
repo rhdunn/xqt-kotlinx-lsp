@@ -36,6 +36,11 @@ object ProjectMetadata {
      */
     object BuildTargets {
         /**
+         * The default value for the `jvm.variants` property.
+         */
+        const val DefaultJvmTarget = "11"
+
+        /**
          * Specifies which Java versions to target in Kotlin/JVM.
          */
         val JvmTargets: List<JavaVersion> = listOf(
