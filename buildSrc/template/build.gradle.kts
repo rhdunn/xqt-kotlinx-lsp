@@ -127,11 +127,12 @@ if (supportedJvmVariants !== SupportedVariants.None) {
 // endregion
 // region Kotlin Native
 
+val supportedKonanVariants = BuildConfiguration.konanVariants(project)
 val konanBuildTarget = BuildConfiguration.konanTarget(project)
 
 lateinit var nativeTarget: KotlinNativeTarget
 ProjectMetadata.BuildTargets.KonanTargets.forEach { konanTarget ->
-    val nativeName = konanTarget.publicationName
+    val nativeName = supportedKonanVariants.nativePublication(konanTarget, konanBuildTarget) ?: return@forEach
 
     // https://kotlinlang.org/docs/native-target-support.html
     val target = when (konanTarget) {
@@ -168,9 +169,11 @@ ProjectMetadata.BuildTargets.KonanTargets.forEach { konanTarget ->
         nativeTarget = target
 }
 
-kotlin.sourceSets {
-    nativeMain(nativeTarget).kotlin.srcDir("nativeMain")
-    nativeTest(nativeTarget).kotlin.srcDir("nativeTest")
+if (supportedKonanVariants !== SupportedVariants.None) {
+    kotlin.sourceSets {
+        nativeMain(nativeTarget).kotlin.srcDir("nativeMain")
+        nativeTest(nativeTarget).kotlin.srcDir("nativeTest")
+    }
 }
 
 // endregion
