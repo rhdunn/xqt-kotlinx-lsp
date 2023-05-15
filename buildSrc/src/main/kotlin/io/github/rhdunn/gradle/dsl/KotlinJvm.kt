@@ -4,6 +4,7 @@ package io.github.rhdunn.gradle.dsl
 import BuildConfiguration
 import io.github.rhdunn.gradle.maven.SupportedVariants
 import org.gradle.api.JavaVersion
+import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 
@@ -36,6 +37,13 @@ val <T> NamedDomainObjectContainer<T>.jvmMain: T
  */
 fun <T> NamedDomainObjectContainer<T>.jvmMain(javaVersion: JavaVersion): T {
     return findByName(jvmName(javaVersion, "Main"))!!
+}
+
+/**
+ * Access the JVM main configuration object.
+ */
+fun <T> NamedDomainObjectContainer<T>.jvmMain(target: Named): T {
+    return findByName("${target.name}Main")!!
 }
 
 /**
