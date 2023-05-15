@@ -104,7 +104,10 @@ object BuildConfiguration {
      */
     fun konanTarget(project: Project): KonanTarget {
         val target = getProperty(project, "konan.target")
-        return target?.let { KonanTarget.predefinedTargets[it] } ?: HostManager.host
+        val konanTarget = target?.let { KonanTarget.predefinedTargets[it] } ?: HostManager.host
+        if (konanTarget !in ProjectMetadata.BuildTargets.KonanTargets)
+            throw GradleException("The specified konan.target is not in the configured project metadata.")
+        return konanTarget
     }
 
     /**
