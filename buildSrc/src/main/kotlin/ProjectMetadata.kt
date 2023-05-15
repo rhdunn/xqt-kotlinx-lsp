@@ -1,5 +1,6 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 import io.github.rhdunn.gradle.maven.BuildType
+import io.github.rhdunn.gradle.maven.SupportedVariants
 import org.gradle.api.JavaVersion
 
 /**
@@ -35,6 +36,11 @@ object ProjectMetadata {
      * Information about which platform targets to build for.
      */
     object BuildTargets {
+        /**
+         * The default value for the `jvm.variants` property.
+         */
+        val DefaultJvmVariants = SupportedVariants.All
+
         /**
          * The default value for the `jvm.variants` property.
          */

@@ -4,12 +4,23 @@ The following configuration properties are available to configure the build:
 > __NOTE:__ These build properties take precedence over any equivalent
 > environment variables.
 
-## Build Target
+## Build Variants
 
 ### jvm.target
 The `jvm.target` build property configures the version of the Java VM to target
 by the Kotlin compiler. This is used by the GitHub Actions to build against the
 LTS releases of JVM, 11 and 17.
+
+### jvm.variants
+The `jvm.variants` build property configures the list of Java VM variants
+supported in the main multiplatform publication.
+
+This can be one of the following values:
+1. `all` -- Include all JVM targets configured in the project metadata as
+   JVM variants. The publications are named `jvm[MAJOR_JVM_VERSION]`.
+2. `target-only` -- Only include the `jvm.target` JVM variant. The publication
+   is named `jvm`.
+3. `none` -- Don't include any JVM variants.
 
 ### konan.target
 The `konan.target` build property configures the Kotlin/Native build target.

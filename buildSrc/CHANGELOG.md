@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- A new `SupportedVariants` enumeration type.
+- A new `jvm.variants` build configuration property.
+
 ## [1.1.0] - 2023-05-14
 
 ### Added
