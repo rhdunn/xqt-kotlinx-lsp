@@ -94,7 +94,7 @@ val javaVersion = BuildConfiguration.javaVersion(project)
 
 lateinit var javaTarget: KotlinJvmTarget
 ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
-    val jvmName = supportedJvmVariants.jvmName(jvmTarget, javaVersion) ?: return@forEach
+    val jvmName = supportedJvmVariants.jvmPublication(jvmTarget, javaVersion) ?: return@forEach
     val target: KotlinJvmTarget = kotlin.jvm(jvmName) {
         compilations.all {
             kotlinOptions.jvmTarget = jvmTarget.toString()
