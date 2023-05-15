@@ -28,12 +28,15 @@ object BuildConfiguration {
      * The variants of the Java Virtual Machine (JVM) to support.
      */
     fun jvmVariants(project: Project): SupportedVariants {
-        return when (getProperty(project, "jvm.variants")) {
-            "all" -> SupportedVariants.All
-            "target-only" -> SupportedVariants.TargetOnly
-            "none" -> SupportedVariants.None
-            null -> ProjectMetadata.BuildTargets.DefaultJvmVariants
-            else -> throw GradleException("Invalid value for the 'jvm.variants' property.")
+        return when (ProjectMetadata.BuildTargets.JvmTargets.size) {
+            0 -> SupportedVariants.None // No JVM targets configured.
+            else -> when (getProperty(project, "jvm.variants")) {
+                "all" -> SupportedVariants.All
+                "target-only" -> SupportedVariants.TargetOnly
+                "none" -> SupportedVariants.None
+                null -> ProjectMetadata.BuildTargets.DefaultJvmVariants
+                else -> throw GradleException("Invalid value for the 'jvm.variants' property.")
+            }
         }
     }
 
