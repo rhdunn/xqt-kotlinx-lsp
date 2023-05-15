@@ -114,12 +114,15 @@ object BuildConfiguration {
      * The Kotlin/Native targets to support as native variants.
      */
     fun konanVariants(project: Project): SupportedVariants {
-        return when (getProperty(project, "konan.variants")) {
-            "all" -> SupportedVariants.All
-            "target-only" -> SupportedVariants.TargetOnly
-            "none" -> SupportedVariants.None
-            null -> ProjectMetadata.BuildTargets.DefaultKonanVariants
-            else -> throw GradleException("Invalid value for the 'konan.variants' property.")
+        return when (ProjectMetadata.BuildTargets.KonanTargets.size) {
+            0 -> SupportedVariants.None // No Kotlin/Native targets configured.
+            else -> when (getProperty(project, "konan.variants")) {
+                "all" -> SupportedVariants.All
+                "target-only" -> SupportedVariants.TargetOnly
+                "none" -> SupportedVariants.None
+                null -> ProjectMetadata.BuildTargets.DefaultKonanVariants
+                else -> throw GradleException("Invalid value for the 'konan.variants' property.")
+            }
         }
     }
 
