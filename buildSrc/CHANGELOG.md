@@ -9,13 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - A `SupportedVariants` enumeration type.
-- A `jvm.variants` build configuration property.
-- A `jvmName` DSL helper method that works with the `SupportedVariants` enumeration type.
-- A `jvmMain` and `jvmTest` DSL helper methods taking a `Named` target.
+- `jvm.variants` and `konan.variants` build configuration properties.
+- `jvmMain` and `jvmTest` DSL helper methods taking a `Named` target.
 
 ### Fixed
 
 - Use `jvm` for the Kotlin/JVM documentation.
+- Use `native` for the Kotlin/Native documentation.
 
 ## [1.1.0] - 2023-05-14
 

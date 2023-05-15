@@ -1,6 +1,8 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package io.github.rhdunn.gradle.dsl
 
+import io.github.rhdunn.gradle.maven.SupportedVariants
+import org.gradle.api.JavaVersion
 import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
@@ -43,6 +45,21 @@ val KonanTarget.publicationName: String
  */
 val KonanTarget.artifactIdSuffix: String
     get() = publicationName
+
+/**
+ * Compute the publication name for the specified Konan target.
+ */
+fun SupportedVariants.nativePublication(
+    konanTarget: KonanTarget,
+    konanBuildTarget: KonanTarget
+): String? = when (this) {
+    SupportedVariants.All -> konanTarget.publicationName
+    SupportedVariants.None -> null
+    SupportedVariants.TargetOnly -> when (konanTarget) {
+        konanBuildTarget -> "native"
+        else -> null
+    }
+}
 
 /**
  * Returns the Maven artifact ID for the native target.

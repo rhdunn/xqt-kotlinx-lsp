@@ -17,8 +17,8 @@ fun jvmName(javaVersion: JavaVersion, suffix: String = ""): String =
 /**
  * Compute the publication name for the specified Java version.
  */
-fun SupportedVariants.jvmName(jvmTarget: JavaVersion, javaVersion: JavaVersion): String? = when (this) {
-    SupportedVariants.All -> jvmName(jvmTarget, suffix = "")
+fun SupportedVariants.jvmPublication(jvmTarget: JavaVersion, javaVersion: JavaVersion): String? = when (this) {
+    SupportedVariants.All -> jvmName(jvmTarget)
     SupportedVariants.None -> null
     SupportedVariants.TargetOnly -> when (jvmTarget) {
         javaVersion -> "jvm"

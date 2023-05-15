@@ -90,14 +90,11 @@ kotlin.sourceSets {
 // region Kotlin JVM
 
 val supportedJvmVariants = BuildConfiguration.jvmVariants(project)
-
 val javaVersion = BuildConfiguration.javaVersion(project)
-if (javaVersion !in ProjectMetadata.BuildTargets.JvmTargets)
-    throw GradleException("The specified jvm.target is not in the configured project metadata.")
 
 lateinit var javaTarget: KotlinJvmTarget
 ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
-    val jvmName = supportedJvmVariants.jvmName(jvmTarget, javaVersion) ?: return@forEach
+    val jvmName = supportedJvmVariants.jvmPublication(jvmTarget, javaVersion) ?: return@forEach
     val target: KotlinJvmTarget = kotlin.jvm(jvmName) {
         compilations.all {
             kotlinOptions.jvmTarget = jvmTarget.toString()
@@ -130,43 +127,53 @@ if (supportedJvmVariants !== SupportedVariants.None) {
 // endregion
 // region Kotlin Native
 
-// https://kotlinlang.org/docs/native-target-support.html
-val nativeTargets = mutableMapOf<KonanTarget, KotlinNativeTarget>()
-nativeTargets[KonanTarget.ANDROID_ARM32] = kotlin.androidNativeArm32("androidarm32") // Tier 3
-nativeTargets[KonanTarget.ANDROID_ARM64] = kotlin.androidNativeArm64("androidarm64") // Tier 3
-nativeTargets[KonanTarget.ANDROID_X64] = kotlin.androidNativeX64("androidx64") // Tier 3
-nativeTargets[KonanTarget.ANDROID_X86] = kotlin.androidNativeX86("androidx86") // Tier 3
-nativeTargets[KonanTarget.IOS_ARM32] = kotlin.iosArm32("iosarm32") // Deprecated, to be removed in 1.9.20
-nativeTargets[KonanTarget.IOS_ARM64] = kotlin.iosArm64("iosarm64") // Tier 2
-nativeTargets[KonanTarget.IOS_SIMULATOR_ARM64] = kotlin.iosSimulatorArm64("iossimulatorarm64") // Tier 1
-nativeTargets[KonanTarget.IOS_X64] = kotlin.iosX64("iosx64") // Tier 1
-nativeTargets[KonanTarget.LINUX_ARM32_HFP] = kotlin.linuxArm32Hfp("linuxarm32hfp") // Deprecated, to be removed in 1.9.20
-nativeTargets[KonanTarget.LINUX_ARM64] = kotlin.linuxArm64("linuxarm64") // Tier 2
-nativeTargets[KonanTarget.LINUX_MIPS32] = kotlin.linuxMips32("linuxmips32") // Deprecated, to be removed in 1.9.20
-nativeTargets[KonanTarget.LINUX_MIPSEL32] = kotlin.linuxMipsel32("linuxmipsel32") // Deprecated, to be removed in 1.9.20
-nativeTargets[KonanTarget.LINUX_X64] = kotlin.linuxX64("linuxx64") // Tier 1 ; native host
-nativeTargets[KonanTarget.MACOS_ARM64] = kotlin.macosArm64("macosarm64") // Tier 1 ; native host
-nativeTargets[KonanTarget.MACOS_X64] = kotlin.macosX64("macosx64") // Tier 1 ; native host
-nativeTargets[KonanTarget.MINGW_X64] = kotlin.mingwX64("mingwx64") // Tier 3 ; native host
-nativeTargets[KonanTarget.MINGW_X86] = kotlin.mingwX86("mingwx86") // Deprecated, to be removed in 1.9.20
-nativeTargets[KonanTarget.TVOS_ARM64] = kotlin.tvosArm64("tvosarm64") // Tier 2
-nativeTargets[KonanTarget.TVOS_SIMULATOR_ARM64] = kotlin.tvosSimulatorArm64("tvossimulatorarm64") // Tier 2
-nativeTargets[KonanTarget.TVOS_X64] = kotlin.tvosX64("tvosx64") // Tier 2
-nativeTargets[KonanTarget.WASM32] = kotlin.wasm32("wasm32") // Deprecated, to be removed in 1.9.20
-nativeTargets[KonanTarget.WATCHOS_ARM32] = kotlin.watchosArm32("watchosarm32") // Tier 2
-nativeTargets[KonanTarget.WATCHOS_ARM64] = kotlin.watchosArm64("watchosarm64") // Tier 2
-nativeTargets[KonanTarget.WATCHOS_SIMULATOR_ARM64] = kotlin.watchosSimulatorArm64("watchossimulatorarm64") // Tier 2
-nativeTargets[KonanTarget.WATCHOS_X64] = kotlin.watchosX64("watchosx64") // Tier 2
-nativeTargets[KonanTarget.WATCHOS_X86] = kotlin.watchosX86("watchosx86") // Deprecated, to be removed in 1.9.20
+val supportedKonanVariants = BuildConfiguration.konanVariants(project)
+val konanBuildTarget = BuildConfiguration.konanTarget(project)
 
-val nativeTarget = BuildConfiguration.konanTarget(project).let { konanTarget ->
-    nativeTargets[konanTarget]
-        ?: throw GradleException("Kotlin/Native build target '${konanTarget.name}' is not supported.")
+lateinit var nativeTarget: KotlinNativeTarget
+ProjectMetadata.BuildTargets.KonanTargets.forEach { konanTarget ->
+    val nativeName = supportedKonanVariants.nativePublication(konanTarget, konanBuildTarget) ?: return@forEach
+
+    // https://kotlinlang.org/docs/native-target-support.html
+    val target = when (konanTarget) {
+        KonanTarget.ANDROID_ARM32 -> kotlin.androidNativeArm32(nativeName) // Tier 3
+        KonanTarget.ANDROID_ARM64 -> kotlin.androidNativeArm64(nativeName) // Tier 3
+        KonanTarget.ANDROID_X64 -> kotlin.androidNativeX64(nativeName) // Tier 3
+        KonanTarget.ANDROID_X86 -> kotlin.androidNativeX86(nativeName) // Tier 3
+        KonanTarget.IOS_ARM32 -> kotlin.iosArm32(nativeName) // Deprecated, to be removed in 1.9.20
+        KonanTarget.IOS_ARM64 -> kotlin.iosArm64(nativeName) // Tier 2
+        KonanTarget.IOS_SIMULATOR_ARM64 -> kotlin.iosSimulatorArm64(nativeName) // Tier 1
+        KonanTarget.IOS_X64 -> kotlin.iosX64(nativeName) // Tier 1
+        KonanTarget.LINUX_ARM32_HFP -> kotlin.linuxArm32Hfp(nativeName) // Deprecated, to be removed in 1.9.20
+        KonanTarget.LINUX_ARM64 -> kotlin.linuxArm64(nativeName) // Tier 2
+        KonanTarget.LINUX_MIPS32 -> kotlin.linuxMips32(nativeName) // Deprecated, to be removed in 1.9.20
+        KonanTarget.LINUX_MIPSEL32 -> kotlin.linuxMipsel32(nativeName) // Deprecated, to be removed in 1.9.20
+        KonanTarget.LINUX_X64 -> kotlin.linuxX64(nativeName) // Tier 1 ; native host
+        KonanTarget.MACOS_ARM64 -> kotlin.macosArm64(nativeName) // Tier 1 ; native host
+        KonanTarget.MACOS_X64 -> kotlin.macosX64(nativeName) // Tier 1 ; native host
+        KonanTarget.MINGW_X64 -> kotlin.mingwX64(nativeName) // Tier 3 ; native host
+        KonanTarget.MINGW_X86 -> kotlin.mingwX86(nativeName) // Deprecated, to be removed in 1.9.20
+        KonanTarget.TVOS_ARM64 -> kotlin.tvosArm64(nativeName) // Tier 2
+        KonanTarget.TVOS_SIMULATOR_ARM64 -> kotlin.tvosSimulatorArm64(nativeName) // Tier 2
+        KonanTarget.TVOS_X64 -> kotlin.tvosX64(nativeName) // Tier 2
+        KonanTarget.WASM32 -> kotlin.wasm32(nativeName) // Deprecated, to be removed in 1.9.20
+        KonanTarget.WATCHOS_ARM32 -> kotlin.watchosArm32(nativeName) // Tier 2
+        KonanTarget.WATCHOS_ARM64 -> kotlin.watchosArm64(nativeName) // Tier 2
+        KonanTarget.WATCHOS_SIMULATOR_ARM64 -> kotlin.watchosSimulatorArm64(nativeName) // Tier 2
+        KonanTarget.WATCHOS_X64 -> kotlin.watchosX64(nativeName) // Tier 2
+        KonanTarget.WATCHOS_X86 -> kotlin.watchosX86(nativeName) // Deprecated, to be removed in 1.9.20
+        is KonanTarget.ZEPHYR -> throw GradleException("Kotlin/Native build target 'zephyr' is not supported.")
+    }
+
+    if (konanTarget == konanBuildTarget)
+        nativeTarget = target
 }
 
-kotlin.sourceSets {
-    nativeMain(nativeTarget).kotlin.srcDir("nativeMain")
-    nativeTest(nativeTarget).kotlin.srcDir("nativeTest")
+if (supportedKonanVariants !== SupportedVariants.None) {
+    kotlin.sourceSets {
+        nativeMain(nativeTarget).kotlin.srcDir("nativeMain")
+        nativeTest(nativeTarget).kotlin.srcDir("nativeTest")
+    }
 }
 
 // endregion

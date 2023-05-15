@@ -21,7 +21,10 @@ object BuildConfiguration {
      * The version of the Java Virtual Machine (JVM) to target by the Kotlin compiler.
      */
     fun jvmTarget(project: Project): String {
-        return getProperty(project, "jvm.target") ?: ProjectMetadata.BuildTargets.DefaultJvmTarget
+        val target = getProperty(project, "jvm.target") ?: ProjectMetadata.BuildTargets.DefaultJvmTarget
+        if (JavaVersion.toVersion(target) !in ProjectMetadata.BuildTargets.JvmTargets)
+            throw GradleException("The specified jvm.target is not in the configured project metadata.")
+        return target
     }
 
     /**
@@ -101,7 +104,26 @@ object BuildConfiguration {
      */
     fun konanTarget(project: Project): KonanTarget {
         val target = getProperty(project, "konan.target")
-        return target?.let { KonanTarget.predefinedTargets[it] } ?: HostManager.host
+        val konanTarget = target?.let { KonanTarget.predefinedTargets[it] } ?: HostManager.host
+        if (konanTarget !in ProjectMetadata.BuildTargets.KonanTargets)
+            throw GradleException("The specified konan.target is not in the configured project metadata.")
+        return konanTarget
+    }
+
+    /**
+     * The Kotlin/Native targets to support as native variants.
+     */
+    fun konanVariants(project: Project): SupportedVariants {
+        return when (ProjectMetadata.BuildTargets.KonanTargets.size) {
+            0 -> SupportedVariants.None // No Kotlin/Native targets configured.
+            else -> when (getProperty(project, "konan.variants")) {
+                "all" -> SupportedVariants.All
+                "target-only" -> SupportedVariants.TargetOnly
+                "none" -> SupportedVariants.None
+                null -> ProjectMetadata.BuildTargets.DefaultKonanVariants
+                else -> throw GradleException("Invalid value for the 'konan.variants' property.")
+            }
+        }
     }
 
     /**
