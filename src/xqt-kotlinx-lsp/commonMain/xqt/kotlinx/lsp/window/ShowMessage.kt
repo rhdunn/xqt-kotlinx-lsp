@@ -5,10 +5,10 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import xqt.kotlinx.rpc.json.protocol.method
-import xqt.kotlinx.rpc.json.protocol.sendNotification
+import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import kotlin.jvm.JvmInline
@@ -150,6 +150,34 @@ data class MessageActionItem(
 private val MessageActionItemArray = JsonTypedArray(MessageActionItem)
 
 /**
+ * The response of a show message request.
+ *
+ * @param id the request id
+ * @param result the result of the request
+ * @param error the error object in case the request failed
+ * @param jsonrpc the version of the JSON-RPC protocol
+ *
+ * @since 1.0.0
+ */
+data class ShowMessageResponse(
+    override val id: JsonIntOrString?,
+    override val result: MessageActionItem?,
+    override val error: TypedErrorObject<JsonElement>?,
+    override val jsonrpc: String
+) : TypedResponseObject<MessageActionItem?, JsonElement> {
+    companion object : TypedResponseObjectConverter<MessageActionItem?, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<MessageActionItem?, JsonElement> {
+            return ShowMessageResponse(
+                id = response.id,
+                result = response.result?.let { MessageActionItem.deserialize(it) },
+                error = response.error,
+                jsonrpc = response.jsonrpc
+            )
+        }
+    }
+}
+
+/**
  * Ask the client to display a particular message in the user interface.
  *
  * @since 1.0.0
@@ -196,6 +224,28 @@ fun WindowJsonRpcServer.showMessage(
 /**
  * Ask the client to display a particular message in the user interface.
  *
+ * In addition to the show message notification the request allows to pass actions
+ * and to wait for an answer from the client.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 2.0.0
+ */
+fun WindowJsonRpcServer.showMessage(
+    params: ShowMessageRequestParams,
+    responseHandler: (TypedResponseObject<MessageActionItem?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = WindowRequest.SHOW_MESSAGE,
+    params = ShowMessageRequestParams.serializeToJson(params),
+    responseHandler = responseHandler,
+    responseObjectConverter = ShowMessageResponse
+)
+
+/**
+ * Ask the client to display a particular message in the user interface.
+ *
  * @param type the message type
  * @param message the actual message
  *
@@ -205,5 +255,36 @@ fun WindowJsonRpcServer.showMessage(
     type: MessageType,
     message: String
 ): Unit = showMessage(
-    params = ShowMessageParams(type = type, message = message)
+    params = ShowMessageParams(
+        type = type,
+        message = message
+    )
+)
+
+/**
+ * Ask the client to display a particular message in the user interface.
+ *
+ * In addition to the show message notification the request allows to pass actions
+ * and to wait for an answer from the client.
+ *
+ * @param type the message type
+ * @param message the actual message
+ * @param actions the message action items to present
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 2.0.0
+ */
+fun WindowJsonRpcServer.showMessage(
+    type: MessageType,
+    message: String,
+    actions: List<MessageActionItem> = listOf(),
+    responseHandler: (TypedResponseObject<MessageActionItem?, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = showMessage(
+    params = ShowMessageRequestParams(
+        type = type,
+        message = message,
+        actions = actions
+    ),
+    responseHandler = responseHandler
 )

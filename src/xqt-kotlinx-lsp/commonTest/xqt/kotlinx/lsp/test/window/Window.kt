@@ -2,6 +2,8 @@
 package xqt.kotlinx.lsp.test.window
 
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.base.ErrorCodes
+import xqt.kotlinx.lsp.base.InternalError
 import xqt.kotlinx.lsp.test.base.testJsonRpc
 import xqt.kotlinx.lsp.window.*
 import xqt.kotlinx.rpc.json.protocol.jsonRpc
@@ -154,6 +156,216 @@ class WindowDSL {
             ),
             client.receive()
         )
+    }
+
+    @Test
+    @DisplayName("supports sending window/showMessageRequest requests using parameter objects")
+    fun supports_sending_show_message_requests_using_parameter_objects() = testJsonRpc {
+        val id = client.window.showMessage(
+            params = ShowMessageRequestParams(
+                type = MessageType.Warning,
+                message = "Lorem Ipsum",
+                actions = listOf(
+                    MessageActionItem(title = "Yes"),
+                    MessageActionItem(title = "No")
+                )
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("window/showMessageRequest"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "type" to JsonPrimitive(2),
+                    "message" to JsonPrimitive("Lorem Ipsum"),
+                    "actions" to jsonArrayOf(
+                        jsonObjectOf(
+                            "title" to JsonPrimitive("Yes")
+                        ),
+                        jsonObjectOf(
+                            "title" to JsonPrimitive("No")
+                        )
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports window/showMessageRequest request callback receiving a result using parameter objects")
+    fun supports_show_message_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
+        var called = 0
+
+        client.window.showMessage(
+            params = ShowMessageRequestParams(
+                type = MessageType.Warning,
+                message = "Lorem Ipsum",
+                actions = listOf(
+                    MessageActionItem(title = "Yes"),
+                    MessageActionItem(title = "No")
+                )
+            )
+        ) {
+            ++called
+
+            assertEquals("Yes", result?.title)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                window.showMessage {
+                    actions[0]
+                }
+            }
+        }
+
+        assertEquals(0, called, "The window.showMessage DSL handler should not have been called.")
+        client.jsonRpc {} // The "window/showMessageRequest" response is processed by the handler callback.
+        assertEquals(1, called, "The window.showMessage DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports window/showMessageRequest request callback receiving an error using parameter objects")
+    fun supports_show_message_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
+        var called = 0
+
+        client.window.showMessage(
+            params = ShowMessageRequestParams(
+                type = MessageType.Warning,
+                message = "Lorem Ipsum",
+                actions = listOf(
+                    MessageActionItem(title = "Yes"),
+                    MessageActionItem(title = "No")
+                )
+            )
+        ) {
+            ++called
+
+            assertEquals(null, result)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                window.showMessage {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The window.showMessage DSL handler should not have been called.")
+        client.jsonRpc {} // The "window/showMessageRequest" response is processed by the handler callback.
+        assertEquals(1, called, "The window.showMessage DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending window/showMessageRequest requests using function parameters")
+    fun supports_sending_show_message_requests_using_function_parameters() = testJsonRpc {
+        val id = client.window.showMessage(
+            type = MessageType.Warning,
+            message = "Lorem Ipsum",
+            actions = listOf(
+                MessageActionItem(title = "Yes"),
+                MessageActionItem(title = "No")
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("window/showMessageRequest"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "type" to JsonPrimitive(2),
+                    "message" to JsonPrimitive("Lorem Ipsum"),
+                    "actions" to jsonArrayOf(
+                        jsonObjectOf(
+                            "title" to JsonPrimitive("Yes")
+                        ),
+                        jsonObjectOf(
+                            "title" to JsonPrimitive("No")
+                        )
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports window/showMessageRequest request callback receiving a result using function parameters")
+    fun supports_show_message_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
+        var called = 0
+
+        client.window.showMessage(
+            type = MessageType.Warning,
+            message = "Lorem Ipsum",
+            actions = listOf(
+                MessageActionItem(title = "Yes"),
+                MessageActionItem(title = "No")
+            )
+        ) {
+            ++called
+
+            assertEquals("Yes", result?.title)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                window.showMessage {
+                    actions[0]
+                }
+            }
+        }
+
+        assertEquals(0, called, "The window.showMessage DSL handler should not have been called.")
+        client.jsonRpc {} // The "window/showMessageRequest" response is processed by the handler callback.
+        assertEquals(1, called, "The window.showMessage DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports window/showMessage request callback receiving an error using function parameters")
+    fun supports_show_message_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
+        var called = 0
+
+        client.window.showMessage(
+            type = MessageType.Warning,
+            message = "Lorem Ipsum",
+            actions = listOf(
+                MessageActionItem(title = "Yes"),
+                MessageActionItem(title = "No")
+            )
+        ) {
+            ++called
+
+            assertEquals(null, result?.title)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                window.showMessage {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The window.showMessage DSL handler should not have been called.")
+        client.jsonRpc {} // The "window/showMessageRequest" response is processed by the handler callback.
+        assertEquals(1, called, "The window.showMessage DSL handler should have been called.")
     }
 
     // endregion

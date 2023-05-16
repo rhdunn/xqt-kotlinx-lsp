@@ -14,6 +14,7 @@ specification.
 
 Notifications and Requests:
 - `$/cancelRequest`
+- `window/showMessageRequest`
 
 Types:
 - `TextEditArray`
