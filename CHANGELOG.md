@@ -25,16 +25,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2023-04-16
 
-### Added
-
 - Implementation of the
   [VSCode Client/Server Language Protocol 1.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-1-x.md)
   specification.
-- JSON serialization support for the LSP types.
-- DSL methods for LSP notifications and requests.
-- APIs for sending LSP notifications and requests.
-- LSP-based JSON-RPC server.
-- `stdio` communication channel.
+
+### Added
+
+Base Protocol:
+- Base Types from LSP 3.16 -- `Integer`, `UInteger`, and `Decimal`
+- Base Types from LSP 3.17 -- `LSPAny`, `LSPObject`, and `LSPArray`
+- Abstract Message -- `Message`
+- Request Message -- `RequestMessage`
+- Response Message -- `ResponseMessage`, `ResponseError`, `ErrorCodes`, and error constructor functions.
+- Notification Message -- `NotificationMessage`
+
+Transport:
+- `LspJsonRpcServer`
+- `stdio`
+
+Notifications and Requests:
+- `initialize`
+- `shutdown`
+- `exit`
+- `window/showMessage`
+- `window/logMessage`
+- `workspace/didChangeConfiguration`
+- `textDocument/didOpen`
+- `textDocument/didChange`
+- `textDocument/didClose`
+- `workspace/didChangeWatchedFiles`
+- `textDocument/publishDiagnostics`
+- `textDocument/completion`
+- `completionItem/resolve`
+- `textDocument/hover`
+- `textDocument/signatureHelp`
+- `textDocument/definition`
+- `textDocument/references`
+- `textDocument/documentHighlight`
+- `textDocument/documentSymbol`
+- `workspace/symbol`
+- `textDocument/codeAction`
+- `textDocument/codeLens`
+- `codeLens/resolve`
+- `textDocument/formatting`
+- `textDocument/rangeFormatting`
+- `textDocument/onTypeFormatting`
+- `textDocument/rename`
+
+Types:
+- `Position`
+- `Range`
+- `Location`
+- `Diagnostic` and `DiagnosticSeverity`
+- `Command`
+- `TextEdit`
+- `WorkspaceEdit`
+- `TextDocumentIdentifier`
+- `TextDocumentPosition`
 
 [Unreleased]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.1...HEAD
 [1.0.1]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.0...1.0.1
