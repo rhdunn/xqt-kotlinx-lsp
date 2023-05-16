@@ -13,6 +13,8 @@ on:
           - snapshot
           - release
   push:
+    branches:
+      - "*"
 
 env:
   OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
