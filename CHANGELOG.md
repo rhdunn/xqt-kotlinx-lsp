@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2023-05-16
+
 ### Fixed
 
 - Improve the build infrastructure to support automated deployment.
@@ -34,5 +36,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - LSP-based JSON-RPC server.
 - `stdio` communication channel.
 
-[Unreleased]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.1...HEAD
+[1.0.1]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/rhdunn/xqt-kotlinx-lsp/releases/tag/1.0.0
