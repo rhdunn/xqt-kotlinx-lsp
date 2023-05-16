@@ -9,10 +9,31 @@ on the structure of this Kotlin multiplatform project template.
 
 -----
 
-1. [Supported Kotlin/Native Targets](#supported-kotlinnative-targets)
-2. [Documentation](#documentation)
+1. [Adding the Library as a Maven Dependency](#adding-the-library-as-a-maven-dependency)
+2. [Supported Kotlin/Native Targets](#supported-kotlinnative-targets)
+3. [Documentation](#documentation)
     1. [Building the Project with Gradle](#building-the-project-with-gradle)
-3. [License](#license)
+4. [License](#license)
+
+## Adding the Library as a Maven Dependency
+The `kotlin-multiplatform-template` binaries are available on
+[Maven Central](https://central.sonatype.com/artifact/io.github.rhdunn/kotlin-multiplatform-tempate/1.0.0).
+
+Maven:
+
+    <dependency>
+        <groupId>io.github.rhdunn</groupId>
+        <artifactId>kotlin-multiplatform-template</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+
+Gradle (Groovy DSL):
+
+    implementation 'io.github.rhdunn:kotlin-multiplatform-template:1.0.0'
+
+Gradle (Kotlin DSL):
+
+    implementation("io.github.rhdunn:kotlin-multiplatform-template:1.0.0")
 
 ## Supported Kotlin/Native Targets
 | Target [1]                | Family       | Tier [1]       | Status         |
