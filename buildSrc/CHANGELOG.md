@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A `SupportedVariants` enumeration type.
 - `jvm.variants` and `konan.variants` build configuration properties.
 - `jvmMain` and `jvmTest` DSL helper methods taking a `Named` target.
+- Table of contents in the readme file.
 
 ### Fixed
 

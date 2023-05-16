@@ -6,6 +6,11 @@
 
 For more information, see the documentation in the `docs/build` directory.
 
+-----
+
+1. [Supported Kotlin/Native Targets](#supported-kotlinnative-targets)
+2. [License](#license)
+
 ## Supported Kotlin/Native Targets
 | Target [1]                | Family       | Tier [1]       | Status         |
 |---------------------------|--------------|----------------|----------------|
