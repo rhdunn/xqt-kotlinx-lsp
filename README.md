@@ -1,4 +1,6 @@
 # xqt-kotlinx-lsp
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.rhdunn/xqt-kotlinx-lsp)](https://central.sonatype.com/artifact/io.github.rhdunn/xqt-kotlinx-lsp)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 > Kotlin multiplatform Language Server Protocol (LSP) library
 
 The `xqt-kotlinx-lsp` library is an open-source implementation of the LSP
@@ -6,20 +8,33 @@ The `xqt-kotlinx-lsp` library is an open-source implementation of the LSP
 1. Language Server Protocol (LSP)
    [1.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-1-x.md)
 
-The documentation is available at https://rhdunn.github.io/xqt-kotlinx-lsp/.
+-----
 
-## Maven Central
-The `xqt-kotlinx-lsp` binaries are available on Maven Central:
+1. [Adding the Library as a Maven Dependency](#adding-the-library-as-a-maven-dependency)
+2. [Supported Kotlin/Native Targets](#supported-kotlinnative-targets)
+3. [Documentation](#documentation)
+    1. [Building the Project with Gradle](#building-the-project-with-gradle)
+4. [License](#license)
 
-1. Gradle (Groovy DSL)
-   ```
-   implementation 'io.github.rhdunn:xqt-kotlinx-lsp:1.0.0'
-   ```
+## Adding the Library as a Maven Dependency
+The `xqt-kotlinx-lsp` binaries are available on
+[Maven Central](https://central.sonatype.com/artifact/io.github.rhdunn/xqt-kotlinx-lsp).
 
-2. Gradle (Kotlin DSL)
-   ```
-   implementation("io.github.rhdunn:xqt-kotlinx-lsp:1.0.0")
-   ```
+Maven:
+
+    <dependency>
+        <groupId>io.github.rhdunn</groupId>
+        <artifactId>xqt-kotlinx-lsp</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+
+Gradle (Groovy DSL):
+
+    implementation 'io.github.rhdunn:xqt-kotlinx-lsp:1.0.0'
+
+Gradle (Kotlin DSL):
+
+    implementation("io.github.rhdunn:xqt-kotlinx-lsp:1.0.0")
 
 ## Supported Kotlin/Native Targets
 | Target [1]                | Family       | Tier [1]       | Status          |
@@ -66,6 +81,14 @@ JetBrains for the Kotlin/Native target.
 
 [5] The dependant `kotlinx-serialization-json` library does not support these
 Kotlin/Native targets.
+
+## Documentation
+1. [API Documentation](https://rhdunn.github.io/xqt-kotlinx-lsp/)
+
+### Building the Project with Gradle
+1. [Build Properties](docs/build/Build%20Properties.md)
+2. [Environment Variables](docs/build/Envvironment%20Variables.md)
+3. [Signing Artifacts](docs/build/Signing%20Artifacts.md)
 
 ## License
 Copyright (C) 2022-2023 Reece H. Dunn
