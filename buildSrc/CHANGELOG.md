@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - table of contents
     - documentation links
     - information for adding the library as a Maven dependency
+    - maven central and license badges
 
 ### Fixed
 

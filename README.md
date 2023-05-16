@@ -1,4 +1,6 @@
 # kotlin-multiplatform-template
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.rhdunn/kotlin-multiplatform-template)](https://central.sonatype.com/artifact/io.github.rhdunn/kotlin-multiplatform-template)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 > A template project for Kotlin multiplatform projects
 
 > NOTE: This readme should be edited to describe your project, removing the
@@ -17,7 +19,7 @@ on the structure of this Kotlin multiplatform project template.
 
 ## Adding the Library as a Maven Dependency
 The `kotlin-multiplatform-template` binaries are available on
-[Maven Central](https://central.sonatype.com/artifact/io.github.rhdunn/kotlin-multiplatform-tempate/1.0.0).
+[Maven Central](https://central.sonatype.com/artifact/io.github.rhdunn/kotlin-multiplatform-template).
 
 Maven:
 
