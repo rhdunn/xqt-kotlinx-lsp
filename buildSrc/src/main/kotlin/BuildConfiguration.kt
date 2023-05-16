@@ -31,8 +31,10 @@ object BuildConfiguration {
      * The variants of the Java Virtual Machine (JVM) to support.
      */
     fun jvmVariants(project: Project): SupportedVariants {
-        return when (ProjectMetadata.BuildTargets.JvmTargets.size) {
-            0 -> SupportedVariants.None // No JVM targets configured.
+        val variants = ProjectMetadata.BuildTargets.JvmTargets
+        return when {
+            variants.isEmpty() -> SupportedVariants.None // No JVM targets configured.
+            ideaActive -> SupportedVariants.TargetOnly // Only use a single variant when in IntelliJ IDEA.
             else -> when (getProperty(project, "jvm.variants")) {
                 "all" -> SupportedVariants.All
                 "target-only" -> SupportedVariants.TargetOnly
@@ -114,8 +116,10 @@ object BuildConfiguration {
      * The Kotlin/Native targets to support as native variants.
      */
     fun konanVariants(project: Project): SupportedVariants {
-        return when (ProjectMetadata.BuildTargets.KonanTargets.size) {
-            0 -> SupportedVariants.None // No Kotlin/Native targets configured.
+        val variants = ProjectMetadata.BuildTargets.KonanTargets
+        return when {
+            variants.isEmpty() -> SupportedVariants.None // No Kotlin/Native targets configured.
+            ideaActive -> SupportedVariants.TargetOnly // Only use a single variant when in IntelliJ IDEA.
             else -> when (getProperty(project, "konan.variants")) {
                 "all" -> SupportedVariants.All
                 "target-only" -> SupportedVariants.TargetOnly
@@ -196,6 +200,12 @@ object BuildConfiguration {
     fun ossrhPassword(project: Project): String? {
         return getProperty(project, "ossrh.password", "OSSRH_PASSWORD")
     }
+
+    /**
+     * Is the project being imported by IntelliJ IDEA?
+     */
+    val ideaActive: Boolean
+        get() = System.getProperty("idea.active") == "true"
 
     private fun getProperty(project: Project, name: String, envName: String? = null): String? {
         val projectValue = project.findProperty(name)?.toString()
