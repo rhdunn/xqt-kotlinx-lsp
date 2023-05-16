@@ -4,12 +4,15 @@
 > NOTE: This readme should be edited to describe your project, removing the
 > text describing the content of this template.
 
-For more information, see the documentation in the `docs/build` directory.
+See [Project Template](docs/build/Project%20Template.md) for more information
+on the structure of this Kotlin multiplatform project template.
 
 -----
 
 1. [Supported Kotlin/Native Targets](#supported-kotlinnative-targets)
-2. [License](#license)
+2. [Documentation](#documentation)
+    1. [Building the Project with Gradle](#building-the-project-with-gradle)
+3. [License](#license)
 
 ## Supported Kotlin/Native Targets
 | Target [1]                | Family       | Tier [1]       | Status         |
@@ -53,6 +56,14 @@ JetBrains for the Kotlin/Native target.
 
 [4] The tests fail with Kotlin 1.7.20. There is a fix for this in the Kotlin
 1.8.0 release. See [KT-54814](https://youtrack.jetbrains.com/issue/KT-54814).
+
+## Documentation
+1. [API Documentation](https://rhdunn.github.io/kotlin-multiplatform-template/)
+
+### Building the Project with Gradle
+1. [Build Properties](docs/build/Build%20Properties.md)
+2. [Environment Variables](docs/build/Envvironment%20Variables.md)
+3. [Signing Artifacts](docs/build/Signing%20Artifacts.md)
 
 ## License
 Copyright (C) 2023 Reece H. Dunn
