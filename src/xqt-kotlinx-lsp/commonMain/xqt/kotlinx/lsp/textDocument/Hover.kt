@@ -7,6 +7,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.Range
+import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.lsp.types.TextDocumentPositionParams
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
@@ -121,7 +122,9 @@ data class HoverResponse(
  * The hover request is sent from the client to the server to request hover information at
  * a given text document position.
  *
- * @since 1.0.0
+ * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
+ *
+ * @since 2.0.0
  */
 fun TextDocumentRequest.hover(
     handler: TextDocumentPositionParams.() -> Hover
@@ -136,11 +139,13 @@ fun TextDocumentRequest.hover(
  * The hover request is sent from the client to the server to request hover information at
  * a given text document position.
  *
+ * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
+ *
  * @param params the request parameters
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.hover(
     params: TextDocumentPositionParams,
@@ -156,18 +161,23 @@ fun TextDocumentJsonRpcServer.hover(
  * The hover request is sent from the client to the server to request hover information at
  * a given text document position.
  *
- * @param uri the text document's URI
+ * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
+ *
+ * @param textDocument the text document
  * @param position the position inside the text document
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.hover(
-    uri: String,
+    textDocument: TextDocumentIdentifier,
     position: Position,
     responseHandler: (TypedResponseObject<Hover?, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = hover(
-    params = TextDocumentPositionParams(uri = uri, position = position),
+    params = TextDocumentPositionParams(
+        textDocument = textDocument,
+        position = position
+    ),
     responseHandler = responseHandler
 )

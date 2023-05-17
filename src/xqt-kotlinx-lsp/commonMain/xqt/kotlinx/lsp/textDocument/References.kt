@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Location
 import xqt.kotlinx.lsp.types.Position
+import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.lsp.types.TextDocumentPositionParams
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
@@ -13,7 +14,6 @@ import xqt.kotlinx.rpc.json.serialization.get
 import xqt.kotlinx.rpc.json.serialization.put
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
-import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
@@ -23,8 +23,16 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  * @since 1.0.0
  */
 data class ReferenceParams(
-    override val uri: String,
     override val position: Position,
+
+    /**
+     * The text document.
+     *
+     * __NOTE:__ In LSP 1.x, this was an inlined `uri` parameter.
+     *
+     * @since 2.0.0
+     */
+    override val textDocument: TextDocumentIdentifier,
 
     /**
      * The reference context.
@@ -33,7 +41,7 @@ data class ReferenceParams(
 ) : TextDocumentPositionParams {
     companion object : JsonSerialization<ReferenceParams> {
         override fun serializeToJson(value: ReferenceParams): JsonObject = buildJsonObject {
-            put("uri", value.uri, JsonString)
+            put("textDocument", value.textDocument, TextDocumentIdentifier)
             put("position", value.position, Position)
             put("context", value.context, ReferenceContext)
         }
@@ -41,7 +49,7 @@ data class ReferenceParams(
         override fun deserialize(json: JsonElement): ReferenceParams = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> ReferenceParams(
-                uri = json.get("uri", JsonString),
+                textDocument = json.get("textDocument", TextDocumentIdentifier),
                 position = json.get("position", Position),
                 context = json.get("context", ReferenceContext)
             )
@@ -108,6 +116,8 @@ data class ReferencesResponse(
  * The references request is sent from the client to the server to resolve project-wide
  * references for the symbol denoted by the given text document position.
  *
+ * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
+ *
  * @since 1.0.0
  */
 fun TextDocumentRequest.references(
@@ -122,6 +132,8 @@ fun TextDocumentRequest.references(
 /**
  * The references request is sent from the client to the server to resolve project-wide
  * references for the symbol denoted by the given text document position.
+ *
+ * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
  * @param params the request parameters
  * @param responseHandler the callback to process the response for the request
@@ -143,22 +155,24 @@ fun TextDocumentJsonRpcServer.references(
  * The references request is sent from the client to the server to resolve project-wide
  * references for the symbol denoted by the given text document position.
  *
- * @param uri the text document's URI
+ * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
+ *
+ * @param textDocument the text document
  * @param position the position inside the text document
  * @param context the reference context
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.references(
-    uri: String,
+    textDocument: TextDocumentIdentifier,
     position: Position,
     context: ReferenceContext,
     responseHandler: (TypedResponseObject<List<Location>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = references(
     params = ReferenceParams(
-        uri = uri,
+        textDocument = textDocument,
         position = position,
         context = context
     ),

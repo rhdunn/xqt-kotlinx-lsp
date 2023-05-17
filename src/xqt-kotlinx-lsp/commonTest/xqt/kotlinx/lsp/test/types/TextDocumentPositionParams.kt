@@ -18,7 +18,9 @@ class TheTextDocumentPositionParamsType {
     @DisplayName("supports the non-optional properties")
     fun supports_the_non_optional_properties() {
         val json = jsonObjectOf(
-            "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+            "textDocument" to jsonObjectOf(
+                "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+            ),
             "position" to jsonObjectOf(
                 "line" to JsonPrimitive(2),
                 "character" to JsonPrimitive(6)
@@ -26,7 +28,7 @@ class TheTextDocumentPositionParamsType {
         )
 
         val tdpp = TextDocumentPositionParams.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", tdpp.uri)
+        assertEquals("file:///home/lorem/ipsum.py", tdpp.textDocument.uri)
         assertEquals(2u, tdpp.position.line)
         assertEquals(6u, tdpp.position.character)
 

@@ -7,6 +7,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
 import xqt.kotlinx.lsp.types.Position
+import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.lsp.types.TextDocumentPositionParams
 import xqt.kotlinx.lsp.types.TextEdit
 import xqt.kotlinx.rpc.json.protocol.*
@@ -293,6 +294,8 @@ data class CompletionResponse(
  * handler for the resolve completion item request. This request is sent when a completion
  * item is selected in the user interface.
  *
+ * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
+ *
  * @return an initialize result response
  *
  * @since 1.0.0
@@ -314,11 +317,13 @@ fun TextDocumentRequest.completion(
  * handler for the resolve completion item request. This request is sent when a completion
  * item is selected in the user interface.
  *
+ * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
+ *
  * @param params the request parameters
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.completion(
     params: TextDocumentPositionParams,
@@ -338,18 +343,23 @@ fun TextDocumentJsonRpcServer.completion(
  * handler for the resolve completion item request. This request is sent when a completion
  * item is selected in the user interface.
  *
- * @param uri the text document's URI
+ * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
+ *
+ * @param textDocument the text document
  * @param position the position inside the text document
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.completion(
-    uri: String,
+    textDocument: TextDocumentIdentifier,
     position: Position,
     responseHandler: (TypedResponseObject<List<CompletionItem>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = completion(
-    params = TextDocumentPositionParams(uri = uri, position = position),
+    params = TextDocumentPositionParams(
+        textDocument = textDocument,
+        position = position
+    ),
     responseHandler = responseHandler
 )

@@ -24,8 +24,18 @@ Types:
 
 - Updated the API documentation.
 
+Notifications and Requests:
+> __NOTE:__ These are no longer compatible with LSP 1.x clients/servers.
+- `textDocument/completion` -- Replace the `uri` parameter with `textDocument`.
+- `textDocument/definition` -- Replace the `uri` parameter with `textDocument`.
+- `textDocument/documentHighlight` -- Replace the `uri` parameter with `textDocument`.
+- `textDocument/hover` -- Replace the `uri` parameter with `textDocument`.
+- `textDocument/references` -- Replace the `uri` parameter with `textDocument`.
+- `textDocument/signatureHelp` -- Replace the `uri` parameter with `textDocument`.
+
 Types:
 - Renamed `TextDocumentPosition` to `TextDocumentPositionParams`.
+- `TextDocumentPositionParams` -- Replace the `uri` parameter with `textDocument`.
 
 ## [1.0.1] - 2023-05-16
 

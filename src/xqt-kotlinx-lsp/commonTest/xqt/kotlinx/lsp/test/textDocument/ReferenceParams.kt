@@ -18,7 +18,9 @@ class TheReferenceParameters {
     @DisplayName("supports the non-optional properties")
     fun supports_the_non_optional_properties() {
         val json = jsonObjectOf(
-            "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+            "textDocument" to jsonObjectOf(
+                "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+            ),
             "position" to jsonObjectOf(
                 "line" to JsonPrimitive(2),
                 "character" to JsonPrimitive(6)
@@ -29,7 +31,7 @@ class TheReferenceParameters {
         )
 
         val params = ReferenceParams.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", params.uri)
+        assertEquals("file:///home/lorem/ipsum.py", params.textDocument.uri)
         assertEquals(2u, params.position.line)
         assertEquals(6u, params.position.character)
         assertEquals(true, params.context.includeDeclaration)

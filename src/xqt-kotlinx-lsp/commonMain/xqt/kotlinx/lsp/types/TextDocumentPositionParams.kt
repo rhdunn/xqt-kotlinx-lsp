@@ -7,18 +7,21 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
 import xqt.kotlinx.rpc.json.serialization.put
-import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
  * Identifies a position in a text document.
  *
- * __NOTE:__ This was defined as the `TextDocumentPosition` type in LSP 1.x.
+ * __NOTE:__ This was defined as the `TextDocumentPosition` type in LSP 1.x
+ * with an inlined `uri` parameter.
  *
  * @since 2.0.0
  */
-interface TextDocumentPositionParams : TextDocumentIdentifier {
-    override val uri: String
+interface TextDocumentPositionParams {
+    /**
+     * The text document.
+     */
+    val textDocument: TextDocumentIdentifier
 
     /**
      * The position inside the text document.
@@ -27,14 +30,14 @@ interface TextDocumentPositionParams : TextDocumentIdentifier {
 
     companion object : JsonSerialization<TextDocumentPositionParams> {
         override fun serializeToJson(value: TextDocumentPositionParams): JsonObject = buildJsonObject {
-            put("uri", value.uri, JsonString)
+            put("textDocument", value.textDocument, TextDocumentIdentifier)
             put("position", value.position, Position)
         }
 
         override fun deserialize(json: JsonElement): TextDocumentPositionParams = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> TextDocumentPositionParams(
-                uri = json.get("uri", JsonString),
+                textDocument = json.get("textDocument", TextDocumentIdentifier),
                 position = json.get("position", Position)
             )
         }
@@ -44,17 +47,18 @@ interface TextDocumentPositionParams : TextDocumentIdentifier {
 /**
  * Identifies a position in a text document.
  *
- * __NOTE:__ This was defined as the `TextDocumentPosition` type in LSP 1.x.
+ * __NOTE:__ This was defined as the `TextDocumentPosition` type in LSP 1.x
+ * with an inlined `uri` parameter.
  *
- * @param uri the text document's URI
+ * @param textDocument the text document
  * @param position the position inside the text document
  *
  * @since 2.0.0
  */
 fun TextDocumentPositionParams(
-    uri: String,
+    textDocument: TextDocumentIdentifier,
     position: Position
 ): TextDocumentPositionParams = object : TextDocumentPositionParams {
-    override val uri: String = uri
+    override val textDocument: TextDocumentIdentifier = textDocument
     override val position: Position = position
 }

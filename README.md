@@ -6,9 +6,15 @@
 The `xqt-kotlinx-lsp` library is an open-source implementation of the LSP
 (Language Server Protocol) specification. It supports:
 1. Language Server Protocol (LSP)
-   [1.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-1-x.md)
-2. Language Server Protocol (LSP)
    [2.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-2-x.md)
+
+> __NOTE:__ The LSP
+> [1.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-1-x.md)
+> and
+> [2.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-2-x.md)
+> protocols are incompatible in several of the notifications and requests.
+> If you need LSP 1.x support use the
+> [1.0.1](https://github.com/rhdunn/xqt-kotlinx-lsp/tree/1.0.1) release.
 
 -----
 

@@ -340,7 +340,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/completion"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -359,7 +361,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/completion", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     listOf(
@@ -394,7 +396,9 @@ class TextDocumentDSL {
     fun supports_sending_completion_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.completion(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         )
@@ -406,7 +410,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/completion"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -424,7 +430,9 @@ class TextDocumentDSL {
 
         client.textDocument.completion(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         ) {
@@ -467,7 +475,9 @@ class TextDocumentDSL {
 
         client.textDocument.completion(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         ) {
@@ -496,7 +506,9 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/completion requests using function parameters")
     fun supports_sending_completion_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.completion(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -507,7 +519,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/completion"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -524,7 +538,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.completion(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         ) {
             ++called
@@ -565,7 +581,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.completion(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         ) {
             ++called
@@ -601,7 +619,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/hover"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -620,7 +640,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/hover", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     Hover(
@@ -660,7 +680,9 @@ class TextDocumentDSL {
     fun supports_sending_hover_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.hover(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         )
@@ -672,7 +694,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/hover"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -690,7 +714,9 @@ class TextDocumentDSL {
 
         client.textDocument.hover(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         ) {
@@ -728,7 +754,9 @@ class TextDocumentDSL {
 
         client.textDocument.hover(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         ) {
@@ -757,7 +785,9 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/hover requests using function parameters")
     fun supports_sending_hover_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.hover(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -768,7 +798,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/hover"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -785,7 +817,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.hover(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         ) {
             ++called
@@ -821,7 +855,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.hover(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         ) {
             ++called
@@ -857,7 +893,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/signatureHelp"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -876,7 +914,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/signatureHelp", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     SignatureHelp(signatures = listOf())
@@ -903,7 +941,9 @@ class TextDocumentDSL {
     fun supports_sending_signature_help_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.signatureHelp(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         )
@@ -915,7 +955,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/signatureHelp"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -933,7 +975,9 @@ class TextDocumentDSL {
 
         client.textDocument.signatureHelp(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         ) {
@@ -964,7 +1008,9 @@ class TextDocumentDSL {
 
         client.textDocument.signatureHelp(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         ) {
@@ -993,7 +1039,9 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/signatureHelp requests using function parameters")
     fun supports_sending_signature_help_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.signatureHelp(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -1004,7 +1052,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/signatureHelp"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1021,7 +1071,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.signatureHelp(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         ) {
             ++called
@@ -1050,7 +1102,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.signatureHelp(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         ) {
             ++called
@@ -1086,7 +1140,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/definition"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1105,7 +1161,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/definition", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     GoTo()
@@ -1134,7 +1190,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/definition"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1153,10 +1211,15 @@ class TextDocumentDSL {
                     assertEquals("textDocument/definition", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
-                    GoTo(Location(uri = uri, range = Range(start = position, end = position)))
+                    GoTo(
+                        Location(
+                            uri = textDocument.uri,
+                            range = Range(start = position, end = position)
+                        )
+                    )
                 }
             }
         }
@@ -1194,7 +1257,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/definition"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1213,12 +1278,18 @@ class TextDocumentDSL {
                     assertEquals("textDocument/definition", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     GoTo(
-                        Location(uri = uri, range = Range(start = position, end = position)),
-                        Location(uri = uri, range = Range(start = position, end = position))
+                        Location(
+                            uri = textDocument.uri,
+                            range = Range(start = position, end = position)
+                        ),
+                        Location(
+                            uri = textDocument.uri,
+                            range = Range(start = position, end = position)
+                        )
                     )
                 }
             }
@@ -1268,7 +1339,9 @@ class TextDocumentDSL {
     fun supports_sending_definition_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.definition(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         )
@@ -1280,7 +1353,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/definition"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1298,7 +1373,9 @@ class TextDocumentDSL {
 
         client.textDocument.definition(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         ) {
@@ -1329,7 +1406,9 @@ class TextDocumentDSL {
 
         client.textDocument.definition(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         ) {
@@ -1358,7 +1437,9 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/definition requests using function parameters")
     fun supports_sending_definition_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.definition(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -1369,7 +1450,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/definition"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1386,7 +1469,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.definition(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         ) {
             ++called
@@ -1415,7 +1500,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.definition(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         ) {
             ++called
@@ -1451,7 +1538,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/references"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1473,7 +1562,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/references", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     assertEquals(false, context.includeDeclaration)
@@ -1500,7 +1589,9 @@ class TextDocumentDSL {
     fun supports_sending_references_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.references(
             params = ReferenceParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u),
                 context = ReferenceContext(
                     includeDeclaration = false
@@ -1515,7 +1606,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/references"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1536,7 +1629,9 @@ class TextDocumentDSL {
 
         client.textDocument.references(
             params = ReferenceParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u),
                 context = ReferenceContext(
                     includeDeclaration = false
@@ -1570,7 +1665,9 @@ class TextDocumentDSL {
 
         client.textDocument.references(
             params = ReferenceParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u),
                 context = ReferenceContext(
                     includeDeclaration = false
@@ -1602,7 +1699,9 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/references requests using function parameters")
     fun supports_sending_references_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.references(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u),
             context = ReferenceContext(
                 includeDeclaration = false
@@ -1616,7 +1715,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/references"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1636,7 +1737,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.references(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u),
             context = ReferenceContext(
                 includeDeclaration = false
@@ -1668,7 +1771,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.references(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u),
             context = ReferenceContext(
                 includeDeclaration = false
@@ -1707,7 +1812,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/documentHighlight"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1726,7 +1833,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/documentHighlight", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     DocumentHighlight(
@@ -1764,7 +1871,9 @@ class TextDocumentDSL {
     fun supports_sending_document_highlight_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.documentHighlight(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         )
@@ -1776,7 +1885,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/documentHighlight"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1794,7 +1905,9 @@ class TextDocumentDSL {
 
         client.textDocument.documentHighlight(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         ) {
@@ -1828,7 +1941,9 @@ class TextDocumentDSL {
 
         client.textDocument.documentHighlight(
             params = TextDocumentPositionParams(
-                uri = "file:///home/lorem/ipsum.py",
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                ),
                 position = Position(2u, 6u)
             )
         ) {
@@ -1857,7 +1972,9 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/documentHighlight requests using function parameters")
     fun supports_sending_document_highlight_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.documentHighlight(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -1868,7 +1985,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/documentHighlight"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    ),
                     "position" to jsonObjectOf(
                         "line" to JsonPrimitive(2),
                         "character" to JsonPrimitive(6)
@@ -1885,7 +2004,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.documentHighlight(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         ) {
             ++called
@@ -1917,7 +2038,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.documentHighlight(
-            uri = "file:///home/lorem/ipsum.py",
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            ),
             position = Position(2u, 6u)
         ) {
             ++called
