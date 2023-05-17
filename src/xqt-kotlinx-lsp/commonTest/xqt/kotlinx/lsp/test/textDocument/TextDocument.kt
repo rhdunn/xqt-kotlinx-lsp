@@ -393,7 +393,7 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/completion requests using parameter objects")
     fun supports_sending_completion_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.completion(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -423,7 +423,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.completion(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -466,7 +466,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.completion(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -659,7 +659,7 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/hover requests using parameter objects")
     fun supports_sending_hover_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.hover(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -689,7 +689,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.hover(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -727,7 +727,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.hover(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -902,7 +902,7 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/signatureHelp requests using parameter objects")
     fun supports_sending_signature_help_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.signatureHelp(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -932,7 +932,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.signatureHelp(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -963,7 +963,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.signatureHelp(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -1267,7 +1267,7 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/definition requests using parameter objects")
     fun supports_sending_definition_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.definition(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -1297,7 +1297,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.definition(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -1328,7 +1328,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.definition(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -1763,7 +1763,7 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/documentHighlight requests using parameter objects")
     fun supports_sending_document_highlight_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.documentHighlight(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -1793,7 +1793,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.documentHighlight(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )
@@ -1827,7 +1827,7 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.documentHighlight(
-            params = TextDocumentPosition(
+            params = TextDocumentPositionParams(
                 uri = "file:///home/lorem/ipsum.py",
                 position = Position(2u, 6u)
             )

@@ -7,7 +7,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
 import xqt.kotlinx.lsp.types.Position
-import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.lsp.types.TextDocumentPositionParams
 import xqt.kotlinx.lsp.types.TextEdit
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
@@ -298,11 +298,11 @@ data class CompletionResponse(
  * @since 1.0.0
  */
 fun TextDocumentRequest.completion(
-    handler: TextDocumentPosition.() -> List<CompletionItem>
+    handler: TextDocumentPositionParams.() -> List<CompletionItem>
 ): Unit = request.method(
     method = TextDocumentRequest.COMPLETION,
     handler = handler,
-    paramsSerializer = TextDocumentPosition,
+    paramsSerializer = TextDocumentPositionParams,
     resultSerializer = CompletionItemArray
 )
 
@@ -321,11 +321,11 @@ fun TextDocumentRequest.completion(
  * @since 1.0.0
  */
 fun TextDocumentJsonRpcServer.completion(
-    params: TextDocumentPosition,
+    params: TextDocumentPositionParams,
     responseHandler: (TypedResponseObject<List<CompletionItem>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.COMPLETION,
-    params = TextDocumentPosition.serializeToJson(params),
+    params = TextDocumentPositionParams.serializeToJson(params),
     responseHandler = responseHandler,
     responseObjectConverter = CompletionResponse
 )
@@ -350,6 +350,6 @@ fun TextDocumentJsonRpcServer.completion(
     position: Position,
     responseHandler: (TypedResponseObject<List<CompletionItem>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = completion(
-    params = TextDocumentPosition(uri = uri, position = position),
+    params = TextDocumentPositionParams(uri = uri, position = position),
     responseHandler = responseHandler
 )

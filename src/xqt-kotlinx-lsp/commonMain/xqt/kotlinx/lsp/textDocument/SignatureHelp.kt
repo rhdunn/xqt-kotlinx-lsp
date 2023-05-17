@@ -6,7 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.UInteger
 import xqt.kotlinx.lsp.types.Position
-import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.lsp.types.TextDocumentPositionParams
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
@@ -200,11 +200,11 @@ data class SignatureHelpResponse(
  * @since 1.0.0
  */
 fun TextDocumentRequest.signatureHelp(
-    handler: TextDocumentPosition.() -> SignatureHelp
+    handler: TextDocumentPositionParams.() -> SignatureHelp
 ): Unit = request.method(
     method = TextDocumentRequest.SIGNATURE_HELP,
     handler = handler,
-    paramsSerializer = TextDocumentPosition,
+    paramsSerializer = TextDocumentPositionParams,
     resultSerializer = SignatureHelp
 )
 
@@ -219,11 +219,11 @@ fun TextDocumentRequest.signatureHelp(
  * @since 1.0.0
  */
 fun TextDocumentJsonRpcServer.signatureHelp(
-    params: TextDocumentPosition,
+    params: TextDocumentPositionParams,
     responseHandler: (TypedResponseObject<SignatureHelp?, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.SIGNATURE_HELP,
-    params = TextDocumentPosition.serializeToJson(params),
+    params = TextDocumentPositionParams.serializeToJson(params),
     responseHandler = responseHandler,
     responseObjectConverter = SignatureHelpResponse
 )
@@ -244,6 +244,6 @@ fun TextDocumentJsonRpcServer.signatureHelp(
     position: Position,
     responseHandler: (TypedResponseObject<SignatureHelp?, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = signatureHelp(
-    params = TextDocumentPosition(uri = uri, position = position),
+    params = TextDocumentPositionParams(uri = uri, position = position),
     responseHandler = responseHandler
 )

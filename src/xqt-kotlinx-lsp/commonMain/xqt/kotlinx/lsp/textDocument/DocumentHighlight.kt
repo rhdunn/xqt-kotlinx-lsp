@@ -7,7 +7,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.Range
-import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.lsp.types.TextDocumentPositionParams
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
@@ -120,11 +120,11 @@ data class DocumentHighlightResponse(
  * @since 1.0.0
  */
 fun TextDocumentRequest.documentHighlight(
-    handler: TextDocumentPosition.() -> DocumentHighlight
+    handler: TextDocumentPositionParams.() -> DocumentHighlight
 ): Unit = request.method(
     method = TextDocumentRequest.DOCUMENT_HIGHLIGHT,
     handler = handler,
-    paramsSerializer = TextDocumentPosition,
+    paramsSerializer = TextDocumentPositionParams,
     resultSerializer = DocumentHighlight
 )
 
@@ -139,11 +139,11 @@ fun TextDocumentRequest.documentHighlight(
  * @since 1.0.0
  */
 fun TextDocumentJsonRpcServer.documentHighlight(
-    params: TextDocumentPosition,
+    params: TextDocumentPositionParams,
     responseHandler: (TypedResponseObject<DocumentHighlight?, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.DOCUMENT_HIGHLIGHT,
-    params = TextDocumentPosition.serializeToJson(params),
+    params = TextDocumentPositionParams.serializeToJson(params),
     responseHandler = responseHandler,
     responseObjectConverter = DocumentHighlightResponse
 )
@@ -164,6 +164,6 @@ fun TextDocumentJsonRpcServer.documentHighlight(
     position: Position,
     responseHandler: (TypedResponseObject<DocumentHighlight?, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = documentHighlight(
-    params = TextDocumentPosition(uri = uri, position = position),
+    params = TextDocumentPositionParams(uri = uri, position = position),
     responseHandler = responseHandler
 )

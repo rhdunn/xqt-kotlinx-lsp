@@ -6,7 +6,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import xqt.kotlinx.lsp.types.Location
 import xqt.kotlinx.lsp.types.Position
-import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.lsp.types.TextDocumentPositionParams
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
@@ -90,11 +90,11 @@ data class GoToResponse(
  * @since 1.0.0
  */
 fun TextDocumentRequest.definition(
-    handler: TextDocumentPosition.() -> GoTo
+    handler: TextDocumentPositionParams.() -> GoTo
 ): Unit = request.method(
     method = TextDocumentRequest.DEFINITION,
     handler = handler,
-    paramsSerializer = TextDocumentPosition,
+    paramsSerializer = TextDocumentPositionParams,
     resultSerializer = GoTo
 )
 
@@ -109,11 +109,11 @@ fun TextDocumentRequest.definition(
  * @since 1.0.0
  */
 fun TextDocumentJsonRpcServer.definition(
-    params: TextDocumentPosition,
+    params: TextDocumentPositionParams,
     responseHandler: (TypedResponseObject<GoTo, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.DEFINITION,
-    params = TextDocumentPosition.serializeToJson(params),
+    params = TextDocumentPositionParams.serializeToJson(params),
     responseHandler = responseHandler,
     responseObjectConverter = GoToResponse
 )
@@ -134,6 +134,6 @@ fun TextDocumentJsonRpcServer.definition(
     position: Position,
     responseHandler: (TypedResponseObject<GoTo, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = definition(
-    params = TextDocumentPosition(uri = uri, position = position),
+    params = TextDocumentPositionParams(uri = uri, position = position),
     responseHandler = responseHandler
 )

@@ -7,7 +7,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.Range
-import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.lsp.types.TextDocumentPositionParams
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
@@ -124,11 +124,11 @@ data class HoverResponse(
  * @since 1.0.0
  */
 fun TextDocumentRequest.hover(
-    handler: TextDocumentPosition.() -> Hover
+    handler: TextDocumentPositionParams.() -> Hover
 ): Unit = request.method(
     method = TextDocumentRequest.HOVER,
     handler = handler,
-    paramsSerializer = TextDocumentPosition,
+    paramsSerializer = TextDocumentPositionParams,
     resultSerializer = Hover
 )
 
@@ -143,11 +143,11 @@ fun TextDocumentRequest.hover(
  * @since 1.0.0
  */
 fun TextDocumentJsonRpcServer.hover(
-    params: TextDocumentPosition,
+    params: TextDocumentPositionParams,
     responseHandler: (TypedResponseObject<Hover?, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.HOVER,
-    params = TextDocumentPosition.serializeToJson(params),
+    params = TextDocumentPositionParams.serializeToJson(params),
     responseHandler = responseHandler,
     responseObjectConverter = HoverResponse
 )
@@ -168,6 +168,6 @@ fun TextDocumentJsonRpcServer.hover(
     position: Position,
     responseHandler: (TypedResponseObject<Hover?, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = hover(
-    params = TextDocumentPosition(uri = uri, position = position),
+    params = TextDocumentPositionParams(uri = uri, position = position),
     responseHandler = responseHandler
 )

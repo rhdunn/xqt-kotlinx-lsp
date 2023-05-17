@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+// Copyright (C) 2022-2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.types
 
 import kotlinx.serialization.json.JsonElement
@@ -13,9 +13,11 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 /**
  * Identifies a position in a text document.
  *
- * @since 1.0.0
+ * __NOTE:__ This was defined as the `TextDocumentPosition` type in LSP 1.x.
+ *
+ * @since 2.0.0
  */
-interface TextDocumentPosition : TextDocumentIdentifier {
+interface TextDocumentPositionParams : TextDocumentIdentifier {
     override val uri: String
 
     /**
@@ -23,15 +25,15 @@ interface TextDocumentPosition : TextDocumentIdentifier {
      */
     val position: Position
 
-    companion object : JsonSerialization<TextDocumentPosition> {
-        override fun serializeToJson(value: TextDocumentPosition): JsonObject = buildJsonObject {
+    companion object : JsonSerialization<TextDocumentPositionParams> {
+        override fun serializeToJson(value: TextDocumentPositionParams): JsonObject = buildJsonObject {
             put("uri", value.uri, JsonString)
             put("position", value.position, Position)
         }
 
-        override fun deserialize(json: JsonElement): TextDocumentPosition = when (json) {
+        override fun deserialize(json: JsonElement): TextDocumentPositionParams = when (json) {
             !is JsonObject -> unsupportedKindType(json)
-            else -> TextDocumentPosition(
+            else -> TextDocumentPositionParams(
                 uri = json.get("uri", JsonString),
                 position = json.get("position", Position)
             )
@@ -42,15 +44,17 @@ interface TextDocumentPosition : TextDocumentIdentifier {
 /**
  * Identifies a position in a text document.
  *
+ * __NOTE:__ This was defined as the `TextDocumentPosition` type in LSP 1.x.
+ *
  * @param uri the text document's URI
  * @param position the position inside the text document
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
-fun TextDocumentPosition(
+fun TextDocumentPositionParams(
     uri: String,
     position: Position
-): TextDocumentPosition = object : TextDocumentPosition {
+): TextDocumentPositionParams = object : TextDocumentPositionParams {
     override val uri: String = uri
     override val position: Position = position
 }

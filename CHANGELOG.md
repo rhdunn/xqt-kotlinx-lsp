@@ -24,6 +24,9 @@ Types:
 
 - Updated the API documentation.
 
+Types:
+- Renamed `TextDocumentPosition` to `TextDocumentPositionParams`.
+
 ## [1.0.1] - 2023-05-16
 
 ### Fixed

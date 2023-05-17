@@ -6,7 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Location
 import xqt.kotlinx.lsp.types.Position
-import xqt.kotlinx.lsp.types.TextDocumentPosition
+import xqt.kotlinx.lsp.types.TextDocumentPositionParams
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
@@ -30,7 +30,7 @@ data class ReferenceParams(
      * The reference context.
      */
     val context: ReferenceContext
-) : TextDocumentPosition {
+) : TextDocumentPositionParams {
     companion object : JsonSerialization<ReferenceParams> {
         override fun serializeToJson(value: ReferenceParams): JsonObject = buildJsonObject {
             put("uri", value.uri, JsonString)
