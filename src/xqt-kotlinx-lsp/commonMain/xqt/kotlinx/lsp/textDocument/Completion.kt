@@ -7,10 +7,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
-import xqt.kotlinx.lsp.types.Position
-import xqt.kotlinx.lsp.types.TextDocumentIdentifier
-import xqt.kotlinx.lsp.types.TextDocumentPositionParams
-import xqt.kotlinx.lsp.types.TextEdit
+import xqt.kotlinx.lsp.types.*
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.*
@@ -114,6 +111,14 @@ data class CompletionItem(
     val textEdit: TextEdit? = null,
 
     /**
+     * An optional array of additional text edits that are applied when
+     * selecting this completion.
+     *
+     * Edits must not overlap with the main edit nor with themselves.
+     */
+    val additionalTextEdits: List<TextEdit> = listOf(),
+
+    /**
      * A data entry field that is preserved on a completion item between
      * a completion and a completion resolve request.
      */
@@ -129,6 +134,7 @@ data class CompletionItem(
             putOptional("filterText", value.filterText, JsonString)
             putOptional("insertText", value.insertText, JsonString)
             putOptional("textEdit", value.textEdit, TextEdit)
+            putOptional("additionalTextEdits", value.additionalTextEdits, TextEditArray)
             putOptional("data", value.data, LSPAny)
         }
 
@@ -143,6 +149,7 @@ data class CompletionItem(
                 filterText = json.getOptional("filterText", JsonString),
                 insertText = json.getOptional("insertText", JsonString),
                 textEdit = json.getOptional("textEdit", TextEdit),
+                additionalTextEdits = json.getOptional("additionalTextEdits", TextEditArray),
                 data = json.getOptional("data", LSPAny)
             )
         }

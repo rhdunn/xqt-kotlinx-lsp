@@ -32,6 +32,7 @@ class TheCompletionItemType {
         assertEquals(null, params.filterText)
         assertEquals(null, params.insertText)
         assertEquals(null, params.textEdit)
+        assertEquals(0, params.additionalTextEdits.size)
         assertEquals(null, params.data)
 
         assertEquals(json, CompletionItem.serializeToJson(params))
@@ -54,6 +55,7 @@ class TheCompletionItemType {
         assertEquals(null, params.filterText)
         assertEquals(null, params.insertText)
         assertEquals(null, params.textEdit)
+        assertEquals(0, params.additionalTextEdits.size)
         assertEquals(null, params.data)
 
         assertEquals(json, CompletionItem.serializeToJson(params))
@@ -76,6 +78,7 @@ class TheCompletionItemType {
         assertEquals(null, params.filterText)
         assertEquals(null, params.insertText)
         assertEquals(null, params.textEdit)
+        assertEquals(0, params.additionalTextEdits.size)
         assertEquals(null, params.data)
 
         assertEquals(json, CompletionItem.serializeToJson(params))
@@ -98,6 +101,7 @@ class TheCompletionItemType {
         assertEquals(null, params.filterText)
         assertEquals(null, params.insertText)
         assertEquals(null, params.textEdit)
+        assertEquals(0, params.additionalTextEdits.size)
         assertEquals(null, params.data)
 
         assertEquals(json, CompletionItem.serializeToJson(params))
@@ -120,6 +124,7 @@ class TheCompletionItemType {
         assertEquals(null, params.filterText)
         assertEquals(null, params.insertText)
         assertEquals(null, params.textEdit)
+        assertEquals(0, params.additionalTextEdits.size)
         assertEquals(null, params.data)
 
         assertEquals(json, CompletionItem.serializeToJson(params))
@@ -142,6 +147,7 @@ class TheCompletionItemType {
         assertEquals("Lorem ipsum dolor", params.filterText)
         assertEquals(null, params.insertText)
         assertEquals(null, params.textEdit)
+        assertEquals(0, params.additionalTextEdits.size)
         assertEquals(null, params.data)
 
         assertEquals(json, CompletionItem.serializeToJson(params))
@@ -164,6 +170,7 @@ class TheCompletionItemType {
         assertEquals(null, params.filterText)
         assertEquals("Lorem ipsum dolor", params.insertText)
         assertEquals(null, params.textEdit)
+        assertEquals(0, params.additionalTextEdits.size)
         assertEquals(null, params.data)
 
         assertEquals(json, CompletionItem.serializeToJson(params))
@@ -198,10 +205,52 @@ class TheCompletionItemType {
         assertEquals(null, params.filterText)
         assertEquals(null, params.insertText)
         assertEquals(null, params.data)
+        assertEquals(0, params.additionalTextEdits.size)
 
         assertEquals(Position(5u, 23u), params.textEdit?.range?.start)
         assertEquals(Position(5u, 23u), params.textEdit?.range?.end)
         assertEquals("Lorem ipsum dolor", params.textEdit?.newText)
+
+        assertEquals(json, CompletionItem.serializeToJson(params))
+    }
+
+    @Test
+    @DisplayName("supports the additionalTextEdits property")
+    fun supports_the_additional_text_edits_property() {
+        val json = jsonObjectOf(
+            "label" to JsonPrimitive("Lorem Ipsum"),
+            "additionalTextEdits" to jsonArrayOf(
+                jsonObjectOf(
+                    "range" to jsonObjectOf(
+                        "start" to jsonObjectOf(
+                            "line" to JsonPrimitive(5),
+                            "character" to JsonPrimitive(23)
+                        ),
+                        "end" to jsonObjectOf(
+                            "line" to JsonPrimitive(5),
+                            "character" to JsonPrimitive(23)
+                        )
+                    ),
+                    "newText" to JsonPrimitive("Lorem ipsum dolor")
+                )
+            )
+        )
+
+        val params = CompletionItem.deserialize(json)
+        assertEquals("Lorem Ipsum", params.label)
+        assertEquals(null, params.kind)
+        assertEquals(null, params.detail)
+        assertEquals(null, params.documentation)
+        assertEquals(null, params.sortText)
+        assertEquals(null, params.filterText)
+        assertEquals(null, params.insertText)
+        assertEquals(null, params.textEdit)
+        assertEquals(null, params.data)
+
+        val textEdit = params.additionalTextEdits[0]
+        assertEquals(Position(5u, 23u), textEdit.range.start)
+        assertEquals(Position(5u, 23u), textEdit.range.end)
+        assertEquals("Lorem ipsum dolor", textEdit.newText)
 
         assertEquals(json, CompletionItem.serializeToJson(params))
     }
@@ -223,6 +272,7 @@ class TheCompletionItemType {
         assertEquals(null, params.filterText)
         assertEquals(null, params.insertText)
         assertEquals(null, params.textEdit)
+        assertEquals(0, params.additionalTextEdits.size)
         assertEquals(JsonPrimitive("Lorem ipsum dolor"), params.data)
 
         assertEquals(json, CompletionItem.serializeToJson(params))
