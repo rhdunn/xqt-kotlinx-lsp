@@ -118,6 +118,31 @@ data class CodeLensResponse(
 }
 
 /**
+ * Parameters for `textDocument/codeLens` notification.
+ *
+ * @since 2.0.0
+ */
+data class CodeLensParams(
+    /**
+     * The document to request code lens for.
+     */
+    val textDocument: TextDocumentIdentifier
+) {
+    companion object : JsonSerialization<CodeLensParams> {
+        override fun serializeToJson(value: CodeLensParams): JsonObject = buildJsonObject {
+            put("textDocument", value.textDocument, TextDocumentIdentifier)
+        }
+
+        override fun deserialize(json: JsonElement): CodeLensParams = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> CodeLensParams(
+                textDocument = json.get("textDocument", TextDocumentIdentifier)
+            )
+        }
+    }
+}
+
+/**
  * The code lens request is sent from the client to the server to compute code lenses for
  * a given text document.
  *
