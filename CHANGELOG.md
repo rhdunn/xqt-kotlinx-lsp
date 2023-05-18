@@ -49,7 +49,7 @@ Notifications and Requests:
 Types:
 - Renamed `TextDocumentPosition` to `TextDocumentPositionParams`.
 - Don't implement `TextDocumentIdentifier` on `FileEvent`.
-- `CompletionItem` -- Add an `additionalTextEdits` property.
+- `CompletionItem` -- Add `additionalTextEdits` and `command` properties.
 
 ## [1.0.1] - 2023-05-16
 

@@ -115,8 +115,20 @@ data class CompletionItem(
      * selecting this completion.
      *
      * Edits must not overlap with the main edit nor with themselves.
+     *
+     * @since 2.0.0
      */
     val additionalTextEdits: List<TextEdit> = listOf(),
+
+    /**
+     * An optional command that is executed *after* inserting this completion.
+     *
+     * *Note* that additional modifications to the current document should be described
+     * with the `additionalTextEdits` property.
+     *
+     * @since 2.0.0
+     */
+    val command: Command? = null,
 
     /**
      * A data entry field that is preserved on a completion item between
@@ -135,6 +147,7 @@ data class CompletionItem(
             putOptional("insertText", value.insertText, JsonString)
             putOptional("textEdit", value.textEdit, TextEdit)
             putOptional("additionalTextEdits", value.additionalTextEdits, TextEditArray)
+            putOptional("command", value.command, Command)
             putOptional("data", value.data, LSPAny)
         }
 
@@ -150,6 +163,7 @@ data class CompletionItem(
                 insertText = json.getOptional("insertText", JsonString),
                 textEdit = json.getOptional("textEdit", TextEdit),
                 additionalTextEdits = json.getOptional("additionalTextEdits", TextEditArray),
+                command = json.getOptional("command", Command),
                 data = json.getOptional("data", LSPAny)
             )
         }
