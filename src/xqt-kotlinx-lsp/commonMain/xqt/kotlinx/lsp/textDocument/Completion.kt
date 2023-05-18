@@ -272,14 +272,18 @@ data class CompletionList(
      *
      * Further typing should result in recomputing this list.
      */
-    val isIncomplete: Boolean?,
+    val isIncomplete: Boolean? = null,
 
     /**
      * The completion items.
      */
     val items: List<CompletionItem>
 ) : List<CompletionItem> by items {
+    constructor() : this(null, listOf())
+
     companion object : JsonSerialization<CompletionList> {
+        private val CompletionItemArray = JsonTypedArray(CompletionItem)
+
         override fun serializeToJson(value: CompletionList): JsonElement = when (value.isIncomplete) {
             null -> CompletionItemArray.serializeToJson(value.items)
             else -> buildJsonObject {
@@ -304,10 +308,10 @@ data class CompletionList(
     }
 }
 
-private val CompletionItemArray = JsonTypedArray(CompletionItem)
-
 /**
  * The response of a completion request.
+ *
+ * __NOTE:__ In LSP 1.x, the `result` type was `List<CompletionItem>`.
  *
  * @param id the request id
  * @param result the result of the request
@@ -318,15 +322,15 @@ private val CompletionItemArray = JsonTypedArray(CompletionItem)
  */
 data class CompletionResponse(
     override val id: JsonIntOrString?,
-    override val result: List<CompletionItem>,
+    override val result: CompletionList,
     override val error: TypedErrorObject<JsonElement>?,
     override val jsonrpc: String
-) : TypedResponseObject<List<CompletionItem>, JsonElement> {
-    companion object : TypedResponseObjectConverter<List<CompletionItem>, JsonElement> {
-        override fun convert(response: ResponseObject): TypedResponseObject<List<CompletionItem>, JsonElement> {
+) : TypedResponseObject<CompletionList, JsonElement> {
+    companion object : TypedResponseObjectConverter<CompletionList, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<CompletionList, JsonElement> {
             return CompletionResponse(
                 id = response.id,
-                result = response.result?.let { CompletionItemArray.deserialize(it) } ?: listOf(),
+                result = response.result?.let { CompletionList.deserialize(it) } ?: CompletionList(),
                 error = response.error,
                 jsonrpc = response.jsonrpc
             )
@@ -350,17 +354,19 @@ data class CompletionResponse(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
- * @return an initialize result response
+ * __NOTE:__ In LSP 1.x, the `result` type was `List<CompletionItem>`.
  *
- * @since 1.0.0
+ * @return a completion item list
+ *
+ * @since 2.0.0
  */
 fun TextDocumentRequest.completion(
-    handler: TextDocumentPositionParams.() -> List<CompletionItem>
+    handler: TextDocumentPositionParams.() -> CompletionList
 ): Unit = request.method(
     method = TextDocumentRequest.COMPLETION,
     handler = handler,
     paramsSerializer = TextDocumentPositionParams,
-    resultSerializer = CompletionItemArray
+    resultSerializer = CompletionList
 )
 
 /**
@@ -379,6 +385,8 @@ fun TextDocumentRequest.completion(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
+ * __NOTE:__ In LSP 1.x, the `result` type was `List<CompletionItem>`.
+ *
  * @param params the request parameters
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
@@ -387,7 +395,7 @@ fun TextDocumentRequest.completion(
  */
 fun TextDocumentJsonRpcServer.completion(
     params: TextDocumentPositionParams,
-    responseHandler: (TypedResponseObject<List<CompletionItem>, JsonElement>.() -> Unit)? = null
+    responseHandler: (TypedResponseObject<CompletionList, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.COMPLETION,
     params = TextDocumentPositionParams.serializeToJson(params),
@@ -411,6 +419,8 @@ fun TextDocumentJsonRpcServer.completion(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
+ * __NOTE:__ In LSP 1.x, the `result` type was `List<CompletionItem>`.
+ *
  * @param textDocument the text document
  * @param position the position inside the text document
  * @param responseHandler the callback to process the response for the request
@@ -421,7 +431,7 @@ fun TextDocumentJsonRpcServer.completion(
 fun TextDocumentJsonRpcServer.completion(
     textDocument: TextDocumentIdentifier,
     position: Position,
-    responseHandler: (TypedResponseObject<List<CompletionItem>, JsonElement>.() -> Unit)? = null
+    responseHandler: (TypedResponseObject<CompletionList, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = completion(
     params = TextDocumentPositionParams(
         textDocument = textDocument,

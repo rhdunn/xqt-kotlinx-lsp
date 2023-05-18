@@ -412,12 +412,13 @@ class TextDocumentDSL {
                     assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
-                    listOf(
+                    val items = listOf(
                         CompletionItem(
                             label = "Lorem Ipsum",
                             kind = CompletionItemKind.Text
                         )
                     )
+                    CompletionList(items = items)
                 }
             }
         }
@@ -501,12 +502,13 @@ class TextDocumentDSL {
         server.jsonRpc {
             request {
                 textDocument.completion {
-                    listOf(
+                    val items = listOf(
                         CompletionItem(
                             label = "Lorem Ipsum",
                             kind = CompletionItemKind.Text
                         )
                     )
+                    CompletionList(items = items)
                 }
             }
         }
@@ -608,12 +610,13 @@ class TextDocumentDSL {
         server.jsonRpc {
             request {
                 textDocument.completion {
-                    listOf(
+                    val items = listOf(
                         CompletionItem(
                             label = "Lorem Ipsum",
                             kind = CompletionItemKind.Text
                         )
                     )
+                    CompletionList(items = items)
                 }
             }
         }

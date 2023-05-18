@@ -33,6 +33,7 @@ Parameters:
 Notifications and Requests:
 - `initialize` -- Make the `processId` parameter nullable.
 - `initialize` -- Make `capabilities` an instance of `ClientCapabilities`.
+- `textDocument/completion` -- Return a `CompletionList` instead of a `List<CompletionItem>`.
 > __NOTE:__ The following notifications and requests are no longer compatible
 > with LSP 1.x clients/servers.
 - `textDocument/completion` -- Replace the `uri` parameter with `textDocument`.
