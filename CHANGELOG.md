@@ -42,6 +42,7 @@ Notifications and Requests:
 - `textDocument/didClose` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/didOpen` -- Replace the `uri` and `text` parameters with `textDocument`.
 - `textDocument/documentHighlight` -- Replace the `uri` parameter with `textDocument`.
+- `textDocument/documentHighlight` -- Return a `List<DocumentHighlight>` instead of a `DocumetnHighlight` object.
 - `textDocument/hover` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/references` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/signatureHelp` -- Replace the `uri` parameter with `textDocument`.

@@ -13,6 +13,7 @@ import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import kotlin.jvm.JvmInline
 
 /**
@@ -86,6 +87,8 @@ value class DocumentHighlightKind(val kind: Int) {
     }
 }
 
+private val DocumentHighlightArray = JsonTypedArray(DocumentHighlight)
+
 /**
  * The response of a document highlight request.
  *
@@ -98,15 +101,15 @@ value class DocumentHighlightKind(val kind: Int) {
  */
 data class DocumentHighlightResponse(
     override val id: JsonIntOrString?,
-    override val result: DocumentHighlight?,
+    override val result: List<DocumentHighlight>,
     override val error: TypedErrorObject<JsonElement>?,
     override val jsonrpc: String
-) : TypedResponseObject<DocumentHighlight?, JsonElement> {
-    companion object : TypedResponseObjectConverter<DocumentHighlight?, JsonElement> {
-        override fun convert(response: ResponseObject): TypedResponseObject<DocumentHighlight?, JsonElement> {
+) : TypedResponseObject<List<DocumentHighlight>, JsonElement> {
+    companion object : TypedResponseObjectConverter<List<DocumentHighlight>, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<List<DocumentHighlight>, JsonElement> {
             return DocumentHighlightResponse(
                 id = response.id,
-                result = response.result?.let { DocumentHighlight.deserialize(it) },
+                result = response.result?.let { DocumentHighlightArray.deserialize(it) } ?: listOf(),
                 error = response.error,
                 jsonrpc = response.jsonrpc
             )
@@ -126,15 +129,17 @@ data class DocumentHighlightResponse(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
+ * __NOTE:__ In LSP 1.x, the result type is a single `DocumentHighlight` object.
+ *
  * @since 2.0.0
  */
 fun TextDocumentRequest.documentHighlight(
-    handler: TextDocumentPositionParams.() -> DocumentHighlight
+    handler: TextDocumentPositionParams.() -> List<DocumentHighlight>
 ): Unit = request.method(
     method = TextDocumentRequest.DOCUMENT_HIGHLIGHT,
     handler = handler,
     paramsSerializer = TextDocumentPositionParams,
-    resultSerializer = DocumentHighlight
+    resultSerializer = DocumentHighlightArray
 )
 
 /**
@@ -149,6 +154,8 @@ fun TextDocumentRequest.documentHighlight(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
+ * __NOTE:__ In LSP 1.x, the result type is a single `DocumentHighlight` object.
+ *
  * @param params the request parameters
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
@@ -157,7 +164,7 @@ fun TextDocumentRequest.documentHighlight(
  */
 fun TextDocumentJsonRpcServer.documentHighlight(
     params: TextDocumentPositionParams,
-    responseHandler: (TypedResponseObject<DocumentHighlight?, JsonElement>.() -> Unit)? = null
+    responseHandler: (TypedResponseObject<List<DocumentHighlight>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.DOCUMENT_HIGHLIGHT,
     params = TextDocumentPositionParams.serializeToJson(params),
@@ -177,6 +184,8 @@ fun TextDocumentJsonRpcServer.documentHighlight(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
+ * __NOTE:__ In LSP 1.x, the result type is a single `DocumentHighlight` object.
+ *
  * @param textDocument the text document
  * @param position the position inside the text document
  * @param responseHandler the callback to process the response for the request
@@ -187,7 +196,7 @@ fun TextDocumentJsonRpcServer.documentHighlight(
 fun TextDocumentJsonRpcServer.documentHighlight(
     textDocument: TextDocumentIdentifier,
     position: Position,
-    responseHandler: (TypedResponseObject<DocumentHighlight?, JsonElement>.() -> Unit)? = null
+    responseHandler: (TypedResponseObject<List<DocumentHighlight>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = documentHighlight(
     params = TextDocumentPositionParams(
         textDocument = textDocument,

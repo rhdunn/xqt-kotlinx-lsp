@@ -1887,8 +1887,10 @@ class TextDocumentDSL {
                     assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
-                    DocumentHighlight(
-                        range = Range(start = position, end = position)
+                    listOf(
+                        DocumentHighlight(
+                            range = Range(start = position, end = position)
+                        )
                     )
                 }
             }
@@ -1900,15 +1902,17 @@ class TextDocumentDSL {
             jsonObjectOf(
                 "jsonrpc" to JsonPrimitive("2.0"),
                 "id" to JsonPrimitive(1),
-                "result" to jsonObjectOf(
-                    "range" to jsonObjectOf(
-                        "start" to jsonObjectOf(
-                            "line" to JsonPrimitive(2),
-                            "character" to JsonPrimitive(6)
-                        ),
-                        "end" to jsonObjectOf(
-                            "line" to JsonPrimitive(2),
-                            "character" to JsonPrimitive(6)
+                "result" to jsonArrayOf(
+                    jsonObjectOf(
+                        "range" to jsonObjectOf(
+                            "start" to jsonObjectOf(
+                                "line" to JsonPrimitive(2),
+                                "character" to JsonPrimitive(6)
+                            ),
+                            "end" to jsonObjectOf(
+                                "line" to JsonPrimitive(2),
+                                "character" to JsonPrimitive(6)
+                            )
                         )
                     )
                 )
@@ -1964,8 +1968,10 @@ class TextDocumentDSL {
         ) {
             ++called
 
-            assertEquals(Position(2u, 6u), result?.range?.start)
-            assertEquals(Position(2u, 6u), result?.range?.end)
+            assertEquals(1, result.size)
+
+            assertEquals(Position(2u, 6u), result[0].range.start)
+            assertEquals(Position(2u, 6u), result[0].range.end)
 
             assertEquals(null, error)
         }
@@ -1973,8 +1979,10 @@ class TextDocumentDSL {
         server.jsonRpc {
             request {
                 textDocument.documentHighlight {
-                    DocumentHighlight(
-                        range = Range(start = position, end = position)
+                    listOf(
+                        DocumentHighlight(
+                            range = Range(start = position, end = position)
+                        )
                     )
                 }
             }
@@ -2000,7 +2008,7 @@ class TextDocumentDSL {
         ) {
             ++called
 
-            assertEquals(null, result)
+            assertEquals(0, result.size)
 
             assertEquals(ErrorCodes.InternalError, error?.code)
             assertEquals("Lorem ipsum", error?.message)
@@ -2062,8 +2070,10 @@ class TextDocumentDSL {
         ) {
             ++called
 
-            assertEquals(Position(2u, 6u), result?.range?.start)
-            assertEquals(Position(2u, 6u), result?.range?.end)
+            assertEquals(1, result.size)
+
+            assertEquals(Position(2u, 6u), result[0].range.start)
+            assertEquals(Position(2u, 6u), result[0].range.end)
 
             assertEquals(null, error)
         }
@@ -2071,8 +2081,10 @@ class TextDocumentDSL {
         server.jsonRpc {
             request {
                 textDocument.documentHighlight {
-                    DocumentHighlight(
-                        range = Range(start = position, end = position)
+                    listOf(
+                        DocumentHighlight(
+                            range = Range(start = position, end = position)
+                        )
                     )
                 }
             }
@@ -2096,7 +2108,7 @@ class TextDocumentDSL {
         ) {
             ++called
 
-            assertEquals(null, result)
+            assertEquals(0, result.size)
 
             assertEquals(ErrorCodes.InternalError, error?.code)
             assertEquals("Lorem ipsum", error?.message)
