@@ -2677,7 +2677,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/codeLens"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
                 )
             )
         )
@@ -2692,7 +2694,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/codeLens", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
 
                     listOf()
                 }
@@ -2715,8 +2717,10 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/codeLens requests using parameter objects")
     fun supports_sending_code_lens_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.codeLens(
-            params = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+            params = CodeLensParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
             )
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -2727,7 +2731,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/codeLens"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
                 )
             ),
             server.receive()
@@ -2740,8 +2746,10 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.codeLens(
-            params = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+            params = CodeLensParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
             )
         ) {
             ++called
@@ -2770,8 +2778,10 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.codeLens(
-            params = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+            params = CodeLensParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
             )
         ) {
             ++called
@@ -2799,7 +2809,9 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/codeLens requests using function parameters")
     fun supports_sending_code_lens_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.codeLens(
-            uri = "file:///home/lorem/ipsum.py"
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
 
@@ -2809,7 +2821,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/codeLens"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
                 )
             ),
             server.receive()
@@ -2822,7 +2836,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.codeLens(
-            uri = "file:///home/lorem/ipsum.py"
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
         ) {
             ++called
 
@@ -2850,7 +2866,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.codeLens(
-            uri = "file:///home/lorem/ipsum.py"
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
         ) {
             ++called
 

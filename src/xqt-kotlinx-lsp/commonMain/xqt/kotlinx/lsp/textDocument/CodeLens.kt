@@ -146,14 +146,14 @@ data class CodeLensParams(
  * The code lens request is sent from the client to the server to compute code lenses for
  * a given text document.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentRequest.codeLens(
-    handler: TextDocumentIdentifier.() -> List<CodeLens>
+    handler: CodeLensParams.() -> List<CodeLens>
 ): Unit = request.method(
     method = TextDocumentRequest.CODE_LENS,
     handler = handler,
-    paramsSerializer = TextDocumentIdentifier,
+    paramsSerializer = CodeLensParams,
     resultSerializer = CodeLensArray
 )
 
@@ -165,14 +165,14 @@ fun TextDocumentRequest.codeLens(
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.codeLens(
-    params: TextDocumentIdentifier,
+    params: CodeLensParams,
     responseHandler: (TypedResponseObject<List<CodeLens>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.CODE_LENS,
-    params = TextDocumentIdentifier.serializeToJson(params),
+    params = CodeLensParams.serializeToJson(params),
     responseHandler = responseHandler,
     responseObjectConverter = CodeLensResponse
 )
@@ -181,16 +181,16 @@ fun TextDocumentJsonRpcServer.codeLens(
  * The code lens request is sent from the client to the server to compute code lenses for
  * a given text document.
  *
- * @param uri the text document's URI
+ * @param textDocument the text document to request code lens for
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.codeLens(
-    uri: String,
+    textDocument: TextDocumentIdentifier,
     responseHandler: (TypedResponseObject<List<CodeLens>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = codeLens(
-    params = TextDocumentIdentifier(uri = uri),
+    params = CodeLensParams(textDocument = textDocument),
     responseHandler = responseHandler
 )

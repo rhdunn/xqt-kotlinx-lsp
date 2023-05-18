@@ -36,6 +36,7 @@ Notifications and Requests:
 - `textDocument/completion` -- Return a `CompletionList` instead of a `List<CompletionItem>`.
 > __NOTE:__ The following notifications and requests are no longer compatible
 > with LSP 1.x clients/servers.
+- `textDocument/codeLens` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/completion` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/definition` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/didChange` -- Replace the `uri` parameter with `textDocument`.
