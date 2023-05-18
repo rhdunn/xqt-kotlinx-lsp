@@ -1,6 +1,7 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.textDocument
 
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -259,6 +260,10 @@ value class CompletionItemKind(val kind: Int) {
 /**
  * Represents a collection of completion items to be presented in the editor.
  *
+ * If `isIncomplete` is null, the `CompletionList` will be (de)serialized as a
+ * `CompletionItem` array. This is to match the result types of the
+ * `textDocument/completion` request.
+ *
  * @since 2.0.0
  */
 data class CompletionList(
@@ -267,25 +272,34 @@ data class CompletionList(
      *
      * Further typing should result in recomputing this list.
      */
-    val isIncomplete: Boolean,
+    val isIncomplete: Boolean?,
 
     /**
      * The completion items.
      */
     val items: List<CompletionItem>
-) {
+) : List<CompletionItem> by items {
     companion object : JsonSerialization<CompletionList> {
-        override fun serializeToJson(value: CompletionList): JsonObject = buildJsonObject {
-            put("isIncomplete", value.isIncomplete, JsonBoolean)
-            put("items", value.items, CompletionItemArray)
+        override fun serializeToJson(value: CompletionList): JsonElement = when (value.isIncomplete) {
+            null -> CompletionItemArray.serializeToJson(value.items)
+            else -> buildJsonObject {
+                put("isIncomplete", value.isIncomplete, JsonBoolean)
+                put("items", value.items, CompletionItemArray)
+            }
         }
 
         override fun deserialize(json: JsonElement): CompletionList = when (json) {
-            !is JsonObject -> unsupportedKindType(json)
-            else -> CompletionList(
+            is JsonArray -> CompletionList(
+                isIncomplete = null,
+                items = CompletionItemArray.deserialize(json)
+            )
+
+            is JsonObject -> CompletionList(
                 isIncomplete = json.get("isIncomplete", JsonBoolean),
                 items = json.get("items", CompletionItemArray)
             )
+
+            else -> unsupportedKindType(json)
         }
     }
 }
