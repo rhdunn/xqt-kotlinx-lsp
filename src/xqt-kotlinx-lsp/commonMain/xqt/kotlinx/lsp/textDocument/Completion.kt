@@ -256,6 +256,40 @@ value class CompletionItemKind(val kind: Int) {
     }
 }
 
+/**
+ * Represents a collection of completion items to be presented in the editor.
+ *
+ * @since 2.0.0
+ */
+data class CompletionList(
+    /**
+     * This list it not complete.
+     *
+     * Further typing should result in recomputing this list.
+     */
+    val isIncomplete: Boolean,
+
+    /**
+     * The completion items.
+     */
+    val items: List<CompletionItem>
+) {
+    companion object : JsonSerialization<CompletionList> {
+        override fun serializeToJson(value: CompletionList): JsonObject = buildJsonObject {
+            put("isIncomplete", value.isIncomplete, JsonBoolean)
+            put("items", value.items, CompletionItemArray)
+        }
+
+        override fun deserialize(json: JsonElement): CompletionList = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> CompletionList(
+                isIncomplete = json.get("isIncomplete", JsonBoolean),
+                items = json.get("items", CompletionItemArray)
+            )
+        }
+    }
+}
+
 private val CompletionItemArray = JsonTypedArray(CompletionItem)
 
 /**
