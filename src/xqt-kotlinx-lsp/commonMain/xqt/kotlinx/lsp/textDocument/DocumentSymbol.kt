@@ -230,14 +230,14 @@ data class DocumentSymbolParams(
  * The document symbol request is sent from the client to the server to list all symbols
  * found in a given text document.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentRequest.documentSymbol(
-    handler: TextDocumentIdentifier.() -> List<SymbolInformation>
+    handler: DocumentSymbolParams.() -> List<SymbolInformation>
 ): Unit = request.method(
     method = TextDocumentRequest.DOCUMENT_SYMBOL,
     handler = handler,
-    paramsSerializer = TextDocumentIdentifier,
+    paramsSerializer = DocumentSymbolParams,
     resultSerializer = SymbolInformationArray
 )
 
@@ -249,14 +249,14 @@ fun TextDocumentRequest.documentSymbol(
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.documentSymbol(
-    params: TextDocumentIdentifier,
+    params: DocumentSymbolParams,
     responseHandler: (TypedResponseObject<List<SymbolInformation>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = server.sendRequest(
     method = TextDocumentRequest.DOCUMENT_SYMBOL,
-    params = TextDocumentIdentifier.serializeToJson(params),
+    params = DocumentSymbolParams.serializeToJson(params),
     responseHandler = responseHandler,
     responseObjectConverter = SymbolInformationResponse
 )
@@ -265,16 +265,16 @@ fun TextDocumentJsonRpcServer.documentSymbol(
  * The document symbol request is sent from the client to the server to list all symbols
  * found in a given text document.
  *
- * @param uri the text document's URI
+ * @param textDocument the text document
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
 fun TextDocumentJsonRpcServer.documentSymbol(
-    uri: String,
+    textDocument: TextDocumentIdentifier,
     responseHandler: (TypedResponseObject<List<SymbolInformation>, JsonElement>.() -> Unit)? = null
 ): JsonIntOrString = documentSymbol(
-    params = TextDocumentIdentifier(uri = uri),
+    params = DocumentSymbolParams(textDocument = textDocument),
     responseHandler = responseHandler
 )

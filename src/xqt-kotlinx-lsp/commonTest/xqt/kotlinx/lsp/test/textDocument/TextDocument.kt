@@ -2139,7 +2139,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/documentSymbol"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
                 )
             )
         )
@@ -2154,7 +2156,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/documentSymbol", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", uri)
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
 
                     listOf()
                 }
@@ -2177,8 +2179,10 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/documentSymbol requests using parameter objects")
     fun supports_sending_document_symbol_requests_using_parameter_objects() = testJsonRpc {
         val id = client.textDocument.documentSymbol(
-            params = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+            params = DocumentSymbolParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
             )
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -2189,7 +2193,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/documentSymbol"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
                 )
             ),
             server.receive()
@@ -2202,8 +2208,10 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.documentSymbol(
-            params = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+            params = DocumentSymbolParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
             )
         ) {
             ++called
@@ -2232,8 +2240,10 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.documentSymbol(
-            params = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+            params = DocumentSymbolParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
             )
         ) {
             ++called
@@ -2261,7 +2271,9 @@ class TextDocumentDSL {
     @DisplayName("supports sending textDocument/documentSymbol requests using function parameters")
     fun supports_sending_document_symbol_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.documentSymbol(
-            uri = "file:///home/lorem/ipsum.py"
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
 
@@ -2271,7 +2283,9 @@ class TextDocumentDSL {
                 "method" to JsonPrimitive("textDocument/documentSymbol"),
                 "id" to JsonPrimitive(1),
                 "params" to jsonObjectOf(
-                    "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
                 )
             ),
             server.receive()
@@ -2284,7 +2298,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.documentSymbol(
-            uri = "file:///home/lorem/ipsum.py"
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
         ) {
             ++called
 
@@ -2312,7 +2328,9 @@ class TextDocumentDSL {
         var called = 0
 
         client.textDocument.documentSymbol(
-            uri = "file:///home/lorem/ipsum.py"
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
         ) {
             ++called
 
