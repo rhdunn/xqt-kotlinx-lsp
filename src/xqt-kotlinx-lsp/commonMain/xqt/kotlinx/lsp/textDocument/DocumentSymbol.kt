@@ -7,6 +7,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.Location
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.lsp.types.TextDocumentItem
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonInt
@@ -195,6 +196,31 @@ data class SymbolInformationResponse(
                 result = response.result?.let { SymbolInformationArray.deserialize(it) } ?: listOf(),
                 error = response.error,
                 jsonrpc = response.jsonrpc
+            )
+        }
+    }
+}
+
+/**
+ * Parameters for `textDocument/documentSymbol` notification.
+ *
+ * @since 2.0.0
+ */
+data class DocumentSymbolParams(
+    /**
+     * The text document.
+     */
+    val textDocument: TextDocumentIdentifier
+) {
+    companion object : JsonSerialization<DocumentSymbolParams> {
+        override fun serializeToJson(value: DocumentSymbolParams): JsonObject = buildJsonObject {
+            put("textDocument", value.textDocument, TextDocumentIdentifier)
+        }
+
+        override fun deserialize(json: JsonElement): DocumentSymbolParams = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> DocumentSymbolParams(
+                textDocument = json.get("textDocument", TextDocumentIdentifier)
             )
         }
     }
