@@ -290,9 +290,15 @@ data class CompletionResponse(
  * The completion request is sent from the client to the server to compute completion items
  * at a given cursor position.
  *
- * If computing complete completion items is expensive, servers can additionally provide a
- * handler for the resolve completion item request. This request is sent when a completion
- * item is selected in the user interface.
+ * If computing full completion items is expensive, servers can additionally provide a
+ * handler for the resolve completion item request (`completionItem/resolve`). This request
+ * is sent when a completion item is selected in the user interface.
+ *
+ * A typical use case is for example: the `textDocument/completion` request doesn't fill in
+ * the `documentation` property for returned completion items since it is expensive to compute.
+ * When the item is selected in the user interface then a `completionItem/resolve` request
+ * is sent with the selected completion item as a param. The returned completion item should
+ * have the documentation property filled in.
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
@@ -313,9 +319,15 @@ fun TextDocumentRequest.completion(
  * The completion request is sent from the client to the server to compute completion items
  * at a given cursor position.
  *
- * If computing complete completion items is expensive, servers can additionally provide a
- * handler for the resolve completion item request. This request is sent when a completion
- * item is selected in the user interface.
+ * If computing full completion items is expensive, servers can additionally provide a
+ * handler for the resolve completion item request (`completionItem/resolve`). This request
+ * is sent when a completion item is selected in the user interface.
+ *
+ * A typical use case is for example: the `textDocument/completion` request doesn't fill in
+ * the `documentation` property for returned completion items since it is expensive to compute.
+ * When the item is selected in the user interface then a `completionItem/resolve` request
+ * is sent with the selected completion item as a param. The returned completion item should
+ * have the documentation property filled in.
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
@@ -339,9 +351,15 @@ fun TextDocumentJsonRpcServer.completion(
  * The completion request is sent from the client to the server to compute completion items
  * at a given cursor position.
  *
- * If computing complete completion items is expensive, servers can additionally provide a
- * handler for the resolve completion item request. This request is sent when a completion
- * item is selected in the user interface.
+ * If computing full completion items is expensive, servers can additionally provide a
+ * handler for the resolve completion item request (`completionItem/resolve`). This request
+ * is sent when a completion item is selected in the user interface.
+ *
+ * A typical use case is for example: the `textDocument/completion` request doesn't fill in
+ * the `documentation` property for returned completion items since it is expensive to compute.
+ * When the item is selected in the user interface then a `completionItem/resolve` request
+ * is sent with the selected completion item as a param. The returned completion item should
+ * have the documentation property filled in.
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
