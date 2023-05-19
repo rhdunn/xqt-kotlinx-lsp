@@ -27,6 +27,19 @@ value class DocumentLinkRequest(val request: RequestMessage) {
 }
 
 /**
+ * A method in the `documentLink/` namespace.
+ *
+ * Note that this does not check the namespace. Therefore, method wrappers need
+ * to specify the fully qualified method name.
+ *
+ * @param server the underlying JSON-RPC server
+ *
+ * @since 2.0.0
+ */
+@JvmInline
+value class DocumentLinkJsonRpcServer(val server: JsonRpcServer)
+
+/**
  * A request in the `documentLink/` namespace.
  *
  * Note that this does not check the namespace. Therefore, method DSLs need to
@@ -36,3 +49,14 @@ value class DocumentLinkRequest(val request: RequestMessage) {
  */
 val RequestMessage.documentLink: DocumentLinkRequest
     get() = DocumentLinkRequest(this)
+
+/**
+ * A method in the `completionItem/` namespace.
+ *
+ * Note that this does not check the namespace. Therefore, method wrappers need
+ * to specify the fully qualified method name.
+ *
+ * @since 2.0.0
+ */
+val JsonRpcServer.documentLink: DocumentLinkJsonRpcServer
+    get() = DocumentLinkJsonRpcServer(this)
