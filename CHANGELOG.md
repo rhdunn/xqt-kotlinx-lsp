@@ -17,6 +17,7 @@ Notifications and Requests:
 - `window/showMessageRequest`
 - `telemetry/event`
 - `textDocument/didSave`
+- `textDocument/documentLink`
 
 Types:
 - `TextEditArray`

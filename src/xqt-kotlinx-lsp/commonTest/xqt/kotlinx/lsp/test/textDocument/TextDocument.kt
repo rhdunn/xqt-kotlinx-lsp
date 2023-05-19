@@ -413,6 +413,184 @@ class TextDocumentDSL {
         )
     }
 
+    @Test
+    @DisplayName("supports sending textDocument/documentLink requests using parameter objects")
+    fun supports_sending_document_link_requests_using_parameter_objects() = testJsonRpc {
+        val id = client.textDocument.documentLink(
+            params = DocumentLinkParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/documentLink"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/documentLink request callback receiving a result using parameter objects")
+    fun supports_document_link_request_callback_receiving_a_result_using_parameter_objects() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.documentLink(
+            params = DocumentLinkParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.documentLink {
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.documentLink DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/documentLink" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.documentLink DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/documentLink request callback receiving an error using parameter objects")
+    fun supports_document_link_request_callback_receiving_an_error_using_parameter_objects() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.documentLink(
+            params = DocumentLinkParams(
+                textDocument = TextDocumentIdentifier(
+                    uri = "file:///home/lorem/ipsum.py"
+                )
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.documentLink {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.documentLink DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/documentLink" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.documentLink DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports sending textDocument/documentLink requests using function parameters")
+    fun supports_sending_document_link_requests_using_function_parameters() = testJsonRpc {
+        val id = client.textDocument.documentLink(
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
+        )
+        assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/documentLink"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
+                )
+            ),
+            server.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/documentLink request callback receiving a result using function parameters")
+    fun supports_document_link_request_callback_receiving_a_result_using_function_parameters() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.documentLink(
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(null, error)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.documentLink {
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.documentLink DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/documentLink" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.documentLink DSL handler should have been called.")
+    }
+
+    @Test
+    @DisplayName("supports textDocument/documentLink request callback receiving an error using function parameters")
+    fun supports_document_link_request_callback_receiving_an_error_using_function_parameters() = testJsonRpc {
+        var called = 0
+
+        client.textDocument.documentLink(
+            textDocument = TextDocumentIdentifier(
+                uri = "file:///home/lorem/ipsum.py"
+            )
+        ) {
+            ++called
+
+            assertEquals(0, result.size)
+
+            assertEquals(ErrorCodes.InternalError, error?.code)
+            assertEquals("Lorem ipsum", error?.message)
+        }
+
+        server.jsonRpc {
+            request {
+                textDocument.documentLink {
+                    throw InternalError(message = "Lorem ipsum")
+                }
+            }
+        }
+
+        assertEquals(0, called, "The textDocument.documentLink DSL handler should not have been called.")
+        client.jsonRpc {} // The "textDocument/documentLink" response is processed by the handler callback.
+        assertEquals(1, called, "The textDocument.documentLink DSL handler should have been called.")
+    }
+
     // endregion
     // region textDocument/publishDiagnostics notification
 

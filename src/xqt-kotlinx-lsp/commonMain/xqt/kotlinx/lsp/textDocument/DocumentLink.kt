@@ -4,8 +4,9 @@ package xqt.kotlinx.lsp.textDocument
 import kotlinx.serialization.json.*
 import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
-import xqt.kotlinx.rpc.json.protocol.method
+import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
@@ -83,6 +84,34 @@ private object DocumentLinkResult : JsonSerialization<List<DocumentLink>> {
 }
 
 /**
+ * The response of a code lens request.
+ *
+ * @param id the request id
+ * @param result the result of the request
+ * @param error the error object in case the request failed
+ * @param jsonrpc the version of the JSON-RPC protocol
+ *
+ * @since 2.0.0
+ */
+data class DocumentLinkResponse(
+    override val id: JsonIntOrString?,
+    override val result: List<DocumentLink>,
+    override val error: TypedErrorObject<JsonElement>?,
+    override val jsonrpc: String
+) : TypedResponseObject<List<DocumentLink>, JsonElement> {
+    companion object : TypedResponseObjectConverter<List<DocumentLink>, JsonElement> {
+        override fun convert(response: ResponseObject): TypedResponseObject<List<DocumentLink>, JsonElement> {
+            return DocumentLinkResponse(
+                id = response.id,
+                result = response.result?.let { DocumentLinkResult.deserialize(it) } ?: listOf(),
+                error = response.error,
+                jsonrpc = response.jsonrpc
+            )
+        }
+    }
+}
+
+/**
  * The document links request is sent from the client to the server to request the location
  * of links in a document.
  *
@@ -95,4 +124,42 @@ fun TextDocumentRequest.documentLink(
     handler = handler,
     paramsSerializer = DocumentLinkParams,
     resultSerializer = DocumentLinkResult
+)
+
+/**
+ * The document links request is sent from the client to the server to request the location
+ * of links in a document.
+ *
+ * @param params the request parameters
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 2.0.0
+ */
+fun TextDocumentJsonRpcServer.documentLink(
+    params: DocumentLinkParams,
+    responseHandler: (TypedResponseObject<List<DocumentLink>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = server.sendRequest(
+    method = TextDocumentRequest.DOCUMENT_LINK,
+    params = DocumentLinkParams.serializeToJson(params),
+    responseHandler = responseHandler,
+    responseObjectConverter = DocumentLinkResponse
+)
+
+/**
+ * The document links request is sent from the client to the server to request the location
+ * of links in a document.
+ *
+ * @param textDocument the document to provide document links for
+ * @param responseHandler the callback to process the response for the request
+ * @return the ID of the request
+ *
+ * @since 2.0.0
+ */
+fun TextDocumentJsonRpcServer.documentLink(
+    textDocument: TextDocumentIdentifier,
+    responseHandler: (TypedResponseObject<List<DocumentLink>, JsonElement>.() -> Unit)? = null
+): JsonIntOrString = documentLink(
+    params = DocumentLinkParams(textDocument = textDocument),
+    responseHandler = responseHandler
 )
