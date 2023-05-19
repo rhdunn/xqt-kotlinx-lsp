@@ -18,6 +18,7 @@ Notifications and Requests:
 - `telemetry/event`
 - `textDocument/didSave`
 - `textDocument/documentLink`
+- `documentLink/resolve`
 
 Types:
 - `TextEditArray`
