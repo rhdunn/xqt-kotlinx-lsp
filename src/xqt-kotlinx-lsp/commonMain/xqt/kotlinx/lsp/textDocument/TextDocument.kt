@@ -70,6 +70,14 @@ value class TextDocumentRequest(val request: RequestMessage) {
         const val DOCUMENT_HIGHLIGHT: String = "textDocument/documentHighlight"
 
         /**
+         * The document links request is sent from the client to the server to request the location
+         * of links in a document.
+         *
+         * @since 2.0.0
+         */
+        const val DOCUMENT_LINK: String = "textDocument/documentLink"
+
+        /**
          * The document symbol request is sent from the client to the server to list all symbols
          * found in a given text document.
          */

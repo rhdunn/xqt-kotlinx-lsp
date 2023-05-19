@@ -1,6 +1,7 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.test.textDocument
 
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.base.ErrorCodes
 import xqt.kotlinx.lsp.base.InternalError
@@ -290,6 +291,121 @@ class TextDocumentDSL {
                 "params" to jsonObjectOf(
                     "textDocument" to jsonObjectOf(
                         "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
+                )
+            ),
+            client.receive()
+        )
+    }
+
+    // endregion
+    // region textDocument/documentLink request
+
+    @Test
+    @DisplayName("supports textDocument/documentLink requests returning an empty array as null")
+    fun supports_document_link_requests_returning_an_empty_array_as_null() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/documentLink"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.documentLink {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/documentLink", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+
+                    listOf()
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.documentLink DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to JsonNull
+            ),
+            client.receive()
+        )
+    }
+
+    @Test
+    @DisplayName("supports textDocument/documentLink requests returning a DocumentLink array")
+    fun supports_document_link_requests_returning_a_document_link_array() = testJsonRpc {
+        client.send(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "method" to JsonPrimitive("textDocument/documentLink"),
+                "id" to JsonPrimitive(1),
+                "params" to jsonObjectOf(
+                    "textDocument" to jsonObjectOf(
+                        "uri" to JsonPrimitive("file:///home/lorem/ipsum.py")
+                    )
+                )
+            )
+        )
+
+        var called = false
+        server.jsonRpc {
+            request {
+                textDocument.documentLink {
+                    called = true
+
+                    assertEquals("2.0", jsonrpc)
+                    assertEquals("textDocument/documentLink", method)
+                    assertEquals(JsonIntOrString.IntegerValue(1), id)
+
+                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+
+                    listOf(
+                        DocumentLink(
+                            range = Range(
+                                start = Position(line = 2u, character = 6u),
+                                end = Position(line = 2u, character = 8u)
+                            ),
+                            target = "file:///home/lorem/dolor.py"
+                        )
+                    )
+                }
+            }
+        }
+
+        assertEquals(true, called, "The textDocument.documentLink DSL should have been called.")
+
+        assertEquals(
+            jsonObjectOf(
+                "jsonrpc" to JsonPrimitive("2.0"),
+                "id" to JsonPrimitive(1),
+                "result" to jsonArrayOf(
+                    jsonObjectOf(
+                        "range" to jsonObjectOf(
+                            "start" to jsonObjectOf(
+                                "line" to JsonPrimitive(2),
+                                "character" to JsonPrimitive(6)
+                            ),
+                            "end" to jsonObjectOf(
+                                "line" to JsonPrimitive(2),
+                                "character" to JsonPrimitive(8)
+                            )
+                        ),
+                        "target" to JsonPrimitive("file:///home/lorem/dolor.py")
                     )
                 )
             ),

@@ -1,13 +1,13 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.textDocument
 
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.*
 import xqt.kotlinx.lsp.types.Range
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
+import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 
 /**
  * Parameters for `textDocument/documentLink` request.
@@ -66,3 +66,33 @@ data class DocumentLink(
         }
     }
 }
+
+private object DocumentLinkResult : JsonSerialization<List<DocumentLink>> {
+    override fun serializeToJson(value: List<DocumentLink>): JsonElement = when (value.size) {
+        0 -> JsonNull
+        else -> buildJsonArray {
+            value.forEach { item -> add(DocumentLink.serializeToJson(item)) }
+        }
+    }
+
+    override fun deserialize(json: JsonElement): List<DocumentLink> = when (json) {
+        is JsonNull -> listOf()
+        is JsonArray -> json.map { item -> DocumentLink.deserialize(item) }
+        else -> unsupportedKindType(json)
+    }
+}
+
+/**
+ * The document links request is sent from the client to the server to request the location
+ * of links in a document.
+ *
+ * @since 2.0.0
+ */
+fun TextDocumentRequest.documentLink(
+    handler: DocumentLinkParams.() -> List<DocumentLink>
+): Unit = request.method(
+    method = TextDocumentRequest.DOCUMENT_LINK,
+    handler = handler,
+    paramsSerializer = DocumentLinkParams,
+    resultSerializer = DocumentLinkResult
+)
