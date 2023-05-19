@@ -16,7 +16,15 @@ import kotlin.jvm.JvmInline
  * @since 2.0.0
  */
 @JvmInline
-value class DocumentLinkRequest(val request: RequestMessage)
+value class DocumentLinkRequest(val request: RequestMessage) {
+    companion object {
+        /**
+         * The document link resolve request is sent from the client to the server
+         * to resolve the target of a given document link.
+         */
+        const val RESOLVE: String = "documentLink/resolve"
+    }
+}
 
 /**
  * A request in the `documentLink/` namespace.
