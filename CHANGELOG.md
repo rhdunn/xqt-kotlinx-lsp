@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2023-05-19
+
 Implementation of the
 [Language Server Protocol 2.x](https://github.com/microsoft/language-server-protocol/blob/main/versions/protocol-2-x.md)
 specification.
@@ -36,16 +38,15 @@ Notifications and Requests:
 - `initialize` -- Make the `processId` parameter nullable.
 - `initialize` -- Make `capabilities` an instance of `ClientCapabilities`.
 - `textDocument/completion` -- Return a `CompletionList` instead of a `List<CompletionItem>`.
-> __NOTE:__ The following notifications and requests are no longer compatible
-> with LSP 1.x clients/servers.
+  > __NOTE:__ The following notifications and requests are incompatible with LSP 1.x clients/servers.
 - `textDocument/codeLens` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/completion` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/definition` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/didChange` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/didClose` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/didOpen` -- Replace the `uri` and `text` parameters with `textDocument`.
-- `textDocument/documentHighlight` -- Replace the `uri` parameter with `textDocument`.
-- `textDocument/documentHighlight` -- Return a `List<DocumentHighlight>` instead of a `DocumetnHighlight` object.
+- `textDocument/documentHighlight` -- Replace the `uri` parameter with `textDocument`; return
+  a `List<DocumentHighlight>` instead of a `DocumentHighlight` object.
 - `textDocument/documentSymbol` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/hover` -- Replace the `uri` parameter with `textDocument`.
 - `textDocument/references` -- Replace the `uri` parameter with `textDocument`.
@@ -134,5 +135,6 @@ Types:
 - `TextDocumentPosition`
 
 [Unreleased]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.1...HEAD
+[2.0.0]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.1...2.0.0
 [1.0.1]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/rhdunn/xqt-kotlinx-lsp/releases/tag/1.0.0

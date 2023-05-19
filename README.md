@@ -33,16 +33,16 @@ Maven:
     <dependency>
         <groupId>io.github.rhdunn</groupId>
         <artifactId>xqt-kotlinx-lsp</artifactId>
-        <version>1.0.1</version>
+        <version>2.0.0</version>
     </dependency>
 
 Gradle (Groovy DSL):
 
-    implementation 'io.github.rhdunn:xqt-kotlinx-lsp:1.0.1'
+    implementation 'io.github.rhdunn:xqt-kotlinx-lsp:2.0.0'
 
 Gradle (Kotlin DSL):
 
-    implementation("io.github.rhdunn:xqt-kotlinx-lsp:1.0.1")
+    implementation("io.github.rhdunn:xqt-kotlinx-lsp:2.0.0")
 
 ## Supported Kotlin/Native Targets
 | Target [1]                | Family       | Tier [1]       | Status          |
