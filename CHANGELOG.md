@@ -12,7 +12,7 @@ specification.
 
 ### Added
 
-- `ServerNotInitialized` error code.
+- `ServerNotInitialized` and `UnknownErrorCode` error codes.
 
 ### Dependency Upgrades
 

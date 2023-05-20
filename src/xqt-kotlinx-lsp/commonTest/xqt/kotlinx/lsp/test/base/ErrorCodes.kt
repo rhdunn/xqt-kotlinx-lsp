@@ -24,6 +24,7 @@ class TheLspErrorCodes {
         assertEquals("-32000", ErrorCode.serializeToJson(ErrorCodes.ServerErrorEnd).toString())
 
         assertEquals("-32002", ErrorCode.serializeToJson(ErrorCodes.ServerNotInitialized).toString())
+        assertEquals("-32001", ErrorCode.serializeToJson(ErrorCodes.UnknownErrorCode).toString())
     }
 
     @Test
@@ -40,6 +41,7 @@ class TheLspErrorCodes {
         assertEquals(ErrorCodes.ServerErrorEnd, ErrorCode.deserialize(JsonPrimitive(-32000)))
 
         assertEquals(ErrorCodes.ServerNotInitialized, ErrorCode.deserialize(JsonPrimitive(-32002)))
+        assertEquals(ErrorCodes.UnknownErrorCode, ErrorCode.deserialize(JsonPrimitive(-32001)))
     }
 
     @Test

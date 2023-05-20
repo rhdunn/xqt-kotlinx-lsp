@@ -53,6 +53,16 @@ object ErrorCodes {
     val ServerNotInitialized: ErrorCode = ErrorCode(-32002)
 
     /**
+     * Error code indicating that a server received a notification or
+     * request before the server has received the `initialize` request.
+     *
+     * __Note:__ This is the error code used by LSP 2.x.
+     *
+     * @since 3.0.0
+     */
+    val UnknownErrorCode: ErrorCode = ErrorCode(-32001)
+
+    /**
      * Reserved for implementation-defined server-errors.
      */
     val ServerErrorEnd: ErrorCode = ErrorCode(-32000)
