@@ -159,6 +159,7 @@ ProjectMetadata.BuildTargets.KonanTargets.forEach { konanTarget ->
         KonanTarget.WASM32 -> kotlin.wasm32(nativeName) // Deprecated, to be removed in 1.9.20
         KonanTarget.WATCHOS_ARM32 -> kotlin.watchosArm32(nativeName) // Tier 2
         KonanTarget.WATCHOS_ARM64 -> kotlin.watchosArm64(nativeName) // Tier 2
+        KonanTarget.WATCHOS_DEVICE_ARM64 -> kotlin.watchosDeviceArm64(nativeName) // Tier 3
         KonanTarget.WATCHOS_SIMULATOR_ARM64 -> kotlin.watchosSimulatorArm64(nativeName) // Tier 2
         KonanTarget.WATCHOS_X64 -> kotlin.watchosX64(nativeName) // Tier 2
         KonanTarget.WATCHOS_X86 -> kotlin.watchosX86(nativeName) // Deprecated, to be removed in 1.9.20

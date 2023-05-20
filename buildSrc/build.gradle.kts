@@ -7,5 +7,5 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-native-utils:1.7.20")
+    implementation("org.jetbrains.kotlin:kotlin-native-utils:1.8.21")
 }

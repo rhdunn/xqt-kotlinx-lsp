@@ -89,6 +89,7 @@ object ProjectMetadata {
             KonanTarget.WASM32, // Deprecated, to be removed in 1.9.20
             KonanTarget.WATCHOS_ARM32, // Tier 2
             KonanTarget.WATCHOS_ARM64, // Tier 2
+            KonanTarget.WATCHOS_DEVICE_ARM64, // Tier 3
             KonanTarget.WATCHOS_SIMULATOR_ARM64, // Tier 2
             KonanTarget.WATCHOS_X64, // Tier 2
             KonanTarget.WATCHOS_X86, // Deprecated, to be removed in 1.9.20

@@ -11,7 +11,7 @@ object Version {
      *
      * @see <a href="https://github.com/JetBrains/kotlin">https://github.com/JetBrains/kotlin</a>
      */
-    const val Kotlin = "1.7.20"
+    const val Kotlin = "1.8.21"
 
     /**
      * Versions of the various plugins used by the project.
@@ -24,7 +24,7 @@ object Version {
          *
          * @see <a href="https://github.com/Kotlin/dokka">https://github.com/Kotlin/dokka</a>
          */
-        const val Dokka = Kotlin
+        const val Dokka = "1.8.10"
 
         /**
          * The version of the `kotlin("multiplatform")` plugin.

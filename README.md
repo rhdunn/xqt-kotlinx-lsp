@@ -66,8 +66,9 @@ Gradle (Kotlin DSL):
 | `wasm32`                  | WASM         | Deprecated [2] | Build Only [3] |
 | `watchos_arm32`           | Mac Watch OS | 2              | Build Only [3] |
 | `watchos_arm64`           | Mac Watch OS | 2              | Build Only [3] |
+| `watchos_device_arm64`    | Mac Watch OS | 3              | Build and Test |
 | `watchos_simulator_arm64` | Mac Watch OS | 2              | Build and Test |
-| `watchos_x64`             | Mac Watch OS | 2              | Build Only [4] |
+| `watchos_x64`             | Mac Watch OS | 2              | Build and Test |
 | `watchos_x86`             | Mac Watch OS | Deprecated [2] | Build and Test |
 
 [1] See https://kotlinlang.org/docs/native-target-support.html for the list of
@@ -79,9 +80,6 @@ JetBrains for the Kotlin/Native target.
 
 [3] The tests for these targets are not supported by Kotlin/Native. A gradle
 `nativeTest` task is not available for this configuration.
-
-[4] The tests fail with Kotlin 1.7.20. There is a fix for this in the Kotlin
-1.8.0 release. See [KT-54814](https://youtrack.jetbrains.com/issue/KT-54814).
 
 ## Documentation
 1. [API Documentation](https://rhdunn.github.io/kotlin-multiplatform-template/)

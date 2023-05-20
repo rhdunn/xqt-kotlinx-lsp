@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
 - Default to building with gradle 8.1.1.
+- Upgrade to Kotlin 1.8.21.
+- Upgrade to Dokka 1.8.10.
 
 ## [1.2.1] - 2023-05-20
 
