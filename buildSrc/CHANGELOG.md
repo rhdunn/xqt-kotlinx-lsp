@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
 - Don't run the workflows when pushing tags to the repository.
 - Set `jvm.variants` and `konan.variants` to `target-only` when importing the
   project in IntelliJ IDEA.
+- Fix running the build action for the `watchos_x86` Kotlin/native target on
+  GitHub Actions.
 
 ## [1.2.0] - 2023-05-16
 

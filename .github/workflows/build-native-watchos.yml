@@ -55,7 +55,7 @@ jobs:
             publish-action: publishWatchosx64
             run-tests: false # Invalid device: Apple Watch Series 5. See https://youtrack.jetbrains.com/issue/KT-54814.
           - konan-target: watchos_x86
-            build-action: watchos86
+            build-action: watchosx86
             publish-action: publishWatchosx86
             run-tests: true
 
