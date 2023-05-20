@@ -12,7 +12,11 @@ specification.
 
 ### Added
 
+Base Protocol:
 - `ServerNotInitialized` and `UnknownErrorCode` error codes.
+
+Types:
+- `DocumentUri`
 
 ### Dependency Upgrades
 
