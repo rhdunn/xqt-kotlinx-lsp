@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2023-05-20
+
 ### Fixed
 
 - Don't run the workflows when pushing tags to the repository.
@@ -58,7 +60,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build and publish the Dokka documentation to GitHub Pages.
 - Build and optionally deploy the various targets to Maven Central.
 
-[Unreleased]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.2.1...HEAD
+[1.2.1]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/rhdunn/kotlin-multilpatform-template/releases/tag/1.0.0
