@@ -3,8 +3,11 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 > A template project for Kotlin multiplatform projects
 
-> NOTE: This readme should be edited to describe your project, removing the
+> __Note:__ This readme should be edited to describe your project, removing the
 > text describing the content of this template.
+
+> __Note:__ This project requires Gradle 8.0 or higher, as the `buildSrc`
+> extensions make use of the Kotlin 1.8 APIs.
 
 See [Project Template](docs/build/Project%20Template.md) for more information
 on the structure of this Kotlin multiplatform project template.
