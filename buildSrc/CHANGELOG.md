@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Default to building with gradle 8.1.1, requires gradle 8.0 or later.
 - Upgrade to Kotlin 1.8.21.
 - Upgrade to Dokka 1.8.10.
+- Upgrade to JUnit 5.9.3.
 - Remove support for the deprecated Kotlin/JS legacy target.
 - Remove support for the deprecated Kotlin/Native targets.
 

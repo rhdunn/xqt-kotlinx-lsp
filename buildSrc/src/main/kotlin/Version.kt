@@ -56,6 +56,6 @@ object Version {
          *
          * @see <a href="https://github.com/junit-team/junit5">https://github.com/junit-team/junit5</a>
          */
-        const val JUnit = "5.6.0"
+        const val JUnit = "5.9.3"
     }
 }
