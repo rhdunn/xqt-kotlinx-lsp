@@ -10,7 +10,7 @@ import xqt.kotlinx.rpc.json.serialization.valueOutOfRange
 /**
  * Defines an integer number in the range of -2^31 to 2^31 - 1.
  *
- * @since 3.16.0
+ * @since 1.0.0 (LSP 3.16.0)
  */
 typealias Integer = JsonInt
 
@@ -22,7 +22,7 @@ typealias Integer = JsonInt
  * [LSP issue 1394](https://github.com/microsoft/language-server-protocol/issues/1394) and
  * [DAP issue 237](https://github.com/microsoft/debug-adapter-protocol/issues/237).
  *
- * @since 3.16.0
+ * @since 1.0.0 (LSP 3.16.0)
  */
 object UInteger : JsonSerialization<UInt> {
     override fun serializeToJson(value: UInt): JsonPrimitive {
@@ -44,27 +44,27 @@ object UInteger : JsonSerialization<UInt> {
  * denote the exact range with every decimal using the mathematics interval
  * notation (e.g. `[0, 1]` denotes all decimals `d` with `0 <= d <= 1`).
  *
- * @since 3.16.0
+ * @since 1.0.0 (LSP 3.16.0)
  */
 typealias Decimal = JsonDouble
 
 /**
  * The LSP any type
  *
- * @since 3.17.0
+ * @since 1.0.0 (LSP 3.17.0)
  */
 typealias LSPAny = xqt.kotlinx.rpc.json.serialization.types.JsonElement
 
 /**
  * LSP object definition.
  *
- * @since 3.17.0
+ * @since 1.0.0 (LSP 3.17.0)
  */
 typealias LSPObject = JsonObject
 
 /**
  * LSP arrays.
  *
- * @since 3.17.0
+ * @since 1.0.0 (LSP 3.17.0)
  */
 typealias LSPArray = JsonArray
