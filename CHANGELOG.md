@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Implementation of the
+[Language Server Protocol 3.0.0](https://github.com/microsoft/language-server-protocol/blob/3.0.0/protocol.md)
+specification.
+
+### Added
+
+- `ServerNotInitialized` error code.
+
 ### Dependency Upgrades
 
 - Upgrade to XQT Kotlinx JSON RPC 1.1.0 snapshot.

@@ -45,6 +45,14 @@ object ErrorCodes {
     val ServerErrorStart: ErrorCode = ErrorCode(-32099)
 
     /**
+     * Error code indicating that a server received a notification or
+     * request before the server has received the `initialize` request.
+     *
+     * @since 3.0.0
+     */
+    val ServerNotInitialized: ErrorCode = ErrorCode(-32002)
+
+    /**
      * Reserved for implementation-defined server-errors.
      */
     val ServerErrorEnd: ErrorCode = ErrorCode(-32000)
@@ -138,5 +146,22 @@ fun MethodNotFound(message: String? = null, data: JsonElement? = null): ErrorObj
 fun InvalidRequest(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
     code = ErrorCodes.InvalidRequest,
     message = message ?: "Invalid Request",
+    data = data
+)
+
+/**
+ * Error code indicating that a server received a notification or
+ * request before the server has received the `initialize` request.
+ *
+ * @param message a string providing a short description of the error
+ * @param data a primitive or structured value that contains additional
+ *             information about the error
+ *
+ * @since 3.0.0
+ */
+@Suppress("FunctionName")
+fun ServerNotInitialized(message: String? = null, data: JsonElement? = null): ErrorObject = ErrorObject(
+    code = ErrorCodes.ServerNotInitialized,
+    message = message ?: "Server Not Initialized",
     data = data
 )
