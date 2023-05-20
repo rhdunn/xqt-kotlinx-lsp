@@ -11,6 +11,9 @@ Code lens request and notification messages, and types.
 # Package xqt.kotlinx.lsp.completionItem
 Completion item request and notification messages, and types.
 
+# Package xqt.kotlinx.lsp.documentLink
+Document link request and notification messages, and types.
+
 # Package xqt.kotlinx.lsp.lifecycle
 Lifecycle request and notification messages, and types.
 
