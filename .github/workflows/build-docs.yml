@@ -23,10 +23,10 @@ jobs:
       - name: Source Code Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Generate the HTML documentation
         run: gradle -D jvm.variants=target-only -D konan.variants=target-only dokkaHtmlMultiModule

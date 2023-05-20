@@ -31,10 +31,10 @@ jobs:
       - name: Source Code Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Build for Kotlin/JS IR
         run: gradle -D nodejs.download=false jsIrJar
@@ -58,10 +58,10 @@ jobs:
       matrix:
         node: [ 16, 18 ]
     steps:
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
@@ -86,10 +86,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
@@ -114,10 +114,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
@@ -142,10 +142,10 @@ jobs:
     needs: [ test-node, test-chrome, test-firefox ]
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Download Build Artifacts
         uses: actions/download-artifact@v3
