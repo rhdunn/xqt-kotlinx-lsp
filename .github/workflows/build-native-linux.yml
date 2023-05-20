@@ -31,28 +31,13 @@ jobs:
       matrix:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
-          linux_arm32_hfp, # Deprecated, to be removed in 1.9.20
           linux_arm64, # Tier 2
-          linux_mips32, # Deprecated, to be removed in 1.9.20
-          linux_mipsel32, # Deprecated, to be removed in 1.9.20
           linux_x64, # Tier 1 ; native host
         ]
         include:
-          - konan-target: linux_arm32_hfp
-            build-action: linuxarm32hfp
-            publish-action: publishLinuxarm32hfp
-            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
           - konan-target: linux_arm64
             build-action: linuxarm64
             publish-action: publishLinuxarm64
-            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
-          - konan-target: linux_mips32
-            build-action: linuxmips32
-            publish-action: publishLinuxmips32
-            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
-          - konan-target: linux_mipsel32
-            build-action: linuxmipsel32
-            publish-action: publishLinuxmipsel32
             run-tests: false # Task 'nativeTest' is ambiguous in root project ...
           - konan-target: linux_x64
             build-action: linuxx64

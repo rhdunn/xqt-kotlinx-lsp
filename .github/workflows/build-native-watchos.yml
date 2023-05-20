@@ -35,7 +35,6 @@ jobs:
           watchos_arm64, # Tier 2
           watchos_simulator_arm64, # Tier 2
           watchos_x64, # Tier 2
-          watchos_x86, # Deprecated, to be removed in 1.9.20
         ]
         include:
           - konan-target: watchos_arm32
@@ -53,10 +52,6 @@ jobs:
           - konan-target: watchos_x64
             build-action: watchosx64
             publish-action: publishWatchosx64
-            run-tests: true
-          - konan-target: watchos_x86
-            build-action: watchosx86
-            publish-action: publishWatchosx86
             run-tests: true
 
     runs-on: macos-latest

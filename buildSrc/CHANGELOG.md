@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade to Kotlin 1.8.21.
 - Upgrade to Dokka 1.8.10.
 - Remove support for the deprecated Kotlin/JS legacy target.
+- Remove support for the deprecated Kotlin/Native targets.
 
 ## [1.2.1] - 2023-05-20
 

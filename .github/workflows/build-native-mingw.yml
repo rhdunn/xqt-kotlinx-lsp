@@ -32,17 +32,12 @@ jobs:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
           mingw_x64, # Tier 3 ; native host
-          mingw_x86, # Deprecated, to be removed in 1.9.20
         ]
         include:
           - konan-target: mingw_x64
             build-action: mingwx64
             publish-action: publishMingwx64
             run-tests: true
-          - konan-target: mingw_x86
-            build-action: mingwx86
-            publish-action: publishMingwx86
-            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
 
     runs-on: windows-latest
     steps:
