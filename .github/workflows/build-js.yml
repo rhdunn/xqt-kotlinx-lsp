@@ -36,11 +36,8 @@ jobs:
         with:
           gradle-version: 8.1.1
 
-      - name: Build for Kotlin/JS IR
-        run: gradle -D nodejs.download=false jsIrJar
-
-      - name: Build for Kotlin/JS Legacy
-        run: gradle -D nodejs.download=false jsLegacyJar
+      - name: Build for Kotlin/JS
+        run: gradle -D nodejs.download=false jsJar
 
       - name: Tar Build Artifacts
         run: tar -cvf build-js-artifacts.tar .
@@ -76,11 +73,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Test for Kotlin/JS IR on Node
-        run: gradle -D nodejs.download=false jsIrNodeTest
-
-      - name: Test for Kotlin/JS Legacy on Node
-        run: gradle -D nodejs.download=false jsLegacyNodeTest
+      - name: Test for Kotlin/JS on Node
+        run: gradle -D nodejs.download=false jsNodeTest
 
   test-firefox:
     needs: build
@@ -104,11 +98,8 @@ jobs:
         with:
           firefox-version: 'latest'
 
-      - name: Test for Kotlin/JS IR on Firefox
-        run: gradle -D nodejs.download=false -D karma.browser=firefox jsIrBrowserTest
-
-      - name: Test for Kotlin/JS Legacy on Firefox
-        run: gradle -D nodejs.download=false -D karma.browser=firefox jsLegacyBrowserTest
+      - name: Test for Kotlin/JS on Firefox
+        run: gradle -D nodejs.download=false -D karma.browser=firefox jsBrowserTest
 
   test-chrome:
     needs: build
@@ -132,11 +123,8 @@ jobs:
         with:
           chrome-version: 'latest'
 
-      - name: Test for Kotlin/JS IR on Chrome
-        run: gradle -D nodejs.download=false -D karma.browser=chrome jsIrBrowserTest
-
-      - name: Test for Kotlin/JS Legacy on Chrome
-        run: gradle -D nodejs.download=false -D karma.browser=chrome jsLegacyBrowserTest
+      - name: Test for Kotlin/JS on Chrome
+        run: gradle -D nodejs.download=false -D karma.browser=chrome jsBrowserTest
 
   publish:
     needs: [ test-node, test-chrome, test-firefox ]

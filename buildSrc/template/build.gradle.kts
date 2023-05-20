@@ -51,7 +51,7 @@ rootProject.plugins.withType<NodeJsRootPlugin> {
     rootProject.the<NodeJsRootExtension>().download = BuildConfiguration.nodeJsDownload(project)
 }
 
-kotlin.js(KotlinJsCompilerType.BOTH).browser {
+kotlin.js(KotlinJsCompilerType.IR).browser {
     testTask {
         useKarma {
             when (BuildConfiguration.karmaBrowserTarget(project)) {
@@ -78,7 +78,7 @@ kotlin.js(KotlinJsCompilerType.BOTH).browser {
     }
 }
 
-kotlin.js(KotlinJsCompilerType.BOTH).nodejs {
+kotlin.js(KotlinJsCompilerType.IR).nodejs {
 }
 
 kotlin.sourceSets {

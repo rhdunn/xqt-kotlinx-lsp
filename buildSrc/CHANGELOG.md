@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Default to building with gradle 8.1.1.
+- Default to building with gradle 8.1.1, requires gradle 8.0 or later.
 - Upgrade to Kotlin 1.8.21.
 - Upgrade to Dokka 1.8.10.
+- Remove support for the deprecated Kotlin/JS legacy target.
 
 ## [1.2.1] - 2023-05-20
 
