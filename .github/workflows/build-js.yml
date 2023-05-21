@@ -98,6 +98,11 @@ jobs:
         with:
           firefox-version: 'latest'
 
+      # The yarn.lock file may change depending on the configured Karma browser,
+      # so update it here to prevent build failures.
+      - name: Update the Yarn Lock File
+        run: gradle -D nodejs.download=false -D karma.browser=firefox kotlinUpgradeYarnLock
+
       - name: Test for Kotlin/JS on Firefox
         run: gradle -D nodejs.download=false -D karma.browser=firefox jsBrowserTest
 
@@ -122,6 +127,11 @@ jobs:
         uses: browser-actions/setup-chrome@latest
         with:
           chrome-version: 'latest'
+
+      # The yarn.lock file may change depending on the configured Karma browser,
+      # so update it here to prevent build failures.
+      - name: Update the Yarn Lock File
+        run: gradle -D nodejs.download=false -D karma.browser=chrome kotlinUpgradeYarnLock
 
       - name: Test for Kotlin/JS on Chrome
         run: gradle -D nodejs.download=false -D karma.browser=chrome jsBrowserTest
