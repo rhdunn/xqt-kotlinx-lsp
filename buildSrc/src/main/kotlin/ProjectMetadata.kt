@@ -66,25 +66,22 @@ object ProjectMetadata {
          * @see <a href="https://kotlinlang.org/docs/native-target-support.html">Kotlin/Native target support</a>
          */
         val KonanTargets: List<KonanTarget> = listOf(
-            KonanTarget.IOS_ARM32, // Deprecated, to be removed in 1.9.20
             KonanTarget.IOS_ARM64, // Tier 2
             KonanTarget.IOS_SIMULATOR_ARM64, // Tier 1
             KonanTarget.IOS_X64, // Tier 1
-            KonanTarget.LINUX_ARM32_HFP, // Deprecated, to be removed in 1.9.20
             KonanTarget.LINUX_ARM64, // Tier 2
             KonanTarget.LINUX_X64, // Tier 1 ; native host
             KonanTarget.MACOS_ARM64, // Tier 1 ; native host
             KonanTarget.MACOS_X64, // Tier 1 ; native host
             KonanTarget.MINGW_X64, // Tier 3 ; native host
-            KonanTarget.MINGW_X86, // Deprecated, to be removed in 1.9.20
             KonanTarget.TVOS_ARM64, // Tier 2
             KonanTarget.TVOS_SIMULATOR_ARM64, // Tier 2
             KonanTarget.TVOS_X64, // Tier 2
             KonanTarget.WATCHOS_ARM32, // Tier 2
             KonanTarget.WATCHOS_ARM64, // Tier 2
+            KonanTarget.WATCHOS_DEVICE_ARM64, // Tier 3
             KonanTarget.WATCHOS_SIMULATOR_ARM64, // Tier 2
             KonanTarget.WATCHOS_X64, // Tier 2
-            KonanTarget.WATCHOS_X86, // Deprecated, to be removed in 1.9.20
         )
     }
 

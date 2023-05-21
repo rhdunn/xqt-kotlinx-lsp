@@ -6,9 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Default to building with gradle 8.1.1, requires gradle 8.0 or later.
+- Upgrade to Kotlin 1.8.21.
+- Upgrade to Dokka 1.8.10.
+- Upgrade to JUnit 5.9.3.
+- Remove support for the deprecated Kotlin/JS legacy target.
+- Remove support for the deprecated Kotlin/Native targets.
+
+## [1.2.1] - 2023-05-20
+
+### Fixed
+
 - Don't run the workflows when pushing tags to the repository.
 - Set `jvm.variants` and `konan.variants` to `target-only` when importing the
   project in IntelliJ IDEA.
+- Fix running the build action for the `watchos_x86` Kotlin/native target on
+  GitHub Actions.
 
 ## [1.2.0] - 2023-05-16
 
@@ -54,7 +69,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build and publish the Dokka documentation to GitHub Pages.
 - Build and optionally deploy the various targets to Maven Central.
 
-[Unreleased]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.2.1...HEAD
+[1.2.1]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/rhdunn/kotlin-multilpatform-template/releases/tag/1.0.0

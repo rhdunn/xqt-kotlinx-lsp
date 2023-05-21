@@ -38,7 +38,7 @@ fun <T> NamedDomainObjectContainer<T>.nativeTest(target: Named): T {
  * Returns the default publication name for the target.
  */
 val KonanTarget.publicationName: String
-    get() = name.toLowerCase().replace("_", "")
+    get() = name.lowercase().replace("_", "")
 
 /**
  * Returns the Maven artifact ID suffix name for the target.

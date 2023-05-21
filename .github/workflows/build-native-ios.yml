@@ -32,16 +32,11 @@ jobs:
       matrix:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
-          ios_arm32, # Deprecated, to be removed in 1.9.20
           ios_arm64, # Tier 2
           ios_simulator_arm64, # Tier 1
           ios_x64, # Tier 1
         ]
         include:
-          - konan-target: ios_arm32
-            build-action: iosarm32
-            publish-action: publishIosarm32
-            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
           - konan-target: ios_arm64
             build-action: iosarm64
             publish-action: publishIosarm64
@@ -104,16 +99,11 @@ jobs:
       matrix:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
-          ios_arm32, # Deprecated, to be removed in 1.9.20
           ios_arm64, # Tier 2
           ios_simulator_arm64, # Tier 1
           ios_x64, # Tier 1
         ]
         include:
-          - konan-target: ios_arm32
-            build-action: iosarm32
-            publish-action: publishIosarm32
-            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
           - konan-target: ios_arm64
             build-action: iosarm64
             publish-action: publishIosarm64
@@ -132,10 +122,10 @@ jobs:
       - name: Source Code Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Download XQT Kotlin JSON-RPC Artifacts
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}

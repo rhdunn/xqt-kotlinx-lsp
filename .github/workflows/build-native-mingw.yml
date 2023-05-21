@@ -33,17 +33,12 @@ jobs:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
           mingw_x64, # Tier 3 ; native host
-          mingw_x86, # Deprecated, to be removed in 1.9.20
         ]
         include:
           - konan-target: mingw_x64
             build-action: mingwx64
             publish-action: publishMingwx64
             run-tests: true
-          - konan-target: mingw_x86
-            build-action: mingwx86
-            publish-action: publishMingwx86
-            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
 
     runs-on: windows-latest
     steps:
@@ -95,27 +90,22 @@ jobs:
         # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
         konan-target: [
           mingw_x64, # Tier 3 ; native host
-          mingw_x86, # Deprecated, to be removed in 1.9.20
         ]
         include:
           - konan-target: mingw_x64
             build-action: mingwx64
             publish-action: publishMingwx64
             run-tests: true
-          - konan-target: mingw_x86
-            build-action: mingwx86
-            publish-action: publishMingwx86
-            run-tests: false # Task 'nativeTest' is ambiguous in root project ...
 
     runs-on: windows-latest
     steps:
       - name: Source Code Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Gradle 7.5
+      - name: Setup Gradle 8.1.1
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 7.5
+          gradle-version: 8.1.1
 
       - name: Download XQT Kotlin JSON-RPC Artifacts
         if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
