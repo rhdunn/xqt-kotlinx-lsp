@@ -6,14 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2023-05-22
+
+### Removed
+
+- Remove support for the deprecated Kotlin/JS legacy target.
+- Remove support for the deprecated Kotlin/Native targets.
+
 ### Changed
 
-- Default to building with gradle 8.1.1, requires gradle 8.0 or later.
+- Default to building with gradle 8.1.1.
+
+### Dependency Upgrades
+
+- Upgrade to Gradle 8.0 and later.
 - Upgrade to Kotlin 1.8.21.
 - Upgrade to Dokka 1.8.10.
 - Upgrade to JUnit 5.9.3.
-- Remove support for the deprecated Kotlin/JS legacy target.
-- Remove support for the deprecated Kotlin/Native targets.
 
 ## [1.2.1] - 2023-05-20
 
@@ -69,7 +78,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build and publish the Dokka documentation to GitHub Pages.
 - Build and optionally deploy the various targets to Maven Central.
 
-[Unreleased]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.2.1...HEAD
+[Unreleased]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.2.1...2.0.0
 [1.2.1]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.0.0...1.1.0
