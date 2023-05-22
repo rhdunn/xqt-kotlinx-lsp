@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.textDocument.SymbolInformation
 import xqt.kotlinx.lsp.textDocument.SymbolKind
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -40,7 +41,7 @@ class TheSymbolInformationType {
         val si = SymbolInformation.deserialize(json)
         assertEquals("Lorem Ipsum", si.name)
         assertEquals(SymbolKind.Property, si.kind)
-        assertEquals("file:///home/lorem/ipsum.py", si.location.uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), si.location.uri)
         assertEquals(Position(5u, 12u), si.location.range.start)
         assertEquals(Position(5u, 21u), si.location.range.end)
 
@@ -71,7 +72,7 @@ class TheSymbolInformationType {
         val si = SymbolInformation.deserialize(json)
         assertEquals("Lorem Ipsum", si.name)
         assertEquals(SymbolKind.Property, si.kind)
-        assertEquals("file:///home/lorem/ipsum.py", si.location.uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), si.location.uri)
         assertEquals(Position(5u, 12u), si.location.range.start)
         assertEquals(Position(5u, 21u), si.location.range.end)
 

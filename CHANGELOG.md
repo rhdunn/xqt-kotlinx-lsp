@@ -18,6 +18,11 @@ Base Protocol:
 Types:
 - `DocumentUri`
 
+### Changed
+
+Types:
+- `Location` -- Changed the `uri` parameter to a `DocumentUri`.
+
 ### Dependency Upgrades
 
 - Upgrade to XQT Kotlinx JSON RPC 1.1.0 snapshot.

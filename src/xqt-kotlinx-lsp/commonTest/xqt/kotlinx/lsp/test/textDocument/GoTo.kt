@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.test.textDocument
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.textDocument.GoTo
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -37,7 +38,7 @@ class TheGoToResponseResult {
         assertEquals(1, goto.size)
         assertEquals(1, goto.locations.size)
 
-        assertEquals("file:///home/lorem/ipsum.py", goto.locations[0].uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), goto.locations[0].uri)
         assertEquals(Position(2u, 6u), goto.locations[0].range.start)
         assertEquals(Position(2u, 8u), goto.locations[0].range.end)
 
@@ -85,7 +86,7 @@ class TheGoToResponseResult {
         assertEquals(1, goto.size)
         assertEquals(1, goto.locations.size)
 
-        assertEquals("file:///home/lorem/ipsum.py", goto.locations[0].uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), goto.locations[0].uri)
         assertEquals(Position(2u, 6u), goto.locations[0].range.start)
         assertEquals(Position(2u, 8u), goto.locations[0].range.end)
 
@@ -132,11 +133,11 @@ class TheGoToResponseResult {
         assertEquals(2, goto.size)
         assertEquals(2, goto.locations.size)
 
-        assertEquals("file:///home/lorem/ipsum.py", goto.locations[0].uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), goto.locations[0].uri)
         assertEquals(Position(2u, 6u), goto.locations[0].range.start)
         assertEquals(Position(2u, 8u), goto.locations[0].range.end)
 
-        assertEquals("file:///home/lorem/ipsum.py", goto.locations[1].uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), goto.locations[0].uri)
         assertEquals(Position(3u, 6u), goto.locations[1].range.start)
         assertEquals(Position(3u, 8u), goto.locations[1].range.end)
 

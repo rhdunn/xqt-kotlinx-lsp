@@ -1561,7 +1561,7 @@ class TextDocumentDSL {
 
                     GoTo(
                         Location(
-                            uri = textDocument.uri,
+                            uri = DocumentUri(textDocument.uri),
                             range = Range(start = position, end = position)
                         )
                     )
@@ -1628,11 +1628,11 @@ class TextDocumentDSL {
 
                     GoTo(
                         Location(
-                            uri = textDocument.uri,
+                            uri = DocumentUri(textDocument.uri),
                             range = Range(start = position, end = position)
                         ),
                         Location(
-                            uri = textDocument.uri,
+                            uri = DocumentUri(textDocument.uri),
                             range = Range(start = position, end = position)
                         )
                     )

@@ -19,7 +19,7 @@ data class Location(
     /**
      * The text document's URI.
      */
-    val uri: String,
+    val uri: DocumentUri,
 
     /**
      * The location inside the document.
@@ -28,14 +28,14 @@ data class Location(
 ) {
     companion object : JsonSerialization<Location> {
         override fun serializeToJson(value: Location): JsonObject = buildJsonObject {
-            put("uri", value.uri, JsonString)
+            put("uri", value.uri, DocumentUri)
             put("range", value.range, Range)
         }
 
         override fun deserialize(json: JsonElement): Location = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> Location(
-                uri = json.get("uri", JsonString),
+                uri = json.get("uri", DocumentUri),
                 range = json.get("range", Range)
             )
         }

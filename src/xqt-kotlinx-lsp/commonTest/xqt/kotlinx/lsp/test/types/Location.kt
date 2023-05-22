@@ -3,6 +3,7 @@ package xqt.kotlinx.lsp.test.types
 
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.lsp.types.Location
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
@@ -33,7 +34,7 @@ class TheLocationType {
         )
 
         val loc = Location.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", loc.uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), loc.uri)
         assertEquals(Position(5u, 23u), loc.range.start)
         assertEquals(Position(5u, 23u), loc.range.end)
 
