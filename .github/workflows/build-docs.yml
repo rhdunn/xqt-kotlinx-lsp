@@ -14,7 +14,7 @@ concurrency:
   group: "pages"
 
 env:
-  XQT_KOTLINX_JSON_RPC: '1.0.2'
+  XQT_KOTLINX_JSON_RPC: 'release'
 
 jobs:
   xqt-kotlinx-json-rpc:

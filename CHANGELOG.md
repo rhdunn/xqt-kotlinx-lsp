@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade to Dokka 1.8.10.
 - Upgrade to JUnit 5.9.3.
 - Upgrade to Kotlinx Serialization 1.5.1.
+- Upgrade to XQT Kotlinx JSON RPC 1.0.3.
 
 ## [2.0.0] - 2023-05-19
 

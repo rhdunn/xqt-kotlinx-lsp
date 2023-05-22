@@ -23,7 +23,7 @@ env:
   SIGNING_KEY_PRIVATE: ${{ secrets.SIGNING_KEY_PRIVATE }}
   SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
   MAVEN_CENTRAL_REPOSITORY: ${{ inputs.mavenCentralRepository || 'none' }}
-  XQT_KOTLINX_JSON_RPC: '1.0.2'
+  XQT_KOTLINX_JSON_RPC: 'release'
 
 jobs:
   xqt-kotlinx-json-rpc:
