@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Default to building with gradle 8.1.1.
+- Remove support for the deprecated Kotlin/JS legacy target.
+- Remove support for the deprecated Kotlin/Native targets.
+
+### Dependency Upgrades
+
+- Upgrade to Gradle 8.0 and later.
+- Upgrade to Kotlin 1.8.21.
+- Upgrade to Dokka 1.8.10.
+- Upgrade to JUnit 5.9.3.
+- Upgrade to Kotlinx Serialization 1.5.1.
+
 ## [2.0.0] - 2023-05-19
 
 Implementation of the
@@ -73,6 +87,10 @@ Types:
   multiple target JVM maven artifact releases.
 - Switched to the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format
   for changelogs.
+
+### Dependency Upgrades
+
+- Upgrade to XQT Kotlinx JSON RPC 1.0.2.
 
 ## [1.0.0] - 2023-04-16
 

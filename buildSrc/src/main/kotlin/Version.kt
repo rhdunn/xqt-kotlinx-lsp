@@ -75,7 +75,7 @@ object Version {
          *
          * @see <a href="https://github.com/Kotlin/kotlinx.serialization/tree/master/formats/json">https://github.com/Kotlin/kotlinx.serialization/tree/master/formats/json</a>
          */
-        const val KotlinxSerializationJson = "1.4.1"
+        const val KotlinxSerializationJson = "1.5.1"
 
         /**
          * The version of the `xqt-kotlinx-json-rpc` library.
