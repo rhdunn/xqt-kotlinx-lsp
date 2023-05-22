@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2023-05-22
+
 ### Added
 
 - Add support for the Android Kotlin/Native targets.
@@ -161,7 +163,8 @@ Types:
 - `TextDocumentIdentifier`
 - `TextDocumentPosition`
 
-[Unreleased]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.1...HEAD
+[Unreleased]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/2.0.1...HEAD
+[2.0.1]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.1...2.0.0
 [1.0.1]: https://github.com/rhdunn/xqt-kotlinx-lsp/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/rhdunn/xqt-kotlinx-lsp/releases/tag/1.0.0
