@@ -66,6 +66,10 @@ object ProjectMetadata {
          * @see <a href="https://kotlinlang.org/docs/native-target-support.html">Kotlin/Native target support</a>
          */
         val KonanTargets: List<KonanTarget> = listOf(
+            KonanTarget.ANDROID_ARM32, // Tier 3
+            KonanTarget.ANDROID_ARM64, // Tier 3
+            KonanTarget.ANDROID_X64, // Tier 3
+            KonanTarget.ANDROID_X86, // Tier 3
             KonanTarget.IOS_ARM64, // Tier 2
             KonanTarget.IOS_SIMULATOR_ARM64, // Tier 1
             KonanTarget.IOS_X64, // Tier 1

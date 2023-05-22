@@ -47,10 +47,10 @@ Gradle (Kotlin DSL):
 ## Supported Kotlin/Native Targets
 | Target [1]                | Family       | Tier [1]       | Status          |
 |---------------------------|--------------|----------------|-----------------|
-| `android_arm32`           | Android      | 3              | Unsupported [3] |
-| `android_arm64`           | Android      | 3              | Unsupported [3] |
-| `android_x64`             | Android      | 3              | Unsupported [3] |
-| `android_x86`             | Android      | 3              | Unsupported [3] |
+| `android_arm32`           | Android      | 3              | Build Only [2]  |
+| `android_arm64`           | Android      | 3              | Build Only [2]  |
+| `android_x64`             | Android      | 3              | Build Only [2]  |
+| `android_x86`             | Android      | 3              | Build Only [2]  |
 | `ios_arm64`               | Mac iOS      | 2              | Build Only [2]  |
 | `ios_simulator_arm64`     | Mac iOS      | 1              | Build and Test  |
 | `ios_x64`                 | Mac iOS      | 1              | Build and Test  |
@@ -75,9 +75,6 @@ JetBrains for the Kotlin/Native target.
 
 [2] The tests for these targets are not supported by Kotlin/Native. A gradle
 `nativeTest` task is not available for this configuration.
-
-[3] The dependant `kotlinx-serialization-json` library does not support these
-Kotlin/Native targets.
 
 ## Documentation
 1. [API Documentation](https://rhdunn.github.io/xqt-kotlinx-lsp/)
