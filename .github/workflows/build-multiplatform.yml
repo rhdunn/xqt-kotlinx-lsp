@@ -47,4 +47,4 @@ jobs:
 
       - name: Publish Kotlin/Multiplatform to Maven Central
         if: env.OSSRH_USERNAME && env.MAVEN_CENTRAL_REPOSITORY != 'none'
-        run: gradle --stacktrace -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} publishKotlinMultiplatformPublicationToMavenCentral
+        run: gradle --stacktrace -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} publishKotlinMultiplatformPublicationToMavenCentralRepository

@@ -160,4 +160,4 @@ jobs:
 
       - name: Publish Kotlin/JS to Maven Central
         if: env.OSSRH_USERNAME && env.MAVEN_CENTRAL_REPOSITORY != 'none'
-        run: gradle --stacktrace -D nodejs.download=false -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} publishJsPublicationToMavenCentral
+        run: gradle --stacktrace -D nodejs.download=false -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} publishJsPublicationToMavenCentralRepository
