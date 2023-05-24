@@ -76,4 +76,4 @@ jobs:
 
       - name: Publish Kotlin/Native to Maven Central
         if: env.OSSRH_USERNAME && env.MAVEN_CENTRAL_REPOSITORY != 'none'
-        run: gradle --stacktrace -D konan.target=${{ matrix.konan-target }} -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} ${{ matrix.publish-action }}PublicationToMavenCentral
+        run: gradle --stacktrace -D konan.target=${{ matrix.konan-target }} -D maven.sign=env -D maven.repository.sonatype=${{ env.MAVEN_CENTRAL_REPOSITORY }} ${{ matrix.publish-action }}PublicationToMavenCentralRepository
