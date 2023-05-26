@@ -20,11 +20,11 @@ data class WorkspaceEdit(
     /**
      * Holds changes to existing resources.
      */
-    val changes: Map<String, List<TextEdit>>
+    val changes: Map<DocumentUri, List<TextEdit>>
 ) {
     companion object : JsonSerialization<WorkspaceEdit> {
         private val TextEditArrayMap = JsonTypedObject(
-            keySerialization = JsonString,
+            keySerialization = DocumentUri,
             valueSerialization = TextEditArray
         )
 

@@ -3,6 +3,7 @@ package xqt.kotlinx.lsp.test.types
 
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.WorkspaceEdit
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
@@ -56,11 +57,11 @@ class TheWorkspaceEditType {
         val we = WorkspaceEdit.deserialize(json)
         assertEquals(2, we.changes.size)
 
-        val lorem = we.changes["file:///home/lorem/lorem.py"]
+        val lorem = we.changes[DocumentUri("file:///home/lorem/lorem.py")]
         assertNotNull(lorem)
         assertEquals(0, lorem.size)
 
-        val ipsum = we.changes["file:///home/lorem/ipsum.py"]
+        val ipsum = we.changes[DocumentUri("file:///home/lorem/ipsum.py")]
         assertNotNull(ipsum)
         assertEquals(2, ipsum.size)
 

@@ -24,6 +24,7 @@ Types:
 
 Types:
 - `Location` -- Changed the `uri` parameter to a `DocumentUri`.
+- `WorkspaceEdit` -- Changed the `changes` parameter key to a `DocumentUri`.
 
 ### Dependency Upgrades
 
