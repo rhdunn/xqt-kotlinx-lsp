@@ -20,6 +20,8 @@ Types:
 
 ### Changed
 
+- Updated the API documentation.
+
 Types:
 - `Location` -- Changed the `uri` parameter to a `DocumentUri`.
 

@@ -14,6 +14,10 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 /**
  * A textual edit applicable to a text document.
  *
+ * If `n` `TextEdit`s are applied to a text document all text edits describe changes to
+ * the initial document version. Execution wise text edits should applied from the bottom
+ * to the top of the text document. Overlapping text edits are not supported.
+ *
  * @since 1.0.0
  */
 data class TextEdit(
@@ -77,15 +81,11 @@ data class TextEdit(
 }
 
 /**
- * Complex text manipulations are described with an array of `TextEdit`'s, representing
- * a single change to the document.
+ * An array of text edits to apply.
  *
- * All text edits ranges refer to positions in the original document. Text edits ranges
- * must never overlap, that means no part of the original document must be manipulated
- * by more than one edit. However, it is possible that multiple edits have the same
- * start position: multiple inserts, or any number of inserts followed by a single
- * remove or replace edit. If multiple inserts have the same position, the order in the
- * array defines the order in which the inserted strings appear in the resulting text.
+ * If `n` `TextEdit`s are applied to a text document all text edits describe changes to
+ * the initial document version. Execution wise text edits should applied from the bottom
+ * to the top of the text document. Overlapping text edits are not supported.
  *
  * @since 2.0.0
  */
