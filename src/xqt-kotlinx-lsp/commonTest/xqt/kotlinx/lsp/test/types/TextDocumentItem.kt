@@ -3,6 +3,7 @@ package xqt.kotlinx.lsp.test.types
 
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.lsp.types.TextDocumentItem
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -25,7 +26,7 @@ class TheTextDocumentItemType {
         )
 
         val tdi = TextDocumentItem.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", tdi.uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), tdi.uri)
         assertEquals("python", tdi.languageId)
         assertEquals(12, tdi.version)
         assertEquals("Lorem ipsum dolor.", tdi.text)

@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.test.textDocument
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.textDocument.DidOpenTextDocumentParams
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
@@ -27,7 +28,7 @@ class TheTextDocumentDidOpenNotificationParameters {
         )
 
         val params = DidOpenTextDocumentParams.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", params.textDocument.uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), params.textDocument.uri)
         assertEquals("python", params.textDocument.languageId)
         assertEquals(12, params.textDocument.version)
         assertEquals("Lorem ipsum dolor.", params.textDocument.text)

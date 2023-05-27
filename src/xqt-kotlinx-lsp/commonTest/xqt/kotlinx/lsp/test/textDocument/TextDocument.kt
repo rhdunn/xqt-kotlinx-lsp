@@ -49,7 +49,7 @@ class TextDocumentDSL {
                     assertEquals("2.0", jsonrpc)
                     assertEquals("textDocument/didOpen", method)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals("python", textDocument.languageId)
                     assertEquals(12, textDocument.version)
                     assertEquals("Lorem ipsum dolor.", textDocument.text)
@@ -66,7 +66,7 @@ class TextDocumentDSL {
         server.textDocument.didOpen(
             params = DidOpenTextDocumentParams(
                 textDocument = TextDocumentItem(
-                    uri = "file:///home/lorem/ipsum.py",
+                    uri = DocumentUri("file:///home/lorem/ipsum.py"),
                     languageId = "python",
                     version = 12,
                     text = "Lorem ipsum dolor."
@@ -96,7 +96,7 @@ class TextDocumentDSL {
     fun supports_sending_did_open_notifications_using_function_parameters() = testJsonRpc {
         server.textDocument.didOpen(
             textDocument = TextDocumentItem(
-                uri = "file:///home/lorem/ipsum.py",
+                uri = DocumentUri("file:///home/lorem/ipsum.py"),
                 languageId = "python",
                 version = 12,
                 text = "Lorem ipsum dolor."

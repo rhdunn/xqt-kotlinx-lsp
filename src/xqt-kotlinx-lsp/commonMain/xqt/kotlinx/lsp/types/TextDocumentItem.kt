@@ -20,7 +20,7 @@ data class TextDocumentItem(
     /**
      * The text document's URI.
      */
-    val uri: String,
+    val uri: DocumentUri,
 
     /**
      * The text document's language identifier.
@@ -40,7 +40,7 @@ data class TextDocumentItem(
 ) {
     companion object : JsonSerialization<TextDocumentItem> {
         override fun serializeToJson(value: TextDocumentItem): JsonObject = buildJsonObject {
-            put("uri", value.uri, JsonString)
+            put("uri", value.uri, DocumentUri)
             put("languageId", value.languageId, JsonString)
             put("version", value.version, Integer)
             put("text", value.text, JsonString)
@@ -49,7 +49,7 @@ data class TextDocumentItem(
         override fun deserialize(json: JsonElement): TextDocumentItem = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> TextDocumentItem(
-                uri = json.get("uri", JsonString),
+                uri = json.get("uri", DocumentUri),
                 languageId = json.get("languageId", JsonString),
                 version = json.get("version", Integer),
                 text = json.get("text", JsonString)

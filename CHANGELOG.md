@@ -26,6 +26,7 @@ Types:
 - `Location` -- Changed the `uri` parameter to a `DocumentUri`.
 - `WorkspaceEdit` -- Changed the `changes` parameter key to a `DocumentUri`.
 - `TextDocumentIdentifier` -- Changed the `uri` parameter to a `DocumentUri`.
+- `TextDocumentItem` -- Changed the `uri` parameter to a `DocumentUri`.
 
 ### Dependency Upgrades
 
