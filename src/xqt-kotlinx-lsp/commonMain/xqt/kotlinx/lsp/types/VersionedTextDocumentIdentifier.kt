@@ -17,7 +17,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
  * @since 2.0.0
  */
 data class VersionedTextDocumentIdentifier(
-    override val uri: String,
+    override val uri: DocumentUri,
 
     /**
      * The version number of this document.
@@ -26,14 +26,14 @@ data class VersionedTextDocumentIdentifier(
 ) : TextDocumentIdentifier {
     companion object : JsonSerialization<VersionedTextDocumentIdentifier> {
         override fun serializeToJson(value: VersionedTextDocumentIdentifier): JsonObject = buildJsonObject {
-            put("uri", value.uri, JsonString)
+            put("uri", value.uri, DocumentUri)
             put("version", value.version, Integer)
         }
 
         override fun deserialize(json: JsonElement): VersionedTextDocumentIdentifier = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> VersionedTextDocumentIdentifier(
-                uri = json.get("uri", JsonString),
+                uri = json.get("uri", DocumentUri),
                 version = json.get("version", Integer)
             )
         }

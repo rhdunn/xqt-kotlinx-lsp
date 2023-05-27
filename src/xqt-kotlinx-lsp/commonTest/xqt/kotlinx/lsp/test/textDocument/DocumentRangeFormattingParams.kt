@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.test.textDocument
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.textDocument.DocumentRangeFormattingParams
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -39,7 +40,7 @@ class TheTextDocumentRangeFormattingParameters {
         )
 
         val params = DocumentRangeFormattingParams.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", params.textDocument.uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), params.textDocument.uri)
         assertEquals(Position(5u, 12u), params.range.start)
         assertEquals(Position(5u, 21u), params.range.end)
 

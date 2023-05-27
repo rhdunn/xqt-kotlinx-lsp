@@ -149,7 +149,7 @@ class TextDocumentDSL {
                     assertEquals("2.0", jsonrpc)
                     assertEquals("textDocument/didChange", method)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(12, textDocument.version)
                     assertEquals(0, contentChanges.size)
                 }
@@ -165,7 +165,7 @@ class TextDocumentDSL {
         server.textDocument.didChange(
             params = DidChangeTextDocumentParams(
                 textDocument = VersionedTextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py",
+                    uri = DocumentUri("file:///home/lorem/ipsum.py"),
                     version = 12
                 ),
                 contentChanges = listOf()
@@ -193,7 +193,7 @@ class TextDocumentDSL {
     fun supports_sending_did_change_notifications_using_function_parameters() = testJsonRpc {
         server.textDocument.didChange(
             textDocument = VersionedTextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py",
+                uri = DocumentUri("file:///home/lorem/ipsum.py"),
                 version = 12
             ),
             contentChanges = listOf()
@@ -242,7 +242,7 @@ class TextDocumentDSL {
                     assertEquals("2.0", jsonrpc)
                     assertEquals("textDocument/didClose", method)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                 }
             }
         }
@@ -256,7 +256,7 @@ class TextDocumentDSL {
         server.textDocument.didClose(
             params = DidCloseTextDocumentParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         )
@@ -280,7 +280,7 @@ class TextDocumentDSL {
     fun supports_sending_did_close_notifications_using_function_parameters() = testJsonRpc {
         server.textDocument.didClose(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         )
 
@@ -327,7 +327,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/documentLink", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
 
                     listOf()
                 }
@@ -372,7 +372,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/documentLink", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
 
                     listOf(
                         DocumentLink(
@@ -419,7 +419,7 @@ class TextDocumentDSL {
         val id = client.textDocument.documentLink(
             params = DocumentLinkParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         )
@@ -448,7 +448,7 @@ class TextDocumentDSL {
         client.textDocument.documentLink(
             params = DocumentLinkParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         ) {
@@ -480,7 +480,7 @@ class TextDocumentDSL {
         client.textDocument.documentLink(
             params = DocumentLinkParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         ) {
@@ -510,7 +510,7 @@ class TextDocumentDSL {
     fun supports_sending_document_link_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.documentLink(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -537,7 +537,7 @@ class TextDocumentDSL {
 
         client.textDocument.documentLink(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         ) {
             ++called
@@ -567,7 +567,7 @@ class TextDocumentDSL {
 
         client.textDocument.documentLink(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         ) {
             ++called
@@ -703,7 +703,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/completion", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     val items = listOf(
@@ -740,7 +740,7 @@ class TextDocumentDSL {
         val id = client.textDocument.completion(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -774,7 +774,7 @@ class TextDocumentDSL {
         client.textDocument.completion(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -820,7 +820,7 @@ class TextDocumentDSL {
         client.textDocument.completion(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -851,7 +851,7 @@ class TextDocumentDSL {
     fun supports_sending_completion_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.completion(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         )
@@ -883,7 +883,7 @@ class TextDocumentDSL {
 
         client.textDocument.completion(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         ) {
@@ -927,7 +927,7 @@ class TextDocumentDSL {
 
         client.textDocument.completion(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         ) {
@@ -985,7 +985,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/hover", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     Hover(
@@ -1026,7 +1026,7 @@ class TextDocumentDSL {
         val id = client.textDocument.hover(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -1060,7 +1060,7 @@ class TextDocumentDSL {
         client.textDocument.hover(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -1100,7 +1100,7 @@ class TextDocumentDSL {
         client.textDocument.hover(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -1131,7 +1131,7 @@ class TextDocumentDSL {
     fun supports_sending_hover_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.hover(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         )
@@ -1163,7 +1163,7 @@ class TextDocumentDSL {
 
         client.textDocument.hover(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         ) {
@@ -1201,7 +1201,7 @@ class TextDocumentDSL {
 
         client.textDocument.hover(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         ) {
@@ -1259,7 +1259,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/signatureHelp", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     SignatureHelp(signatures = listOf())
@@ -1287,7 +1287,7 @@ class TextDocumentDSL {
         val id = client.textDocument.signatureHelp(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -1321,7 +1321,7 @@ class TextDocumentDSL {
         client.textDocument.signatureHelp(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -1354,7 +1354,7 @@ class TextDocumentDSL {
         client.textDocument.signatureHelp(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -1385,7 +1385,7 @@ class TextDocumentDSL {
     fun supports_sending_signature_help_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.signatureHelp(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         )
@@ -1417,7 +1417,7 @@ class TextDocumentDSL {
 
         client.textDocument.signatureHelp(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         ) {
@@ -1448,7 +1448,7 @@ class TextDocumentDSL {
 
         client.textDocument.signatureHelp(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         ) {
@@ -1506,7 +1506,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/definition", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     GoTo()
@@ -1556,12 +1556,12 @@ class TextDocumentDSL {
                     assertEquals("textDocument/definition", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     GoTo(
                         Location(
-                            uri = DocumentUri(textDocument.uri),
+                            uri = textDocument.uri,
                             range = Range(start = position, end = position)
                         )
                     )
@@ -1623,16 +1623,16 @@ class TextDocumentDSL {
                     assertEquals("textDocument/definition", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     GoTo(
                         Location(
-                            uri = DocumentUri(textDocument.uri),
+                            uri = textDocument.uri,
                             range = Range(start = position, end = position)
                         ),
                         Location(
-                            uri = DocumentUri(textDocument.uri),
+                            uri = textDocument.uri,
                             range = Range(start = position, end = position)
                         )
                     )
@@ -1685,7 +1685,7 @@ class TextDocumentDSL {
         val id = client.textDocument.definition(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -1719,7 +1719,7 @@ class TextDocumentDSL {
         client.textDocument.definition(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -1752,7 +1752,7 @@ class TextDocumentDSL {
         client.textDocument.definition(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -1783,7 +1783,7 @@ class TextDocumentDSL {
     fun supports_sending_definition_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.definition(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         )
@@ -1815,7 +1815,7 @@ class TextDocumentDSL {
 
         client.textDocument.definition(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         ) {
@@ -1846,7 +1846,7 @@ class TextDocumentDSL {
 
         client.textDocument.definition(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         ) {
@@ -1907,7 +1907,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/references", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     assertEquals(false, context.includeDeclaration)
@@ -1935,7 +1935,7 @@ class TextDocumentDSL {
         val id = client.textDocument.references(
             params = ReferenceParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u),
                 context = ReferenceContext(
@@ -1975,7 +1975,7 @@ class TextDocumentDSL {
         client.textDocument.references(
             params = ReferenceParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u),
                 context = ReferenceContext(
@@ -2011,7 +2011,7 @@ class TextDocumentDSL {
         client.textDocument.references(
             params = ReferenceParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u),
                 context = ReferenceContext(
@@ -2045,7 +2045,7 @@ class TextDocumentDSL {
     fun supports_sending_references_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.references(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u),
             context = ReferenceContext(
@@ -2083,7 +2083,7 @@ class TextDocumentDSL {
 
         client.textDocument.references(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u),
             context = ReferenceContext(
@@ -2117,7 +2117,7 @@ class TextDocumentDSL {
 
         client.textDocument.references(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u),
             context = ReferenceContext(
@@ -2178,7 +2178,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/documentHighlight", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(Position(2u, 6u), position)
 
                     listOf(
@@ -2221,7 +2221,7 @@ class TextDocumentDSL {
         val id = client.textDocument.documentHighlight(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -2255,7 +2255,7 @@ class TextDocumentDSL {
         client.textDocument.documentHighlight(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -2295,7 +2295,7 @@ class TextDocumentDSL {
         client.textDocument.documentHighlight(
             params = TextDocumentPositionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(2u, 6u)
             )
@@ -2326,7 +2326,7 @@ class TextDocumentDSL {
     fun supports_sending_document_highlight_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.documentHighlight(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         )
@@ -2358,7 +2358,7 @@ class TextDocumentDSL {
 
         client.textDocument.documentHighlight(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         ) {
@@ -2396,7 +2396,7 @@ class TextDocumentDSL {
 
         client.textDocument.documentHighlight(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(2u, 6u)
         ) {
@@ -2450,7 +2450,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/documentSymbol", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
 
                     listOf()
                 }
@@ -2475,7 +2475,7 @@ class TextDocumentDSL {
         val id = client.textDocument.documentSymbol(
             params = DocumentSymbolParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         )
@@ -2504,7 +2504,7 @@ class TextDocumentDSL {
         client.textDocument.documentSymbol(
             params = DocumentSymbolParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         ) {
@@ -2536,7 +2536,7 @@ class TextDocumentDSL {
         client.textDocument.documentSymbol(
             params = DocumentSymbolParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         ) {
@@ -2566,7 +2566,7 @@ class TextDocumentDSL {
     fun supports_sending_document_symbol_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.documentSymbol(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -2593,7 +2593,7 @@ class TextDocumentDSL {
 
         client.textDocument.documentSymbol(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         ) {
             ++called
@@ -2623,7 +2623,7 @@ class TextDocumentDSL {
 
         client.textDocument.documentSymbol(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         ) {
             ++called
@@ -2689,7 +2689,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/codeAction", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
 
                     assertEquals(Position(5u, 12u), range.start)
                     assertEquals(Position(5u, 21u), range.end)
@@ -2719,7 +2719,7 @@ class TextDocumentDSL {
         val id = client.textDocument.codeAction(
             params = CodeActionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 range = Range(
                     start = Position(5u, 12u),
@@ -2768,7 +2768,7 @@ class TextDocumentDSL {
         client.textDocument.codeAction(
             params = CodeActionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 range = Range(
                     start = Position(5u, 12u),
@@ -2807,7 +2807,7 @@ class TextDocumentDSL {
         client.textDocument.codeAction(
             params = CodeActionParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 range = Range(
                     start = Position(5u, 12u),
@@ -2844,7 +2844,7 @@ class TextDocumentDSL {
     fun supports_sending_code_action_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.codeAction(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             range = Range(
                 start = Position(5u, 12u),
@@ -2891,7 +2891,7 @@ class TextDocumentDSL {
 
         client.textDocument.codeAction(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             range = Range(
                 start = Position(5u, 12u),
@@ -2928,7 +2928,7 @@ class TextDocumentDSL {
 
         client.textDocument.codeAction(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             range = Range(
                 start = Position(5u, 12u),
@@ -2988,7 +2988,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/codeLens", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
 
                     listOf()
                 }
@@ -3013,7 +3013,7 @@ class TextDocumentDSL {
         val id = client.textDocument.codeLens(
             params = CodeLensParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         )
@@ -3042,7 +3042,7 @@ class TextDocumentDSL {
         client.textDocument.codeLens(
             params = CodeLensParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         ) {
@@ -3074,7 +3074,7 @@ class TextDocumentDSL {
         client.textDocument.codeLens(
             params = CodeLensParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         ) {
@@ -3104,7 +3104,7 @@ class TextDocumentDSL {
     fun supports_sending_code_lens_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.codeLens(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         )
         assertEquals(JsonIntOrString.IntegerValue(1), id)
@@ -3131,7 +3131,7 @@ class TextDocumentDSL {
 
         client.textDocument.codeLens(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         ) {
             ++called
@@ -3161,7 +3161,7 @@ class TextDocumentDSL {
 
         client.textDocument.codeLens(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         ) {
             ++called
@@ -3218,7 +3218,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/formatting", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
 
                     assertEquals(2, options.size)
                     assertEquals(4u, options.tabSize)
@@ -3247,7 +3247,7 @@ class TextDocumentDSL {
         val id = client.textDocument.formatting(
             params = DocumentFormattingParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 options = FormattingOptions(
                     tabSize = 4u,
@@ -3284,7 +3284,7 @@ class TextDocumentDSL {
         client.textDocument.formatting(
             params = DocumentFormattingParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 options = FormattingOptions(
                     tabSize = 4u,
@@ -3320,7 +3320,7 @@ class TextDocumentDSL {
         client.textDocument.formatting(
             params = DocumentFormattingParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 options = FormattingOptions(
                     tabSize = 4u,
@@ -3354,7 +3354,7 @@ class TextDocumentDSL {
     fun supports_sending_formatting_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.formatting(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             options = FormattingOptions(
                 tabSize = 4u,
@@ -3389,7 +3389,7 @@ class TextDocumentDSL {
 
         client.textDocument.formatting(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             options = FormattingOptions(
                 tabSize = 4u,
@@ -3423,7 +3423,7 @@ class TextDocumentDSL {
 
         client.textDocument.formatting(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             options = FormattingOptions(
                 tabSize = 4u,
@@ -3494,7 +3494,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/rangeFormatting", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
 
                     assertEquals(Position(5u, 12u), range.start)
                     assertEquals(Position(5u, 21u), range.end)
@@ -3526,7 +3526,7 @@ class TextDocumentDSL {
         val id = client.textDocument.rangeFormatting(
             params = DocumentRangeFormattingParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 range = Range(
                     start = Position(5u, 12u),
@@ -3577,7 +3577,7 @@ class TextDocumentDSL {
         client.textDocument.rangeFormatting(
             params = DocumentRangeFormattingParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 range = Range(
                     start = Position(5u, 12u),
@@ -3617,7 +3617,7 @@ class TextDocumentDSL {
         client.textDocument.rangeFormatting(
             params = DocumentRangeFormattingParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 range = Range(
                     start = Position(5u, 12u),
@@ -3655,7 +3655,7 @@ class TextDocumentDSL {
     fun supports_sending_range_formatting_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.rangeFormatting(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             range = Range(
                 start = Position(5u, 12u),
@@ -3704,7 +3704,7 @@ class TextDocumentDSL {
 
         client.textDocument.rangeFormatting(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             range = Range(
                 start = Position(5u, 12u),
@@ -3742,7 +3742,7 @@ class TextDocumentDSL {
 
         client.textDocument.rangeFormatting(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             range = Range(
                 start = Position(5u, 12u),
@@ -3812,7 +3812,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/onTypeFormatting", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(Position(5u, 12u), position)
                     assertEquals("c", ch)
 
@@ -3843,7 +3843,7 @@ class TextDocumentDSL {
         val id = client.textDocument.onTypeFormatting(
             params = DocumentOnTypeFormattingParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(5u, 12u),
                 ch = "c",
@@ -3887,7 +3887,7 @@ class TextDocumentDSL {
         client.textDocument.onTypeFormatting(
             params = DocumentOnTypeFormattingParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(5u, 12u),
                 ch = "c",
@@ -3925,7 +3925,7 @@ class TextDocumentDSL {
         client.textDocument.onTypeFormatting(
             params = DocumentOnTypeFormattingParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(5u, 12u),
                 ch = "c",
@@ -3961,7 +3961,7 @@ class TextDocumentDSL {
     fun supports_sending_on_type_formatting_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.onTypeFormatting(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(5u, 12u),
             ch = "c",
@@ -4003,7 +4003,7 @@ class TextDocumentDSL {
 
         client.textDocument.onTypeFormatting(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(5u, 12u),
             ch = "c",
@@ -4039,7 +4039,7 @@ class TextDocumentDSL {
 
         client.textDocument.onTypeFormatting(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(5u, 12u),
             ch = "c",
@@ -4103,7 +4103,7 @@ class TextDocumentDSL {
                     assertEquals("textDocument/rename", method)
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                     assertEquals(Position(5u, 12u), position)
                     assertEquals("dolor", newName)
 
@@ -4132,7 +4132,7 @@ class TextDocumentDSL {
         val id = client.textDocument.rename(
             params = RenameParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(5u, 12u),
                 newName = "dolor"
@@ -4168,7 +4168,7 @@ class TextDocumentDSL {
         client.textDocument.rename(
             params = RenameParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(5u, 12u),
                 newName = "dolor"
@@ -4202,7 +4202,7 @@ class TextDocumentDSL {
         client.textDocument.rename(
             params = RenameParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 ),
                 position = Position(5u, 12u),
                 newName = "dolor"
@@ -4234,7 +4234,7 @@ class TextDocumentDSL {
     fun supports_sending_rename_requests_using_function_parameters() = testJsonRpc {
         val id = client.textDocument.rename(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(5u, 12u),
             newName = "dolor"
@@ -4268,7 +4268,7 @@ class TextDocumentDSL {
 
         client.textDocument.rename(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(5u, 12u),
             newName = "dolor"
@@ -4300,7 +4300,7 @@ class TextDocumentDSL {
 
         client.textDocument.rename(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             ),
             position = Position(5u, 12u),
             newName = "dolor"
@@ -4353,7 +4353,7 @@ class TextDocumentDSL {
                     assertEquals("2.0", jsonrpc)
                     assertEquals("textDocument/didSave", method)
 
-                    assertEquals("file:///home/lorem/ipsum.py", textDocument.uri)
+                    assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), textDocument.uri)
                 }
             }
         }
@@ -4367,7 +4367,7 @@ class TextDocumentDSL {
         server.textDocument.didSave(
             params = DidSaveTextDocumentParams(
                 textDocument = TextDocumentIdentifier(
-                    uri = "file:///home/lorem/ipsum.py"
+                    uri = DocumentUri("file:///home/lorem/ipsum.py")
                 )
             )
         )
@@ -4391,7 +4391,7 @@ class TextDocumentDSL {
     fun supports_sending_did_save_notifications_using_function_parameters() = testJsonRpc {
         server.textDocument.didSave(
             textDocument = TextDocumentIdentifier(
-                uri = "file:///home/lorem/ipsum.py"
+                uri = DocumentUri("file:///home/lorem/ipsum.py")
             )
         )
 

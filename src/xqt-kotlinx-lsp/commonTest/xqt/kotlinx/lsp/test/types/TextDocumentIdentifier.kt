@@ -3,6 +3,7 @@ package xqt.kotlinx.lsp.test.types
 
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
@@ -22,7 +23,7 @@ class TheTextDocumentIdentifierType {
         )
 
         val tdi = TextDocumentIdentifier.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", tdi.uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), tdi.uri)
 
         assertEquals(json, TextDocumentIdentifier.serializeToJson(tdi))
     }
@@ -30,8 +31,8 @@ class TheTextDocumentIdentifierType {
     @Test
     @DisplayName("supports creating a text document identifier")
     fun supports_creating_a_text_document_identifier() {
-        val tdi = TextDocumentIdentifier("file:///home/lorem/ipsum.py")
-        assertEquals("file:///home/lorem/ipsum.py", tdi.uri)
+        val tdi = TextDocumentIdentifier(DocumentUri("file:///home/lorem/ipsum.py"))
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), tdi.uri)
     }
 
     @Test

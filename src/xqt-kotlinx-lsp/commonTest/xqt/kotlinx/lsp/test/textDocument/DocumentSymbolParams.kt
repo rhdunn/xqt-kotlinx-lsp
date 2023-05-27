@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.test.textDocument
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.textDocument.DocumentSymbolParams
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
@@ -24,7 +25,7 @@ class TheTextDocumentDocumentSymbolParameters {
         )
 
         val params = DocumentSymbolParams.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", params.textDocument.uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), params.textDocument.uri)
 
         assertEquals(json, DocumentSymbolParams.serializeToJson(params))
     }

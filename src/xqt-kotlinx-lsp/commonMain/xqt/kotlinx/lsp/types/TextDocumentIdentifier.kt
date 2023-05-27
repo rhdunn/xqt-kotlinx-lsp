@@ -21,17 +21,17 @@ interface TextDocumentIdentifier {
     /**
      * The text document's URI.
      */
-    val uri: String
+    val uri: DocumentUri
 
     companion object : JsonSerialization<TextDocumentIdentifier> {
         override fun serializeToJson(value: TextDocumentIdentifier): JsonObject = buildJsonObject {
-            put("uri", value.uri, JsonString)
+            put("uri", value.uri, DocumentUri)
         }
 
         override fun deserialize(json: JsonElement): TextDocumentIdentifier = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> TextDocumentIdentifier(
-                uri = json.get("uri", JsonString)
+                uri = json.get("uri", DocumentUri)
             )
         }
     }
@@ -44,6 +44,6 @@ interface TextDocumentIdentifier {
  *
  * @since 1.0.0
  */
-fun TextDocumentIdentifier(uri: String): TextDocumentIdentifier = object : TextDocumentIdentifier {
-    override val uri: String = uri
+fun TextDocumentIdentifier(uri: DocumentUri): TextDocumentIdentifier = object : TextDocumentIdentifier {
+    override val uri: DocumentUri = uri
 }

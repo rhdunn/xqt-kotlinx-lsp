@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.test.types
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.lsp.types.TextDocumentPositionParams
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
@@ -28,7 +29,7 @@ class TheTextDocumentPositionParamsType {
         )
 
         val tdpp = TextDocumentPositionParams.deserialize(json)
-        assertEquals("file:///home/lorem/ipsum.py", tdpp.textDocument.uri)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), tdpp.textDocument.uri)
         assertEquals(2u, tdpp.position.line)
         assertEquals(6u, tdpp.position.character)
 
