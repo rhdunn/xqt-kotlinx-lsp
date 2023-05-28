@@ -3,11 +3,11 @@ package xqt.kotlinx.lsp.window
 
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.rpc.json.enumeration.JsonEnumeration
+import xqt.kotlinx.rpc.json.enumeration.JsonIntEnumerationType
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
-import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
@@ -92,13 +92,11 @@ data class ShowMessageRequestParams(
  * @since 1.0.0
  */
 @JvmInline
-value class MessageType(val type: Int) {
-    companion object : JsonSerialization<MessageType> {
-        override fun serializeToJson(value: MessageType): JsonPrimitive = JsonPrimitive(value.type)
+value class MessageType(val type: Int) : JsonEnumeration<Int> {
+    override val kind: Int get() = type
 
-        override fun deserialize(json: JsonElement): MessageType {
-            return MessageType(JsonInt.deserialize(json))
-        }
+    companion object : JsonIntEnumerationType<MessageType>() {
+        override fun valueOf(value: Int): MessageType = MessageType(value)
 
         /**
          * An error message.
