@@ -7,6 +7,8 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import xqt.kotlinx.lsp.base.LSPAny
 import xqt.kotlinx.lsp.types.*
+import xqt.kotlinx.rpc.json.enumeration.JsonEnumeration
+import xqt.kotlinx.rpc.json.enumeration.JsonIntEnumerationType
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.*
@@ -182,13 +184,9 @@ data class CompletionItem(
  * @since 1.0.0
  */
 @JvmInline
-value class CompletionItemKind(val kind: Int) {
-    companion object : JsonSerialization<CompletionItemKind> {
-        override fun serializeToJson(value: CompletionItemKind): JsonPrimitive = JsonPrimitive(value.kind)
-
-        override fun deserialize(json: JsonElement): CompletionItemKind {
-            return CompletionItemKind(JsonInt.deserialize(json))
-        }
+value class CompletionItemKind(override val kind: Int) : JsonEnumeration<Int> {
+    companion object : JsonIntEnumerationType<CompletionItemKind>() {
+        override fun valueOf(value: Int): CompletionItemKind = CompletionItemKind(value)
 
         /**
          * A text completion entry.
