@@ -62,6 +62,11 @@ ProjectMetadata.BuildTargets.JvmTargets.forEach { jvmTarget ->
 }
 
 if (supportedJvmVariants !== SupportedVariants.None) {
+    tasks.getByName("compileJava", JavaCompile::class).let {
+        it.sourceCompatibility = javaVersion.toString()
+        it.targetCompatibility = javaVersion.toString()
+    }
+
     kotlin.sourceSets {
         jvmMain(javaTarget).kotlin.srcDir("jvmMain")
 
