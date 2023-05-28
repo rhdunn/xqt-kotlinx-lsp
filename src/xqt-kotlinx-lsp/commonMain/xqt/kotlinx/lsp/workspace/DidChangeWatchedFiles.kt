@@ -3,14 +3,14 @@ package xqt.kotlinx.lsp.workspace
 
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.rpc.json.enumeration.JsonEnumeration
+import xqt.kotlinx.rpc.json.enumeration.JsonIntEnumerationType
 import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
 import xqt.kotlinx.rpc.json.serialization.JsonSerialization
 import xqt.kotlinx.rpc.json.serialization.get
 import xqt.kotlinx.rpc.json.serialization.put
-import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
@@ -51,13 +51,11 @@ data class DidChangeWatchedFilesParams(
  * @since 1.0.0
  */
 @JvmInline
-value class FileChangeType(val type: Int) {
-    companion object : JsonSerialization<FileChangeType> {
-        override fun serializeToJson(value: FileChangeType): JsonPrimitive = JsonPrimitive(value.type)
+value class FileChangeType(val type: Int) : JsonEnumeration<Int> {
+    override val kind: Int get() = type
 
-        override fun deserialize(json: JsonElement): FileChangeType {
-            return FileChangeType(JsonInt.deserialize(json))
-        }
+    companion object : JsonIntEnumerationType<FileChangeType>() {
+        override fun valueOf(value: Int): FileChangeType = FileChangeType(value)
 
         /**
          * The file got created.
