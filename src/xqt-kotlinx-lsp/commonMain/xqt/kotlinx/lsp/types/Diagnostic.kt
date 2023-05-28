@@ -3,10 +3,10 @@ package xqt.kotlinx.lsp.types
 
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.rpc.json.enumeration.JsonEnumeration
+import xqt.kotlinx.rpc.json.enumeration.JsonIntEnumerationType
 import xqt.kotlinx.rpc.json.serialization.*
-import xqt.kotlinx.rpc.json.serialization.types.JsonInt
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import kotlin.jvm.JvmInline
@@ -78,13 +78,11 @@ data class Diagnostic(
  * @since 1.0.0
  */
 @JvmInline
-value class DiagnosticSeverity(val severity: Int) {
-    companion object : JsonSerialization<DiagnosticSeverity> {
-        override fun serializeToJson(value: DiagnosticSeverity): JsonPrimitive = JsonPrimitive(value.severity)
+value class DiagnosticSeverity(val severity: Int) : JsonEnumeration<Int> {
+    override val kind: Int get() = severity
 
-        override fun deserialize(json: JsonElement): DiagnosticSeverity {
-            return DiagnosticSeverity(JsonInt.deserialize(json))
-        }
+    companion object : JsonIntEnumerationType<DiagnosticSeverity>() {
+        override fun valueOf(value: Int): DiagnosticSeverity = DiagnosticSeverity(value)
 
         /**
          * Reports an error.
