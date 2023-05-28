@@ -1,10 +1,8 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.textDocument
 
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonPrimitive
-import xqt.kotlinx.rpc.json.serialization.JsonSerialization
-import xqt.kotlinx.rpc.json.serialization.types.JsonInt
+import xqt.kotlinx.rpc.json.enumeration.JsonEnumeration
+import xqt.kotlinx.rpc.json.enumeration.JsonIntEnumerationType
 import kotlin.jvm.JvmInline
 
 /**
@@ -15,13 +13,9 @@ import kotlin.jvm.JvmInline
  * @since 1.0.0
  */
 @JvmInline
-value class TextDocumentSyncKind(val kind: Int) {
-    companion object : JsonSerialization<TextDocumentSyncKind> {
-        override fun serializeToJson(value: TextDocumentSyncKind): JsonPrimitive = JsonPrimitive(value.kind)
-
-        override fun deserialize(json: JsonElement): TextDocumentSyncKind {
-            return TextDocumentSyncKind(JsonInt.deserialize(json))
-        }
+value class TextDocumentSyncKind(override val kind: Int) : JsonEnumeration<Int> {
+    companion object : JsonIntEnumerationType<TextDocumentSyncKind>() {
+        override fun valueOf(value: Int): TextDocumentSyncKind = TextDocumentSyncKind(value)
 
         /**
          * Documents should not be synced at all.
