@@ -23,67 +23,9 @@ env:
   SIGNING_KEY_PRIVATE: ${{ secrets.SIGNING_KEY_PRIVATE }}
   SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
   MAVEN_CENTRAL_REPOSITORY: ${{ inputs.mavenCentralRepository || 'none' }}
-  XQT_KOTLINX_JSON_RPC: 'release'
 
 jobs:
-  xqt-kotlinx-json-rpc:
-    strategy:
-      fail-fast: false
-      matrix:
-        # https://kotlinlang.org/docs/native-target-support.html ; KonanTarget.name
-        konan-target: [
-          mingw_x64, # Tier 3 ; native host
-        ]
-        include:
-          - konan-target: mingw_x64
-            build-action: mingwx64
-            publish-action: publishMingwx64
-            run-tests: true
-
-    runs-on: windows-latest
-    steps:
-      - name: Source Code Checkout
-        if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        uses: actions/checkout@v3
-        with:
-          repository: rhdunn/xqt-kotlinx-json-rpc
-          ref: ${{ env.XQT_KOTLINX_JSON_RPC }}
-
-      - name: Setup Gradle 7.5
-        if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        uses: gradle/gradle-build-action@v2
-        with:
-          gradle-version: 7.5
-
-      - name: Build for Kotlin/Native
-        if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.build-action }}MainKlibrary
-
-      - name: Test for Kotlin/Native
-        if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' && matrix.run-tests }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.build-action }}Test
-
-      - name: Publish Kotlin/Multiplatform to Maven Local
-        if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} publishKotlinMultiplatformPublicationToMavenLocal
-
-      - name: Publish Kotlin/Native to Maven Local
-        if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.publish-action }}PublicationToMavenLocal
-
-      - name: Tar XQT Kotlin JSON-RPC Artifacts
-        if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        run: tar -cvf xqt-kotlinx-json-rpc-native-${{ matrix.konan-target }}.tar -C $HOME/.m2/repository/io/github/rhdunn .
-
-      - name: Upload XQT Kotlin JSON-RPC Artifacts
-        if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: xqt-kotlinx-json-rpc-native-${{ matrix.konan-target }}
-          path: xqt-kotlinx-json-rpc-native-${{ matrix.konan-target }}.tar
-
   build:
-    needs: xqt-kotlinx-json-rpc
     strategy:
       fail-fast: false
       matrix:
@@ -106,18 +48,6 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           gradle-version: 8.1.1
-
-      - name: Download XQT Kotlin JSON-RPC Artifacts
-        if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        uses: actions/download-artifact@v3
-        with:
-          name: xqt-kotlinx-json-rpc-native-${{ matrix.konan-target }}
-
-      - name: Extract XQT Kotlin JSON-RPC Artifacts to Maven Local
-        if: ${{ env.XQT_KOTLINX_JSON_RPC == 'master' }}
-        run: |
-          mkdir -p $HOME/.m2/repository/io/github/rhdunn
-          tar -xvf xqt-kotlinx-json-rpc-native-${{ matrix.konan-target }}.tar -C $HOME/.m2/repository/io/github/rhdunn
 
       - name: Build for Kotlin/Native
         run: gradle -D konan.target=${{ matrix.konan-target }} ${{ matrix.build-action }}MainKlibrary
