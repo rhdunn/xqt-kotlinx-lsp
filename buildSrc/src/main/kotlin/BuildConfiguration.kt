@@ -207,6 +207,12 @@ object BuildConfiguration {
     val ideaActive: Boolean
         get() = System.getProperty("idea.active") == "true"
 
+    /**
+     * Should Maven Local be used to resolve dependencies, e.g. for snapshot builds?
+     */
+    val isMavenLocalEnabled: Boolean
+        get() = false // TODO: Modify this property.
+
     private fun getProperty(project: Project, name: String, envName: String? = null): String? {
         val projectValue = project.findProperty(name)?.toString()
             ?.takeIf { value -> value.isNotBlank() }
