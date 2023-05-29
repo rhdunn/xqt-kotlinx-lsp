@@ -7,8 +7,10 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.types.TextDocumentIdentifier
 import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
-import xqt.kotlinx.rpc.json.serialization.*
-import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.JsonSerialization
+import xqt.kotlinx.rpc.json.serialization.get
+import xqt.kotlinx.rpc.json.serialization.put
+import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 
 /**
  * The `textDocument/didClose` request parameters.

@@ -4,13 +4,9 @@ package xqt.kotlinx.lsp.test.documentLink
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.base.ErrorCodes
 import xqt.kotlinx.lsp.base.InternalError
-import xqt.kotlinx.lsp.completionItem.completionItem
-import xqt.kotlinx.lsp.completionItem.resolve
 import xqt.kotlinx.lsp.documentLink.documentLink
 import xqt.kotlinx.lsp.documentLink.resolve
 import xqt.kotlinx.lsp.test.base.testJsonRpc
-import xqt.kotlinx.lsp.textDocument.CompletionItem
-import xqt.kotlinx.lsp.textDocument.CompletionItemKind
 import xqt.kotlinx.lsp.textDocument.DocumentLink
 import xqt.kotlinx.lsp.types.Position
 import xqt.kotlinx.lsp.types.Range

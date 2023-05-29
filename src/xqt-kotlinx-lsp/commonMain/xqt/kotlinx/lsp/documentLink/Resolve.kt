@@ -2,9 +2,6 @@
 package xqt.kotlinx.lsp.documentLink
 
 import kotlinx.serialization.json.JsonElement
-import xqt.kotlinx.lsp.completionItem.CompletionItemJsonRpcServer
-import xqt.kotlinx.lsp.completionItem.CompletionItemRequest
-import xqt.kotlinx.lsp.textDocument.CompletionItem
 import xqt.kotlinx.lsp.textDocument.DocumentLink
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString

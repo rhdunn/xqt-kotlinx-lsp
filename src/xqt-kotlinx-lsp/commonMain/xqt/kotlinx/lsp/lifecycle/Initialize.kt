@@ -4,7 +4,10 @@ package xqt.kotlinx.lsp.lifecycle
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
-import xqt.kotlinx.lsp.base.*
+import xqt.kotlinx.lsp.base.ErrorCodes
+import xqt.kotlinx.lsp.base.Integer
+import xqt.kotlinx.lsp.base.LSPAny
+import xqt.kotlinx.lsp.base.RequestMessage
 import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*

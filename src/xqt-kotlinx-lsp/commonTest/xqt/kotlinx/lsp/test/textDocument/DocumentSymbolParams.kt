@@ -3,7 +3,6 @@ package xqt.kotlinx.lsp.test.textDocument
 
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
-import xqt.kotlinx.lsp.textDocument.DidOpenTextDocumentParams
 import xqt.kotlinx.lsp.textDocument.DocumentSymbolParams
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf

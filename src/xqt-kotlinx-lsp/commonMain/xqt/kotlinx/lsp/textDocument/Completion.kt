@@ -1,17 +1,21 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.textDocument
 
+import kotlinx.serialization.json.*
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
 import xqt.kotlinx.lsp.types.*
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.*
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.String
+import kotlin.Unit
 import kotlin.jvm.JvmInline
+import kotlin.let
 
 /**
  * Completion options.
