@@ -1,5 +1,5 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
-import io.github.rhdunn.gradle.maven.MavenSonatype
+
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
@@ -16,8 +16,7 @@ allprojects {
         mavenCentral()
         if (BuildConfiguration.isMavenSnapshotEnabled) {
             maven {
-                @Suppress("ReplaceNotNullAssertionWithElvisReturn")
-                url = URI(MavenSonatype.Snapshot.url!!)
+                url = URI(ProjectMetadata.MavenSonatype.Snapshot)
             }
         }
         if (BuildConfiguration.isMavenLocalEnabled) {
