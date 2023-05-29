@@ -168,4 +168,19 @@ object ProjectMetadata {
          */
         const val Owner = "Reece H. Dunn" // TODO: Modify this property.
     }
+
+    /**
+     * Information about the location of the Maven sonatype repositories.
+     */
+    object MavenSonatype {
+        /**
+         * The URL to deploy to when publishing a release build.
+         */
+        const val ReleaseStaging = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+
+        /**
+         * The URL to deploy to when publishing a snapshot build.
+         */
+        const val Snapshot = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+    }
 }
