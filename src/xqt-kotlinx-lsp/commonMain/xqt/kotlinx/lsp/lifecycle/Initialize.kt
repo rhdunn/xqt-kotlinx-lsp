@@ -40,7 +40,7 @@ data class InitializeParams(
     /**
      * User provided initialization options.
      *
-     * @since 2.0.0
+     * @since 2.0.0 (LSP 2.1.0)
      */
     val initializationOptions: JsonElement? = null,
 
@@ -124,7 +124,7 @@ data class InitializeError(
 /**
  * Value-object describing what options formatting should use.
  *
- * @since 1.0.0
+ * @since 1.0.0 (LSP 2.1.0)
  */
 data class ClientCapabilities(
     /**

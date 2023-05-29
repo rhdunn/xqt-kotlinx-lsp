@@ -125,7 +125,7 @@ data class DocumentHighlightResponse(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
- * __NOTE:__ In LSP 1.x, the result type is a single `DocumentHighlight` object.
+ * __NOTE:__ In LSP 1.x and 2.0, the result type is a single `DocumentHighlight` object.
  *
  * @since 2.0.0
  */
@@ -150,7 +150,7 @@ fun TextDocumentRequest.documentHighlight(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
- * __NOTE:__ In LSP 1.x, the result type is a single `DocumentHighlight` object.
+ * __NOTE:__ In LSP 1.x and 2.0, the result type is a single `DocumentHighlight` object.
  *
  * @param params the request parameters
  * @param responseHandler the callback to process the response for the request
@@ -180,7 +180,7 @@ fun TextDocumentJsonRpcServer.documentHighlight(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
- * __NOTE:__ In LSP 1.x, the result type is a single `DocumentHighlight` object.
+ * __NOTE:__ In LSP 1.x and 2.0, the result type is a single `DocumentHighlight` object.
  *
  * @param textDocument the text document
  * @param position the position inside the text document

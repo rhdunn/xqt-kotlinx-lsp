@@ -15,7 +15,7 @@ import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 /**
  * The `textDocument/didSave` request parameters.
  *
- * @since 2.0.0
+ * @since 2.0.0 (LSP 2.1.0)
  */
 data class DidSaveTextDocumentParams(
     /**
@@ -41,7 +41,7 @@ data class DidSaveTextDocumentParams(
  * The document save notification is sent from the client to the server when the document
  * was saved in the client.
  *
- * @since 2.0.0
+ * @since 2.0.0 (LSP 2.1.0)
  */
 fun TextDocumentNotification.didSave(
     handler: DidSaveTextDocumentParams.() -> Unit
@@ -57,7 +57,7 @@ fun TextDocumentNotification.didSave(
  *
  * @param params the notification parameters
  *
- * @since 2.0.0
+ * @since 2.0.0 (LSP 2.1.0)
  */
 fun TextDocumentJsonRpcServer.didSave(
     params: DidSaveTextDocumentParams
@@ -72,7 +72,7 @@ fun TextDocumentJsonRpcServer.didSave(
  *
  * @param textDocument the document that was saved
  *
- * @since 2.0.0
+ * @since 2.0.0 (LSP 2.1.0)
  */
 fun TextDocumentJsonRpcServer.didSave(
     textDocument: TextDocumentIdentifier

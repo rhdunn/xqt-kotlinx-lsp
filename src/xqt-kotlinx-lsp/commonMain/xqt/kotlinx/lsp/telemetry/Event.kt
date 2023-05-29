@@ -11,7 +11,7 @@ import xqt.kotlinx.rpc.json.serialization.types.JsonArrayOrObject
  * The telemetry notification is sent from the server to the client to ask the
  * client to log a telemetry event.
  *
- * @since 2.0.0
+ * @since 2.0.0 (LSP 2.1.0)
  */
 fun TelemetryNotification.event(
     handler: JsonElement.() -> Unit
@@ -27,7 +27,7 @@ fun TelemetryNotification.event(
  *
  * @param params the notification parameters
  *
- * @since 2.0.0
+ * @since 2.0.0 (LSP 2.1.0)
  */
 fun TelemetryJsonRpcServer.event(
     params: JsonElement

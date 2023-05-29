@@ -122,7 +122,7 @@ data class CompletionItem(
      *
      * Edits must not overlap with the main edit nor with themselves.
      *
-     * @since 2.0.0
+     * @since 2.0.0 (LSP 2.1.0)
      */
     val additionalTextEdits: List<TextEdit> = listOf(),
 
@@ -132,7 +132,7 @@ data class CompletionItem(
      * *Note* that additional modifications to the current document should be described
      * with the `additionalTextEdits` property.
      *
-     * @since 2.0.0
+     * @since 2.0.0 (LSP 2.1.0)
      */
     val command: Command? = null,
 
@@ -287,7 +287,7 @@ value class CompletionItemKind(override val kind: Int) : JsonEnumeration<Int> {
  * `CompletionItem` array. This is to match the result types of the
  * `textDocument/completion` request.
  *
- * @since 2.0.0
+ * @since 2.0.0 (LSP 2.1.0)
  */
 data class CompletionList(
     /**
@@ -334,7 +334,7 @@ data class CompletionList(
 /**
  * The response of a completion request.
  *
- * __NOTE:__ In LSP 1.x, the `result` type was `List<CompletionItem>`.
+ * __NOTE:__ In LSP 1.x and 2.0, the `result` type was `List<CompletionItem>`.
  *
  * @param id the request id
  * @param result the result of the request
@@ -377,7 +377,7 @@ data class CompletionResponse(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
- * __NOTE:__ In LSP 1.x, the `result` type was `List<CompletionItem>`.
+ * __NOTE:__ In LSP 1.x and 2.0, the `result` type was `List<CompletionItem>`.
  *
  * @return a completion item list
  *
@@ -408,7 +408,7 @@ fun TextDocumentRequest.completion(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
- * __NOTE:__ In LSP 1.x, the `result` type was `List<CompletionItem>`.
+ * __NOTE:__ In LSP 1.x and 2.0, the `result` type was `List<CompletionItem>`.
  *
  * @param params the request parameters
  * @param responseHandler the callback to process the response for the request
@@ -442,7 +442,7 @@ fun TextDocumentJsonRpcServer.completion(
  *
  * __NOTE:__ In LSP 1.x, the `textDocument` parameter was an inlined `uri` parameter.
  *
- * __NOTE:__ In LSP 1.x, the `result` type was `List<CompletionItem>`.
+ * __NOTE:__ In LSP 1.x and 2.0, the `result` type was `List<CompletionItem>`.
  *
  * @param textDocument the text document
  * @param position the position inside the text document
