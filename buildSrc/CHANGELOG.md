@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for the Maven snapshot repository if enabled by the build
+  configuration.
+
+### Changed
+
+- Make the use of Maven Local determined by the build configuration.
+
+### Fixed
+
+- Fix the name of the "publish to maven central" targets in GitHub Actions.
+- Fix building for Kotlin/JVM when the Java version is different.
+
 ## [1.2.1] - 2023-05-20
 
 ### Fixed

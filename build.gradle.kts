@@ -1,7 +1,9 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
+import io.github.rhdunn.gradle.maven.MavenSonatype
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.DokkaBaseConfiguration
 import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
+import java.net.URI
 
 buildscript {
     dependencies {
@@ -12,6 +14,12 @@ buildscript {
 allprojects {
     repositories {
         mavenCentral()
+        if (BuildConfiguration.isMavenSnapshotEnabled) {
+            maven {
+                @Suppress("ReplaceNotNullAssertionWithElvisReturn")
+                url = URI(MavenSonatype.Snapshot.url!!)
+            }
+        }
         if (BuildConfiguration.isMavenLocalEnabled) {
             // NOTE: Using this before mavenCentral can cause build issues, e.g. being
             //       unable to resolve kotlin-test dependency variants.
