@@ -1,6 +1,8 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package io.github.rhdunn.gradle.maven
 
+import ProjectMetadata
+
 /**
  * The Maven Central (Sonatype) artifact publication location.
  *
@@ -15,10 +17,10 @@ enum class MavenSonatype(val url: String?) {
     /**
      * Publish builds to the release repositories.
      */
-    Release("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"),
+    Release(ProjectMetadata.MavenSonatype.ReleaseStaging),
 
     /**
      * Publish builds to the snapshot repositories.
      */
-    Snapshot("https://s01.oss.sonatype.org/content/repositories/snapshots/"),
+    Snapshot(ProjectMetadata.MavenSonatype.Snapshot),
 }

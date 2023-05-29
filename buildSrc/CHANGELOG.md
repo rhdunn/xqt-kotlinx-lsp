@@ -6,6 +6,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2023-05-29
+
+This release supports Kotlin 1.8.
+
+### Added
+
+- Support for the Maven snapshot repository if enabled by the build
+  configuration.
+
+### Changed
+
+- Make the use of Maven Local determined by the build configuration.
+
+### Fixed
+
+- Fix the name of the "publish to maven central" targets in GitHub Actions.
+- Fix building for Kotlin/JVM when the Java version is different.
+
+## [1.3.0] - 2023-05-29
+
+This release supports Kotlin 1.7.
+
+### Added
+
+- Support for the Maven snapshot repository if enabled by the build
+  configuration.
+
+### Changed
+
+- Make the use of Maven Local determined by the build configuration.
+
+### Fixed
+
+- Fix the name of the "publish to maven central" targets in GitHub Actions.
+- Fix building for Kotlin/JVM when the Java version is different.
+
 ## [2.0.0] - 2023-05-22
 
 ### Removed
@@ -78,8 +114,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build and publish the Dokka documentation to GitHub Pages.
 - Build and optionally deploy the various targets to Maven Central.
 
-[Unreleased]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.2.1...2.0.0
+[1.3.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.2.1...1.3.0
 [1.2.1]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/rhdunn/kotlin-multilpatform-template/compare/1.0.0...1.1.0
