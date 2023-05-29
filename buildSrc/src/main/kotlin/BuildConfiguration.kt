@@ -212,14 +212,14 @@ object BuildConfiguration {
      * builds?
      */
     val isMavenLocalEnabled: Boolean
-        get() = false // TODO: Modify this property.
+        get() = false
 
     /**
      * Should the Maven snapshot repository be used to resolve dependencies,
      * e.g. for snapshot builds?
      */
     val isMavenSnapshotEnabled: Boolean
-        get() = false // TODO: Modify this property.
+        get() = Version.Dependency.XqtKotlinxJsonRpc.endsWith("-SNAPSHOT")
 
     private fun getProperty(project: Project, name: String, envName: String? = null): String? {
         val projectValue = project.findProperty(name)?.toString()
