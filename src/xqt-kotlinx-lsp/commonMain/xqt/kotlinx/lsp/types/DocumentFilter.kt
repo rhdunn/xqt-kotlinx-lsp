@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.uri.UriScheme
 
 /**
  * A document filter denotes a document through properties like `language`,
@@ -22,7 +23,7 @@ data class DocumentFilter(
     /**
      * A Uri scheme, like `file` or `untitled`.
      */
-    val scheme: String? = null,
+    val scheme: UriScheme? = null,
 
     /**
      * A glob pattern, like `*.{ts,js}`.
@@ -32,7 +33,7 @@ data class DocumentFilter(
     companion object : JsonSerialization<DocumentFilter> {
         override fun serializeToJson(value: DocumentFilter): JsonObject = buildJsonObject {
             putOptional("language", value.language, JsonString)
-            putOptional("scheme", value.scheme, JsonString)
+            putOptional("scheme", value.scheme, UriScheme)
             putOptional("pattern", value.pattern, JsonString)
         }
 
@@ -40,7 +41,7 @@ data class DocumentFilter(
             !is JsonObject -> unsupportedKindType(json)
             else -> DocumentFilter(
                 language = json.getOptional("language", JsonString),
-                scheme = json.getOptional("scheme", JsonString),
+                scheme = json.getOptional("scheme", UriScheme),
                 pattern = json.getOptional("pattern", JsonString)
             )
         }

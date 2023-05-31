@@ -7,6 +7,7 @@ import xqt.kotlinx.lsp.types.DocumentFilter
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
+import xqt.kotlinx.rpc.json.uri.UriScheme
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -51,7 +52,7 @@ class TheDocumentFilterType {
 
         val filter = DocumentFilter.deserialize(json)
         assertEquals(null, filter.language)
-        assertEquals("file", filter.scheme)
+        assertEquals(UriScheme.File, filter.scheme)
         assertEquals(null, filter.pattern)
 
         assertEquals(json, DocumentFilter.serializeToJson(filter))
