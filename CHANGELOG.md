@@ -17,6 +17,8 @@ Base Protocol:
 
 Types:
 - `DocumentUri`
+- `DocumentFilter`
+- `DocumentSelector`
 
 ### Changed
 

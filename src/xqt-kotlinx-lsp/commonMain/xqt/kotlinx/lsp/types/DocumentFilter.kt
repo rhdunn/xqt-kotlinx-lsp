@@ -8,6 +8,7 @@ import xqt.kotlinx.rpc.json.enumeration.JsonEnumeration
 import xqt.kotlinx.rpc.json.enumeration.JsonStringEnumerationType
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
+import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
 import xqt.kotlinx.rpc.json.uri.UriScheme
 import kotlin.jvm.JvmInline
 
@@ -50,6 +51,13 @@ data class DocumentFilter(
         }
     }
 }
+
+/**
+ * A document selector is the combination of one or many document filters.
+ *
+ * @since 3.0.0
+ */
+val DocumentSelector = JsonTypedArray(DocumentFilter)
 
 /**
  * A programming language.
