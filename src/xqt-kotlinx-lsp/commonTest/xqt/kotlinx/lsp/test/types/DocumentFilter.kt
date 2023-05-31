@@ -4,6 +4,7 @@ package xqt.kotlinx.lsp.test.types
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.types.DocumentFilter
+import xqt.kotlinx.lsp.types.Language
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
@@ -36,7 +37,7 @@ class TheDocumentFilterType {
         )
 
         val filter = DocumentFilter.deserialize(json)
-        assertEquals("typescript", filter.language)
+        assertEquals(Language("typescript"), filter.language)
         assertEquals(null, filter.scheme)
         assertEquals(null, filter.pattern)
 

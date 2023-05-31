@@ -4,9 +4,12 @@ package xqt.kotlinx.lsp.types
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import xqt.kotlinx.rpc.json.enumeration.JsonEnumeration
+import xqt.kotlinx.rpc.json.enumeration.JsonStringEnumerationType
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.uri.UriScheme
+import kotlin.jvm.JvmInline
 
 /**
  * A document filter denotes a document through properties like `language`,
@@ -18,7 +21,7 @@ data class DocumentFilter(
     /**
      * A language id, like `typescript`.
      */
-    val language: String? = null,
+    val language: Language? = null,
 
     /**
      * A Uri scheme, like `file` or `untitled`.
@@ -32,7 +35,7 @@ data class DocumentFilter(
 ) {
     companion object : JsonSerialization<DocumentFilter> {
         override fun serializeToJson(value: DocumentFilter): JsonObject = buildJsonObject {
-            putOptional("language", value.language, JsonString)
+            putOptional("language", value.language, Language)
             putOptional("scheme", value.scheme, UriScheme)
             putOptional("pattern", value.pattern, JsonString)
         }
@@ -40,10 +43,29 @@ data class DocumentFilter(
         override fun deserialize(json: JsonElement): DocumentFilter = when (json) {
             !is JsonObject -> unsupportedKindType(json)
             else -> DocumentFilter(
-                language = json.getOptional("language", JsonString),
+                language = json.getOptional("language", Language),
                 scheme = json.getOptional("scheme", UriScheme),
                 pattern = json.getOptional("pattern", JsonString)
             )
         }
+    }
+}
+
+/**
+ * A programming language.
+ *
+ * NOTE: This is an extension to the LSP protocol. LSP passes this around as a
+ * string.
+ *
+ * @param kind the identifier for the programming language
+ *
+ * @since 3.0.0
+ */
+@JvmInline
+value class Language(override val kind: String) : JsonEnumeration<String> {
+    override fun toString(): String = kind
+
+    companion object : JsonStringEnumerationType<Language>() {
+        override fun valueOf(value: String): Language = Language(value)
     }
 }
