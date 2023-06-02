@@ -334,7 +334,7 @@ data class InitializeResponse(
  *
  * If the server receives request or notification before the `initialize` request it
  * should act as follows:
- * * for a request the response should be errored with `code: -32001`.
+ * * for a request the response should be errored with `code: -32002` (`ServerNotInitialized`).
  *   The message can be picked by the server.
  * * notifications should be dropped.
  *
@@ -359,6 +359,13 @@ fun RequestMessage.initialize(
  * * for a request the response should be errored with `code: -32001`.
  *   The message can be picked by the server.
  * * notifications should be dropped.
+ *
+ * Until the server has responded to the `initialize` request with an `InitializeResult`
+ * the client must not send any additional requests or notifications to the server.
+ *
+ * In LSP 3.0.0 or later, during the `initialize` request the server is allowed to send
+ * the notifications `window/showMessage`, `window/logMessage` and `telemetry/event` as
+ * well as the `window/showMessageRequest` request to the client.
  *
  * @param params the request parameters
  * @param responseHandler the callback to process the response for the request
@@ -385,9 +392,16 @@ fun JsonRpcServer.initialize(
  *
  * If the server receives request or notification before the `initialize` request it
  * should act as follows:
- * * for a request the response should be errored with `code: -32001`.
+ * * for a request the response should be errored with `code: -32001` (`ServerNotInitialized`).
  *   The message can be picked by the server.
  * * notifications should be dropped.
+ *
+ * Until the server has responded to the `initialize` request with an `InitializeResult`
+ * the client must not send any additional requests or notifications to the server.
+ *
+ * In LSP 3.0.0 or later, during the `initialize` request the server is allowed to send
+ * the notifications `window/showMessage`, `window/logMessage` and `telemetry/event` as
+ * well as the `window/showMessageRequest` request to the client.
  *
  * @param processId the process ID of the parent process that started the server
  * @param rootPath the rootPath of the workspace
