@@ -30,6 +30,9 @@ Types:
 - `TextDocumentIdentifier` -- Changed the `uri` parameter to a `DocumentUri`.
 - `TextDocumentItem` -- Changed the `uri` parameter to a `DocumentUri`.
 
+Parameters:
+- `InitializeResult` -- The `rootPath` parameter is now optional.
+
 ### Dependency Upgrades
 
 - Upgrade to XQT Kotlinx JSON RPC 1.1.0 snapshot.

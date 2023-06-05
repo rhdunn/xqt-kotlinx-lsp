@@ -13,6 +13,7 @@ import xqt.kotlinx.rpc.json.protocol.notification
 import xqt.kotlinx.rpc.json.protocol.request
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
+import xqt.kotlinx.rpc.json.serialization.types.JsonProperty
 import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -50,7 +51,7 @@ class LifecycleDSL {
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
                     assertEquals(1234, processId)
-                    assertEquals(null, rootPath)
+                    assertEquals(JsonProperty<String>(null), rootPath)
                     assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), capabilities)
 
                     InitializeResult(
@@ -107,7 +108,7 @@ class LifecycleDSL {
                     assertEquals(JsonIntOrString.IntegerValue(1), id)
 
                     assertEquals(1234, processId)
-                    assertEquals(null, rootPath)
+                    assertEquals(JsonProperty<String>(null), rootPath)
                     assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), capabilities)
 
                     throw InitializeError(message = "Lorem ipsum", retry = true)
@@ -182,6 +183,7 @@ class LifecycleDSL {
         val id = client.initialize(
             params = InitializeParams(
                 processId = 1234,
+                rootPath = JsonProperty(null),
                 capabilities = ClientCapabilities(
                     "test" to JsonPrimitive("lorem ipsum")
                 )
@@ -288,6 +290,7 @@ class LifecycleDSL {
     fun supports_sending_initialize_requests_using_function_parameters() = testJsonRpc {
         val id = client.initialize(
             processId = 1234,
+            rootPath = JsonProperty(null),
             capabilities = ClientCapabilities(
                 "test" to JsonPrimitive("lorem ipsum")
             )

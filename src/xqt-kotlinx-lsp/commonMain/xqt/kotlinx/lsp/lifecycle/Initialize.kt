@@ -13,6 +13,7 @@ import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
+import xqt.kotlinx.rpc.json.serialization.types.JsonProperty
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 
 /**
@@ -35,7 +36,7 @@ data class InitializeParams(
      *
      * This is null if no folder is open.
      */
-    val rootPath: String? = null,
+    val rootPath: JsonProperty<String> = JsonProperty.missing(),
 
     /**
      * User provided initialization options.
@@ -49,10 +50,11 @@ data class InitializeParams(
      */
     val capabilities: ClientCapabilities
 ) {
+
     companion object : JsonSerialization<InitializeParams> {
         override fun serializeToJson(value: InitializeParams): JsonObject = buildJsonObject {
             putNullable("processId", value.processId, Integer)
-            putNullable("rootPath", value.rootPath, JsonString)
+            putProperty("rootPath", value.rootPath, JsonString)
             putOptional("initializationOptions", value.initializationOptions, LSPAny)
             put("capabilities", value.capabilities, ClientCapabilities)
         }
@@ -61,7 +63,7 @@ data class InitializeParams(
             !is JsonObject -> unsupportedKindType(json)
             else -> InitializeParams(
                 processId = json.getNullable("processId", Integer),
-                rootPath = json.getNullable("rootPath", JsonString),
+                rootPath = json.getProperty("rootPath", JsonString),
                 initializationOptions = json.getOptional("initializationOptions", LSPAny),
                 capabilities = json.get("capabilities", ClientCapabilities)
             )
@@ -413,7 +415,7 @@ fun JsonRpcServer.initialize(
  */
 fun JsonRpcServer.initialize(
     processId: Int? = null,
-    rootPath: String? = null,
+    rootPath: JsonProperty<String> = JsonProperty.missing(),
     capabilities: ClientCapabilities,
     responseHandler: (TypedResponseObject<InitializeResult?, InitializeError>.() -> Unit)? = null
 ): JsonIntOrString = initialize(
