@@ -10,6 +10,7 @@ import xqt.kotlinx.lsp.base.LSPAny
 import xqt.kotlinx.lsp.base.RequestMessage
 import xqt.kotlinx.lsp.textDocument.*
 import xqt.kotlinx.lsp.types.DocumentUri
+import xqt.kotlinx.lsp.types.TraceValue
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
@@ -62,7 +63,14 @@ data class InitializeParams(
     /**
      * The capabilities provided by the client (editor or tool).
      */
-    val capabilities: ClientCapabilities
+    val capabilities: ClientCapabilities,
+
+    /**
+     * The initial trace setting.
+     *
+     * If omitted trace is disabled (`off`).
+     */
+    val trace: TraceValue? = null
 ) {
     @Suppress("DEPRECATION")
     companion object : JsonSerialization<InitializeParams> {
@@ -72,6 +80,7 @@ data class InitializeParams(
             putProperty("rootUri", value.rootUri, DocumentUri)
             putOptional("initializationOptions", value.initializationOptions, LSPAny)
             put("capabilities", value.capabilities, ClientCapabilities)
+            putOptional("trace", value.trace, TraceValue)
         }
 
         override fun deserialize(json: JsonElement): InitializeParams = when (json) {
@@ -81,7 +90,8 @@ data class InitializeParams(
                 rootPath = json.getProperty("rootPath", JsonString),
                 rootUri = json.getProperty("rootUri", DocumentUri),
                 initializationOptions = json.getOptional("initializationOptions", LSPAny),
-                capabilities = json.get("capabilities", ClientCapabilities)
+                capabilities = json.get("capabilities", ClientCapabilities),
+                trace = json.getOptional("trace", TraceValue)
             )
         }
     }

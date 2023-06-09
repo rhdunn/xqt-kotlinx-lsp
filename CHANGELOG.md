@@ -22,7 +22,7 @@ Types:
 - `TraceValue`
 
 Parameters:
-- `InitializeParams` -- Add a `rootUri` parameter.
+- `InitializeParams` -- Add `rootUri` and `trace` parameters.
 
 ### Changed
 

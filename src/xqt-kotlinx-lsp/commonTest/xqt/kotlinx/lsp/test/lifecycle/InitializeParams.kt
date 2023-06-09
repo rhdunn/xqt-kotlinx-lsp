@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.lifecycle.ClientCapabilities
 import xqt.kotlinx.lsp.lifecycle.InitializeParams
 import xqt.kotlinx.lsp.types.DocumentUri
+import xqt.kotlinx.lsp.types.TraceValue
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
@@ -34,6 +35,7 @@ class TheInitializeRequestParameters {
         assertEquals(JsonProperty<String>(null), params.rootPath)
         assertEquals(null, params.initializationOptions)
         assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(null, params.trace)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
     }
@@ -55,6 +57,7 @@ class TheInitializeRequestParameters {
         assertEquals(JsonProperty.missing(), params.rootUri)
         assertEquals(null, params.initializationOptions)
         assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(null, params.trace)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
     }
@@ -76,6 +79,7 @@ class TheInitializeRequestParameters {
         assertEquals(JsonProperty<DocumentUri>(null), params.rootUri)
         assertEquals(null, params.initializationOptions)
         assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(null, params.trace)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
     }
@@ -97,6 +101,7 @@ class TheInitializeRequestParameters {
         assertEquals(JsonProperty.missing(), params.rootUri)
         assertEquals(null, params.initializationOptions)
         assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(null, params.trace)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
     }
@@ -118,6 +123,7 @@ class TheInitializeRequestParameters {
         assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), params.rootUri.value)
         assertEquals(null, params.initializationOptions)
         assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(null, params.trace)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
     }
@@ -140,6 +146,30 @@ class TheInitializeRequestParameters {
         assertEquals(JsonProperty.missing(), params.rootUri)
         assertEquals(JsonPrimitive("test"), params.initializationOptions)
         assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(null, params.trace)
+
+        assertEquals(json, InitializeParams.serializeToJson(params))
+    }
+
+    @Test
+    @DisplayName("supports the trace property")
+    fun supports_the_trace_property() {
+        val json = jsonObjectOf(
+            "processId" to JsonNull,
+            "rootPath" to JsonNull,
+            "trace" to JsonPrimitive("messages"),
+            "capabilities" to jsonObjectOf(
+                "test" to JsonPrimitive("lorem ipsum")
+            )
+        )
+
+        val params = InitializeParams.deserialize(json)
+        assertEquals(null, params.processId)
+        assertEquals(JsonProperty<String>(null), params.rootPath)
+        assertEquals(JsonProperty.missing(), params.rootUri)
+        assertEquals(null, params.initializationOptions)
+        assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+        assertEquals(TraceValue.Messages, params.trace)
 
         assertEquals(json, InitializeParams.serializeToJson(params))
     }
