@@ -19,6 +19,7 @@ Types:
 - `DocumentUri`
 - `DocumentFilter`
 - `DocumentSelector`
+- `TraceValue`
 
 Parameters:
 - `InitializeParams` -- Add a `rootUri` parameter.
