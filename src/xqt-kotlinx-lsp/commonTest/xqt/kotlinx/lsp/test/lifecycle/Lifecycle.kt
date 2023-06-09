@@ -18,6 +18,7 @@ import xqt.kotlinx.test.DisplayName
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@Suppress("DEPRECATION")
 @DisplayName("Lifecycle DSL")
 class LifecycleDSL {
     // region initialize request

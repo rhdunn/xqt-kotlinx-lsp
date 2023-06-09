@@ -5,6 +5,7 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 import xqt.kotlinx.lsp.lifecycle.ClientCapabilities
 import xqt.kotlinx.lsp.lifecycle.InitializeParams
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.rpc.json.serialization.UnsupportedKindTypeException
 import xqt.kotlinx.rpc.json.serialization.jsonArrayOf
 import xqt.kotlinx.rpc.json.serialization.jsonObjectOf
@@ -14,11 +15,12 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 
+@Suppress("DEPRECATION")
 @DisplayName("The initialize request parameters")
 class TheInitializeRequestParameters {
     @Test
-    @DisplayName("supports the non-optional properties")
-    fun supports_the_non_optional_properties() {
+    @DisplayName("supports the non-optional properties for LSP 2.0.0")
+    fun supports_the_non_optional_properties_for_lsp_2_0() {
         val json = jsonObjectOf(
             "processId" to JsonNull,
             "rootPath" to JsonNull,
@@ -37,10 +39,10 @@ class TheInitializeRequestParameters {
     }
 
     @Test
-    @DisplayName("supports the process ID property")
-    fun supports_the_process_id_property() {
+    @DisplayName("supports the non-optional properties")
+    fun supports_the_non_optional_properties() {
         val json = jsonObjectOf(
-            "processId" to JsonPrimitive(1234),
+            "processId" to JsonNull,
             "rootPath" to JsonNull,
             "capabilities" to jsonObjectOf(
                 "test" to JsonPrimitive("lorem ipsum")
@@ -48,8 +50,30 @@ class TheInitializeRequestParameters {
         )
 
         val params = InitializeParams.deserialize(json)
-        assertEquals(1234, params.processId)
+        assertEquals(null, params.processId)
         assertEquals(JsonProperty<String>(null), params.rootPath)
+        assertEquals(JsonProperty.missing(), params.rootUri)
+        assertEquals(null, params.initializationOptions)
+        assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+
+        assertEquals(json, InitializeParams.serializeToJson(params))
+    }
+
+    @Test
+    @DisplayName("supports the process ID property for LSP 3.0.0")
+    fun supports_the_process_id_property_for_lsp_3_0() {
+        val json = jsonObjectOf(
+            "processId" to JsonPrimitive(1234),
+            "rootUri" to JsonNull,
+            "capabilities" to jsonObjectOf(
+                "test" to JsonPrimitive("lorem ipsum")
+            )
+        )
+
+        val params = InitializeParams.deserialize(json)
+        assertEquals(1234, params.processId)
+        assertEquals(JsonProperty.missing(), params.rootPath)
+        assertEquals(JsonProperty<DocumentUri>(null), params.rootUri)
         assertEquals(null, params.initializationOptions)
         assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 
@@ -70,6 +94,28 @@ class TheInitializeRequestParameters {
         val params = InitializeParams.deserialize(json)
         assertEquals(null, params.processId)
         assertEquals("file:///home/lorem/ipsum.py", params.rootPath.value)
+        assertEquals(JsonProperty.missing(), params.rootUri)
+        assertEquals(null, params.initializationOptions)
+        assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
+
+        assertEquals(json, InitializeParams.serializeToJson(params))
+    }
+
+    @Test
+    @DisplayName("supports the root uri property")
+    fun supports_the_root_uri_property() {
+        val json = jsonObjectOf(
+            "processId" to JsonNull,
+            "rootUri" to JsonPrimitive("file:///home/lorem/ipsum.py"),
+            "capabilities" to jsonObjectOf(
+                "test" to JsonPrimitive("lorem ipsum")
+            )
+        )
+
+        val params = InitializeParams.deserialize(json)
+        assertEquals(null, params.processId)
+        assertEquals(JsonProperty.missing(), params.rootPath)
+        assertEquals(DocumentUri("file:///home/lorem/ipsum.py"), params.rootUri.value)
         assertEquals(null, params.initializationOptions)
         assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 
@@ -91,6 +137,7 @@ class TheInitializeRequestParameters {
         val params = InitializeParams.deserialize(json)
         assertEquals(null, params.processId)
         assertEquals(JsonProperty<String>(null), params.rootPath)
+        assertEquals(JsonProperty.missing(), params.rootUri)
         assertEquals(JsonPrimitive("test"), params.initializationOptions)
         assertEquals(ClientCapabilities("test" to JsonPrimitive("lorem ipsum")), params.capabilities)
 

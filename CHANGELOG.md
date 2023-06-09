@@ -20,6 +20,9 @@ Types:
 - `DocumentFilter`
 - `DocumentSelector`
 
+Parameters:
+- `InitializeParams` -- Add a `rootUri` parameter.
+
 ### Changed
 
 - Updated the API documentation.

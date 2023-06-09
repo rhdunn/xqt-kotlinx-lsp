@@ -9,6 +9,7 @@ import xqt.kotlinx.lsp.base.Integer
 import xqt.kotlinx.lsp.base.LSPAny
 import xqt.kotlinx.lsp.base.RequestMessage
 import xqt.kotlinx.lsp.textDocument.*
+import xqt.kotlinx.lsp.types.DocumentUri
 import xqt.kotlinx.rpc.json.protocol.*
 import xqt.kotlinx.rpc.json.serialization.*
 import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
@@ -36,7 +37,20 @@ data class InitializeParams(
      *
      * This is null if no folder is open.
      */
+    @Deprecated(
+        "LSP 3.0.0: Deprecated in favour of rootUri.",
+        replaceWith = ReplaceWith("rootUri")
+    )
     val rootPath: JsonProperty<String> = JsonProperty.missing(),
+
+    /**
+     * The rootUri of the workspace.
+     *
+     * This is null if no folder is open.
+     *
+     * If both `rootPath` and `rootUri` are set `rootUri` wins.
+     */
+    val rootUri: JsonProperty<DocumentUri> = JsonProperty.missing(),
 
     /**
      * User provided initialization options.
@@ -46,15 +60,16 @@ data class InitializeParams(
     val initializationOptions: JsonElement? = null,
 
     /**
-     * The capabilities provided by the client (editor).
+     * The capabilities provided by the client (editor or tool).
      */
     val capabilities: ClientCapabilities
 ) {
-
+    @Suppress("DEPRECATION")
     companion object : JsonSerialization<InitializeParams> {
         override fun serializeToJson(value: InitializeParams): JsonObject = buildJsonObject {
             putNullable("processId", value.processId, Integer)
             putProperty("rootPath", value.rootPath, JsonString)
+            putProperty("rootUri", value.rootUri, DocumentUri)
             putOptional("initializationOptions", value.initializationOptions, LSPAny)
             put("capabilities", value.capabilities, ClientCapabilities)
         }
@@ -64,6 +79,7 @@ data class InitializeParams(
             else -> InitializeParams(
                 processId = json.getNullable("processId", Integer),
                 rootPath = json.getProperty("rootPath", JsonString),
+                rootUri = json.getProperty("rootUri", DocumentUri),
                 initializationOptions = json.getOptional("initializationOptions", LSPAny),
                 capabilities = json.get("capabilities", ClientCapabilities)
             )
@@ -388,9 +404,8 @@ fun JsonRpcServer.initialize(
 /**
  * Send an initialize request to the server.
  *
- * In LSP 2.0.0 `processId` is null if the process has not been started by another process.
- *
- * The `rootPath` is null if no folder is open.
+ * The `rootPath` or `rootUri` is null if no folder is open. If both `rootPath` and `rootUri`
+ * are set `rootUri` wins.
  *
  * If the server receives request or notification before the `initialize` request it
  * should act as follows:
@@ -401,12 +416,16 @@ fun JsonRpcServer.initialize(
  * Until the server has responded to the `initialize` request with an `InitializeResult`
  * the client must not send any additional requests or notifications to the server.
  *
+ * In LSP 2.0.0 or later, `processId` is null if the process has not been started by another
+ * process.
+ *
  * In LSP 3.0.0 or later, during the `initialize` request the server is allowed to send
  * the notifications `window/showMessage`, `window/logMessage` and `telemetry/event` as
  * well as the `window/showMessageRequest` request to the client.
  *
  * @param processId the process ID of the parent process that started the server
  * @param rootPath the rootPath of the workspace
+ * @param rootUri the rootUri of the workspace
  * @param capabilities the capabilities provided by the client (editor)
  * @param responseHandler the callback to process the response for the request
  * @return the ID of the request
@@ -416,12 +435,14 @@ fun JsonRpcServer.initialize(
 fun JsonRpcServer.initialize(
     processId: Int? = null,
     rootPath: JsonProperty<String> = JsonProperty.missing(),
+    rootUri: JsonProperty<DocumentUri> = JsonProperty.missing(),
     capabilities: ClientCapabilities,
     responseHandler: (TypedResponseObject<InitializeResult?, InitializeError>.() -> Unit)? = null
 ): JsonIntOrString = initialize(
     params = InitializeParams(
         processId = processId,
         rootPath = rootPath,
+        rootUri = rootUri,
         capabilities = capabilities
     ),
     responseHandler = responseHandler
