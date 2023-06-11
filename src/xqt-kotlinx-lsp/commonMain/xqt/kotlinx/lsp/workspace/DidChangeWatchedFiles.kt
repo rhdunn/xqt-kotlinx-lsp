@@ -8,13 +8,36 @@ import xqt.kotlinx.rpc.json.enumeration.JsonEnumeration
 import xqt.kotlinx.rpc.json.enumeration.JsonIntEnumerationType
 import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
-import xqt.kotlinx.rpc.json.serialization.JsonSerialization
-import xqt.kotlinx.rpc.json.serialization.get
-import xqt.kotlinx.rpc.json.serialization.put
+import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
-import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 import kotlin.jvm.JvmInline
+
+/**
+ * Capabilities specific to the `workspace/didChangeWatchedFiles` notification.
+ *
+ * @since 3.0.0
+ */
+data class DidChangeWatchedFilesClientCapabilities(
+    /**
+     * Did change watched files notification supports dynamic registration.
+     */
+    val dynamicRegistration: Boolean? = null
+) {
+    companion object : JsonSerialization<DidChangeWatchedFilesClientCapabilities> {
+        override fun serializeToJson(value: DidChangeWatchedFilesClientCapabilities): JsonObject = buildJsonObject {
+            putOptional("dynamicRegistration", value.dynamicRegistration, JsonBoolean)
+        }
+
+        override fun deserialize(json: JsonElement): DidChangeWatchedFilesClientCapabilities = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> DidChangeWatchedFilesClientCapabilities(
+                dynamicRegistration = json.getOptional("dynamicRegistration", JsonBoolean)
+            )
+        }
+    }
+}
 
 /**
  * Parameters for `workspace/didChangeWatchedFiles` notification.
