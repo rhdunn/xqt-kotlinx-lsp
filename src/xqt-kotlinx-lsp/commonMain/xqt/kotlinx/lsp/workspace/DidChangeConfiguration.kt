@@ -7,10 +7,33 @@ import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.LSPAny
 import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendNotification
-import xqt.kotlinx.rpc.json.serialization.JsonSerialization
-import xqt.kotlinx.rpc.json.serialization.get
-import xqt.kotlinx.rpc.json.serialization.put
-import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
+import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
+
+/**
+ * Capabilities specific to the `workspace/didChangeConfiguration` notification.
+ *
+ * @since 3.0.0
+ */
+data class DidChangeConfigurationClientCapabilities(
+    /**
+     * Did change configuration notification supports dynamic registration.
+     */
+    val dynamicRegistration: Boolean? = null
+) {
+    companion object : JsonSerialization<DidChangeConfigurationClientCapabilities> {
+        override fun serializeToJson(value: DidChangeConfigurationClientCapabilities): JsonObject = buildJsonObject {
+            putOptional("dynamicRegistration", value.dynamicRegistration, JsonBoolean)
+        }
+
+        override fun deserialize(json: JsonElement): DidChangeConfigurationClientCapabilities = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> DidChangeConfigurationClientCapabilities(
+                dynamicRegistration = json.getOptional("dynamicRegistration", JsonBoolean)
+            )
+        }
+    }
+}
 
 /**
  * Parameters for `workspace/didChangeConfiguration` notification.
