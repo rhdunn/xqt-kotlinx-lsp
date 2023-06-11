@@ -9,13 +9,36 @@ import xqt.kotlinx.lsp.textDocument.SymbolInformationResponse
 import xqt.kotlinx.rpc.json.protocol.TypedResponseObject
 import xqt.kotlinx.rpc.json.protocol.method
 import xqt.kotlinx.rpc.json.protocol.sendRequest
-import xqt.kotlinx.rpc.json.serialization.JsonSerialization
-import xqt.kotlinx.rpc.json.serialization.get
-import xqt.kotlinx.rpc.json.serialization.put
+import xqt.kotlinx.rpc.json.serialization.*
+import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
 import xqt.kotlinx.rpc.json.serialization.types.JsonIntOrString
 import xqt.kotlinx.rpc.json.serialization.types.JsonString
 import xqt.kotlinx.rpc.json.serialization.types.JsonTypedArray
-import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
+
+/**
+ * Capabilities specific to the `workspace/symbol` request.
+ *
+ * @since 3.0.0
+ */
+data class WorkspaceSymbolClientCapabilities(
+    /**
+     * Symbol request supports dynamic registration.
+     */
+    val dynamicRegistration: Boolean? = null
+) {
+    companion object : JsonSerialization<WorkspaceSymbolClientCapabilities> {
+        override fun serializeToJson(value: WorkspaceSymbolClientCapabilities): JsonObject = buildJsonObject {
+            putOptional("dynamicRegistration", value.dynamicRegistration, JsonBoolean)
+        }
+
+        override fun deserialize(json: JsonElement): WorkspaceSymbolClientCapabilities = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> WorkspaceSymbolClientCapabilities(
+                dynamicRegistration = json.getOptional("dynamicRegistration", JsonBoolean)
+            )
+        }
+    }
+}
 
 /**
  * Parameters for `workspace/symbol` request.
