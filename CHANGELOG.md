@@ -24,6 +24,9 @@ Types:
 Parameters:
 - `InitializeParams` -- Add `rootUri` and `trace` parameters.
 
+Client Capabilities:
+- `WorkspaceClientCapabilities`
+
 ### Changed
 
 - Updated the API documentation.

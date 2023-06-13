@@ -1,10 +1,79 @@
 // Copyright (C) 2023 Reece H. Dunn. SPDX-License-Identifier: Apache-2.0
 package xqt.kotlinx.lsp.workspace
 
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
 import xqt.kotlinx.lsp.base.RequestMessage
 import xqt.kotlinx.rpc.json.protocol.JsonRpcServer
 import xqt.kotlinx.rpc.json.protocol.Notification
+import xqt.kotlinx.rpc.json.serialization.JsonSerialization
+import xqt.kotlinx.rpc.json.serialization.getOptional
+import xqt.kotlinx.rpc.json.serialization.putOptional
+import xqt.kotlinx.rpc.json.serialization.types.JsonBoolean
+import xqt.kotlinx.rpc.json.serialization.unsupportedKindType
 import kotlin.jvm.JvmInline
+
+/**
+ * Workspace specific client capabilities.
+ *
+ * @since 3.0.0
+ */
+data class WorkspaceClientCapabilities(
+    /**
+     * The client supports applying batch edits to the workspace.
+     */
+    val applyEdit: Boolean? = null,
+
+    /**
+     * Capabilities specific to the `workspace/didChangeConfiguration` notification.
+     */
+    val didChangeConfiguration: DidChangeConfigurationClientCapabilities? = null,
+
+    /**
+     * Capabilities specific to the `workspace/didChangeWatchedFiles` notification.
+     */
+    val didChangeWatchedFiles: DidChangeWatchedFilesClientCapabilities? = null,
+
+    /**
+     * Capabilities specific to the `workspace/symbol` request.
+     */
+    val symbol: WorkspaceSymbolClientCapabilities? = null,
+
+    /**
+     * Capabilities specific to the `workspace/executeCommand` request.
+     */
+    val executeCommand: ExecuteCommandClientCapabilities? = null
+) {
+    companion object : JsonSerialization<WorkspaceClientCapabilities> {
+        override fun serializeToJson(value: WorkspaceClientCapabilities): JsonObject = buildJsonObject {
+            putOptional("applyEdit", value.applyEdit, JsonBoolean)
+            putOptional(
+                "didChangeConfiguration", value.didChangeConfiguration, DidChangeConfigurationClientCapabilities
+            )
+            putOptional(
+                "didChangeWatchedFiles", value.didChangeWatchedFiles, DidChangeWatchedFilesClientCapabilities
+            )
+            putOptional("symbol", value.symbol, WorkspaceSymbolClientCapabilities)
+            putOptional("executeCommand", value.executeCommand, ExecuteCommandClientCapabilities)
+        }
+
+        override fun deserialize(json: JsonElement): WorkspaceClientCapabilities = when (json) {
+            !is JsonObject -> unsupportedKindType(json)
+            else -> WorkspaceClientCapabilities(
+                applyEdit = json.getOptional("applyEdit", JsonBoolean),
+                didChangeConfiguration = json.getOptional(
+                    "didChangeConfiguration", DidChangeConfigurationClientCapabilities
+                ),
+                didChangeWatchedFiles = json.getOptional(
+                    "didChangeWatchedFiles", DidChangeWatchedFilesClientCapabilities
+                ),
+                symbol = json.getOptional("symbol", WorkspaceSymbolClientCapabilities),
+                executeCommand = json.getOptional("executeCommand", ExecuteCommandClientCapabilities)
+            )
+        }
+    }
+}
 
 /**
  * A request in the `workspace/` namespace.
